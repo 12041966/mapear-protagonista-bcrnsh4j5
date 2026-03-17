@@ -50655,7 +50655,8 @@ function DashboardCharts({ data }) {
 				fechados: 0,
 				sortKey: key
 			};
-			obs.status === "Concluído" ? acc[key].fechados++ : acc[key].abertos++;
+			if (obs.status === "Concluído") acc[key].fechados++;
+			else acc[key].abertos++;
 			return acc;
 		}, {});
 		return Object.values(grouped).sort((a, b) => a.sortKey.localeCompare(b.sortKey));
@@ -50671,41 +50672,41 @@ function DashboardCharts({ data }) {
 		})).sort((a, b) => b.value - a.value).slice(0, 5);
 	}, [data]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/dashboard/Charts.tsx:62:5",
+		"data-uid": "src/components/dashboard/Charts.tsx:68:5",
 		"data-prohibitions": "[editContent]",
 		className: "grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:63:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:69:7",
 				"data-prohibitions": "[editContent]",
 				className: "col-span-1",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:64:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:70:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:65:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:71:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Observações por Tipo"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:67:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:73:9",
 					"data-prohibitions": "[editContent]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:68:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:74:11",
 						"data-prohibitions": "[editContent]",
 						className: "h-[280px] w-full",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:69:13",
+							"data-uid": "src/components/dashboard/Charts.tsx:75:13",
 							"data-prohibitions": "[editContent]",
 							config: typeConfig,
 							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:70:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:76:15",
 								"data-prohibitions": "[editContent]",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
-										"data-uid": "src/components/dashboard/Charts.tsx:71:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:77:17",
 										"data-prohibitions": "[editContent]",
 										data: typeData,
 										cx: "50%",
@@ -50716,24 +50717,24 @@ function DashboardCharts({ data }) {
 										dataKey: "value",
 										nameKey: "name",
 										children: typeData.map((entry, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-											"data-uid": "src/components/dashboard/Charts.tsx:82:21",
+											"data-uid": "src/components/dashboard/Charts.tsx:88:21",
 											"data-prohibitions": "[editContent]",
 											fill: `var(--color-${entry.name})`
 										}, `cell-${index}`))
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-										"data-uid": "src/components/dashboard/Charts.tsx:85:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:91:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:85:40",
+											"data-uid": "src/components/dashboard/Charts.tsx:91:40",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
-										"data-uid": "src/components/dashboard/Charts.tsx:86:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:92:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:86:39",
+											"data-uid": "src/components/dashboard/Charts.tsx:92:39",
 											"data-prohibitions": "[editContent]",
 											className: "flex-wrap pt-4"
 										})
@@ -50745,27 +50746,27 @@ function DashboardCharts({ data }) {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:93:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:99:7",
 				"data-prohibitions": "[]",
 				className: "col-span-1 lg:col-span-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:94:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:100:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:95:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:101:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Tendência Mensal"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:97:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:103:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:98:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:104:11",
 						"data-prohibitions": "[]",
 						className: "h-[280px] w-full",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:99:13",
+							"data-uid": "src/components/dashboard/Charts.tsx:105:13",
 							"data-prohibitions": "[]",
 							config: {
 								abertos: {
@@ -50779,7 +50780,7 @@ function DashboardCharts({ data }) {
 							},
 							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:106:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:112:15",
 								"data-prohibitions": "[]",
 								data: trendData,
 								margin: {
@@ -50790,14 +50791,14 @@ function DashboardCharts({ data }) {
 								},
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-										"data-uid": "src/components/dashboard/Charts.tsx:107:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:113:17",
 										"data-prohibitions": "[editContent]",
 										strokeDasharray: "3 3",
 										vertical: false,
 										stroke: "#e2e8f0"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:108:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:114:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "name",
 										tickLine: false,
@@ -50808,7 +50809,7 @@ function DashboardCharts({ data }) {
 										}
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:114:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:120:17",
 										"data-prohibitions": "[editContent]",
 										tickLine: false,
 										axisLine: false,
@@ -50819,23 +50820,23 @@ function DashboardCharts({ data }) {
 										allowDecimals: false
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-										"data-uid": "src/components/dashboard/Charts.tsx:120:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:126:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:120:40",
+											"data-uid": "src/components/dashboard/Charts.tsx:126:40",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
-										"data-uid": "src/components/dashboard/Charts.tsx:121:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:127:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:121:39",
+											"data-uid": "src/components/dashboard/Charts.tsx:127:39",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-										"data-uid": "src/components/dashboard/Charts.tsx:122:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:128:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "abertos",
 										fill: "var(--color-abertos)",
@@ -50847,7 +50848,7 @@ function DashboardCharts({ data }) {
 										]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-										"data-uid": "src/components/dashboard/Charts.tsx:123:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:129:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "fechados",
 										fill: "var(--color-fechados)",
@@ -50865,27 +50866,27 @@ function DashboardCharts({ data }) {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:130:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:136:7",
 				"data-prohibitions": "[]",
 				className: "col-span-1 md:col-span-2 lg:col-span-3",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:131:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:137:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:132:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:138:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Distribuição por Área"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:134:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:140:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:135:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:141:11",
 						"data-prohibitions": "[]",
 						className: "h-[250px] w-full",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:136:13",
+							"data-uid": "src/components/dashboard/Charts.tsx:142:13",
 							"data-prohibitions": "[]",
 							config: { value: {
 								label: "Relatos",
@@ -50893,7 +50894,7 @@ function DashboardCharts({ data }) {
 							} },
 							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:140:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:146:15",
 								"data-prohibitions": "[]",
 								data: areaData,
 								margin: {
@@ -50904,14 +50905,14 @@ function DashboardCharts({ data }) {
 								},
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-										"data-uid": "src/components/dashboard/Charts.tsx:141:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:147:17",
 										"data-prohibitions": "[editContent]",
 										strokeDasharray: "3 3",
 										vertical: false,
 										stroke: "#e2e8f0"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:142:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:148:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "name",
 										tickLine: false,
@@ -50922,7 +50923,7 @@ function DashboardCharts({ data }) {
 										}
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:148:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:154:17",
 										"data-prohibitions": "[editContent]",
 										tickLine: false,
 										axisLine: false,
@@ -50933,23 +50934,23 @@ function DashboardCharts({ data }) {
 										allowDecimals: false
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-										"data-uid": "src/components/dashboard/Charts.tsx:154:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:160:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:154:40",
+											"data-uid": "src/components/dashboard/Charts.tsx:160:40",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
-										"data-uid": "src/components/dashboard/Charts.tsx:155:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:161:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:155:39",
+											"data-uid": "src/components/dashboard/Charts.tsx:161:39",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-										"data-uid": "src/components/dashboard/Charts.tsx:156:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:162:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "value",
 										fill: "var(--color-value)",
@@ -55826,4 +55827,4 @@ var App = () => {
 }));
 //#endregion
 
-//# sourceMappingURL=index-Ca0uUyua.js.map
+//# sourceMappingURL=index-DY8p2YXh.js.map

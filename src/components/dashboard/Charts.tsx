@@ -38,7 +38,13 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
         const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, '0')}`
 
         if (!acc[key]) acc[key] = { name: month, abertos: 0, fechados: 0, sortKey: key }
-        obs.status === 'Concluído' ? acc[key].fechados++ : acc[key].abertos++
+
+        if (obs.status === 'Concluído') {
+          acc[key].fechados++
+        } else {
+          acc[key].abertos++
+        }
+
         return acc
       },
       {} as Record<string, { name: string; abertos: number; fechados: number; sortKey: string }>,
