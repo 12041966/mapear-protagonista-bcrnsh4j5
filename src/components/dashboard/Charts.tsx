@@ -12,7 +12,6 @@ import {
   CartesianGrid,
   BarChart,
   Bar,
-  ResponsiveContainer,
 } from 'recharts'
 import { useMainStore } from '@/stores/main'
 
@@ -64,7 +63,12 @@ export function DashboardCharts() {
         </CardHeader>
         <CardContent>
           <div className="h-[250px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
+            <ChartContainer
+              config={{
+                value: { label: 'Quantidade' },
+              }}
+              className="h-full w-full"
+            >
               <PieChart>
                 <Pie
                   data={typeData}
@@ -81,7 +85,7 @@ export function DashboardCharts() {
                 </Pie>
                 <ChartTooltip content={<ChartTooltipContent />} />
               </PieChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </div>
         </CardContent>
       </Card>

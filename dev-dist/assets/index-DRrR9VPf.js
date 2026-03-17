@@ -51188,40 +51188,40 @@ function DashboardCharts() {
 		})).sort((a, b) => b.value - a.value).slice(0, 5);
 	}, [observations]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/dashboard/Charts.tsx:60:5",
+		"data-uid": "src/components/dashboard/Charts.tsx:59:5",
 		"data-prohibitions": "[editContent]",
 		className: "grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:61:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:60:7",
 				"data-prohibitions": "[editContent]",
 				className: "col-span-1",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:62:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:61:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:63:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:62:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Observações por Tipo"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:65:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:64:9",
 					"data-prohibitions": "[editContent]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:66:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:65:11",
 						"data-prohibitions": "[editContent]",
 						className: "h-[250px] w-full",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ResponsiveContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:67:13",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
+							"data-uid": "src/components/dashboard/Charts.tsx:66:13",
 							"data-prohibitions": "[editContent]",
-							width: "100%",
-							height: "100%",
+							config: { value: { label: "Quantidade" } },
+							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:68:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:72:15",
 								"data-prohibitions": "[editContent]",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
-									"data-uid": "src/components/dashboard/Charts.tsx:69:17",
+									"data-uid": "src/components/dashboard/Charts.tsx:73:17",
 									"data-prohibitions": "[editContent]",
 									data: typeData,
 									cx: "50%",
@@ -51231,15 +51231,15 @@ function DashboardCharts() {
 									paddingAngle: 5,
 									dataKey: "value",
 									children: typeData.map((_, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-										"data-uid": "src/components/dashboard/Charts.tsx:79:21",
+										"data-uid": "src/components/dashboard/Charts.tsx:83:21",
 										"data-prohibitions": "[editContent]",
 										fill: COLORS[index % COLORS.length]
 									}, `cell-${index}`))
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-									"data-uid": "src/components/dashboard/Charts.tsx:82:17",
+									"data-uid": "src/components/dashboard/Charts.tsx:86:17",
 									"data-prohibitions": "[editContent]",
 									content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-										"data-uid": "src/components/dashboard/Charts.tsx:82:40",
+										"data-uid": "src/components/dashboard/Charts.tsx:86:40",
 										"data-prohibitions": "[editContent]"
 									})
 								})]
@@ -51249,27 +51249,27 @@ function DashboardCharts() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:89:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:93:7",
 				"data-prohibitions": "[]",
 				className: "col-span-1 lg:col-span-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:90:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:94:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:91:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:95:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Tendência Mensal"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:93:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:97:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:94:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:98:11",
 						"data-prohibitions": "[]",
 						className: "h-[250px] w-full",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:95:13",
+							"data-uid": "src/components/dashboard/Charts.tsx:99:13",
 							"data-prohibitions": "[]",
 							config: { obs: {
 								label: "Observações",
@@ -51277,7 +51277,7 @@ function DashboardCharts() {
 							} },
 							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(LineChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:99:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:103:15",
 								"data-prohibitions": "[]",
 								data: trendData,
 								margin: {
@@ -51288,14 +51288,14 @@ function DashboardCharts() {
 								},
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-										"data-uid": "src/components/dashboard/Charts.tsx:100:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:104:17",
 										"data-prohibitions": "[editContent]",
 										strokeDasharray: "3 3",
 										vertical: false,
 										stroke: "#e2e8f0"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:101:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:105:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "name",
 										tickLine: false,
@@ -51306,7 +51306,7 @@ function DashboardCharts() {
 										}
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:107:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:111:17",
 										"data-prohibitions": "[editContent]",
 										tickLine: false,
 										axisLine: false,
@@ -51316,15 +51316,15 @@ function DashboardCharts() {
 										}
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-										"data-uid": "src/components/dashboard/Charts.tsx:108:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:112:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:108:40",
+											"data-uid": "src/components/dashboard/Charts.tsx:112:40",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Line, {
-										"data-uid": "src/components/dashboard/Charts.tsx:109:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:113:17",
 										"data-prohibitions": "[editContent]",
 										type: "monotone",
 										dataKey: "obs",
@@ -51343,27 +51343,27 @@ function DashboardCharts() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:123:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:127:7",
 				"data-prohibitions": "[]",
 				className: "col-span-1 md:col-span-2 lg:col-span-3",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:124:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:128:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:125:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:129:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Distribuição por Área"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:127:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:131:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:128:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:132:11",
 						"data-prohibitions": "[]",
 						className: "h-[250px] w-full",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:129:13",
+							"data-uid": "src/components/dashboard/Charts.tsx:133:13",
 							"data-prohibitions": "[]",
 							config: { value: {
 								label: "Relatos",
@@ -51371,7 +51371,7 @@ function DashboardCharts() {
 							} },
 							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:133:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:137:15",
 								"data-prohibitions": "[]",
 								data: areaData,
 								margin: {
@@ -51382,14 +51382,14 @@ function DashboardCharts() {
 								},
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-										"data-uid": "src/components/dashboard/Charts.tsx:134:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:138:17",
 										"data-prohibitions": "[editContent]",
 										strokeDasharray: "3 3",
 										vertical: false,
 										stroke: "#e2e8f0"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:135:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:139:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "name",
 										tickLine: false,
@@ -51400,7 +51400,7 @@ function DashboardCharts() {
 										}
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:141:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:145:17",
 										"data-prohibitions": "[editContent]",
 										tickLine: false,
 										axisLine: false,
@@ -51411,15 +51411,15 @@ function DashboardCharts() {
 										allowDecimals: false
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-										"data-uid": "src/components/dashboard/Charts.tsx:147:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:151:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:147:40",
+											"data-uid": "src/components/dashboard/Charts.tsx:151:40",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-										"data-uid": "src/components/dashboard/Charts.tsx:148:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:152:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "value",
 										fill: "var(--color-value)",
@@ -56250,4 +56250,4 @@ var App = () => {
 }));
 //#endregion
 
-//# sourceMappingURL=index-V61vkzUl.js.map
+//# sourceMappingURL=index-DRrR9VPf.js.map
