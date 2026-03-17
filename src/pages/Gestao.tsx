@@ -15,10 +15,6 @@ export default function Gestao() {
   const [editingObs, setEditingObs] = useState<Observation | null>(null)
   const { toast } = useToast()
 
-  if (currentUser?.role === 'Observador') {
-    return <Navigate to="/" replace />
-  }
-
   const filteredData = useMemo(() => {
     return observations.filter(
       (obs) =>
@@ -27,6 +23,10 @@ export default function Gestao() {
         obs.type.toLowerCase().includes(search.toLowerCase()),
     )
   }, [observations, search])
+
+  if (currentUser?.role === 'Observador') {
+    return <Navigate to="/" replace />
+  }
 
   const handleExport = () => {
     toast({

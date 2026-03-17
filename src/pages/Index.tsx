@@ -16,10 +16,6 @@ const Index = () => {
   const { observations, currentUser } = useMainStore()
   const [period, setPeriod] = useState<string>('30d')
 
-  if (currentUser?.role === 'Observador') {
-    return <Navigate to="/nova-observacao" replace />
-  }
-
   const filteredData = useMemo(() => {
     const now = new Date()
     return observations.filter((obs) => {
@@ -35,6 +31,10 @@ const Index = () => {
       return true
     })
   }, [observations, period])
+
+  if (currentUser?.role === 'Observador') {
+    return <Navigate to="/nova-observacao" replace />
+  }
 
   return (
     <div className="w-full max-w-7xl mx-auto space-y-6">

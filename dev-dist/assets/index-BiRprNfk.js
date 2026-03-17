@@ -53906,12 +53906,6 @@ function RecentActivity({ data }) {
 var Index = () => {
 	const { observations, currentUser } = useMainStore();
 	const [period, setPeriod] = (0, import_react.useState)("30d");
-	if (currentUser?.role === "Observador") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
-		"data-uid": "src/pages/Index.tsx:20:12",
-		"data-prohibitions": "[editContent]",
-		to: "/nova-observacao",
-		replace: true
-	});
 	const filteredData = (0, import_react.useMemo)(() => {
 		const now = /* @__PURE__ */ new Date();
 		return observations.filter((obs) => {
@@ -53925,6 +53919,12 @@ var Index = () => {
 			return true;
 		});
 	}, [observations, period]);
+	if (currentUser?.role === "Observador") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
+		"data-uid": "src/pages/Index.tsx:36:12",
+		"data-prohibitions": "[editContent]",
+		to: "/nova-observacao",
+		replace: true
+	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		"data-uid": "src/pages/Index.tsx:40:5",
 		"data-prohibitions": "[]",
@@ -56087,15 +56087,15 @@ function Gestao() {
 	const [search, setSearch] = (0, import_react.useState)("");
 	const [editingObs, setEditingObs] = (0, import_react.useState)(null);
 	const { toast } = useToast();
+	const filteredData = (0, import_react.useMemo)(() => {
+		return observations.filter((obs) => obs.id.toLowerCase().includes(search.toLowerCase()) || obs.area.toLowerCase().includes(search.toLowerCase()) || obs.type.toLowerCase().includes(search.toLowerCase()));
+	}, [observations, search]);
 	if (currentUser?.role === "Observador") return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Navigate, {
-		"data-uid": "src/pages/Gestao.tsx:19:12",
+		"data-uid": "src/pages/Gestao.tsx:28:12",
 		"data-prohibitions": "[editContent]",
 		to: "/",
 		replace: true
 	});
-	const filteredData = (0, import_react.useMemo)(() => {
-		return observations.filter((obs) => obs.id.toLowerCase().includes(search.toLowerCase()) || obs.area.toLowerCase().includes(search.toLowerCase()) || obs.type.toLowerCase().includes(search.toLowerCase()));
-	}, [observations, search]);
 	const handleExport = () => {
 		toast({
 			title: "Download Iniciado",
@@ -57351,4 +57351,4 @@ var App = () => {
 }));
 //#endregion
 
-//# sourceMappingURL=index-BrFbuiHz.js.map
+//# sourceMappingURL=index-BiRprNfk.js.map
