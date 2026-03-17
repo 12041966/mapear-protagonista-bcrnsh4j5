@@ -1,14 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Activity, CheckCircle, AlertOctagon, Users } from 'lucide-react'
-import { useMainStore } from '@/stores/main'
+import { Observation } from '@/types'
 
-export function MetricsCards() {
-  const { observations } = useMainStore()
-
-  const total = observations.length
-  const concluidos = observations.filter((o) => o.status === 'Concluído').length
+export function MetricsCards({ data }: { data: Observation[] }) {
+  const total = data.length
+  const concluidos = data.filter((o) => o.status === 'Concluído').length
   const pctConcluidos = total > 0 ? Math.round((concluidos / total) * 100) : 0
-  const critical = observations.filter(
+  const critical = data.filter(
     (o) => o.riskLevel === 'Muito Grave' || o.type === 'Acidente' || o.type === 'Quase acidente',
   ).length
 
@@ -21,7 +19,6 @@ export function MetricsCards() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{total}</div>
-          <p className="text-xs text-slate-400 mt-1">+12% este mês</p>
         </CardContent>
       </Card>
       <Card>

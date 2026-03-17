@@ -1,59 +1,62 @@
 import { useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import {
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  BarChart,
-  Bar,
-} from 'recharts'
-import { useMainStore } from '@/stores/main'
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  ChartConfig,
+} from '@/components/ui/chart'
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
+import { Observation } from '@/types'
 
-export function DashboardCharts() {
-  const { observations } = useMainStore()
+const COLORS = ['#f59e0b', '#10b981', '#ef4444', '#3b82f6', '#8b5cf6', '#ec4899']
 
+export function DashboardCharts({ data }: { data: Observation[] }) {
   const typeData = useMemo(() => {
-    const counts = observations.reduce(
-      (acc, curr) => {
-        acc[curr.type] = (acc[curr.type] || 0) + 1
-        return acc
-      },
+    const counts = data.reduce(
+      (acc, curr) => ({ ...acc, [curr.type]: (acc[curr.type] || 0) + 1 }),
       {} as Record<string, number>,
     )
-
     return Object.entries(counts).map(([name, value]) => ({ name, value }))
-  }, [observations])
+  }, [data])
 
-  const COLORS = ['#f59e0b', '#10b981', '#ef4444', '#3b82f6', '#8b5cf6', '#ec4899']
+  const typeConfig = useMemo(() => {
+    return typeData.reduce((acc, d, i) => {
+      acc[d.name] = { label: d.name, color: COLORS[i % COLORS.length] }
+      return acc
+    }, {} as ChartConfig)
+  }, [typeData])
 
-  const trendData = [
-    { name: 'Out', obs: 12 },
-    { name: 'Nov', obs: 19 },
-    { name: 'Dez', obs: 15 },
-    { name: 'Jan', obs: 22 },
-    { name: 'Fev', obs: 28 },
-    { name: 'Mar', obs: observations.length + 5 },
-  ]
+  const trendData = useMemo(() => {
+    const grouped = data.reduce(
+      (acc, obs) => {
+        const d = new Date(obs.date)
+        const rawMonth = d.toLocaleString('pt-BR', { month: 'short' }).replace('.', '')
+        const month = rawMonth.charAt(0).toUpperCase() + rawMonth.slice(1)
+        const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, '0')}`
 
-  const areaData = useMemo(() => {
-    const counts = observations.reduce(
-      (acc, curr) => {
-        acc[curr.area] = (acc[curr.area] || 0) + 1
+        if (!acc[key]) acc[key] = { name: month, abertos: 0, fechados: 0, sortKey: key }
+        obs.status === 'Concluído' ? acc[key].fechados++ : acc[key].abertos++
         return acc
       },
+      {} as Record<string, { name: string; abertos: number; fechados: number; sortKey: string }>,
+    )
+
+    return Object.values(grouped).sort((a, b) => a.sortKey.localeCompare(b.sortKey))
+  }, [data])
+
+  const areaData = useMemo(() => {
+    const counts = data.reduce(
+      (acc, curr) => ({ ...acc, [curr.area]: (acc[curr.area] || 0) + 1 }),
       {} as Record<string, number>,
     )
     return Object.entries(counts)
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value)
       .slice(0, 5)
-  }, [observations])
+  }, [data])
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
@@ -62,28 +65,25 @@ export function DashboardCharts() {
           <CardTitle className="text-base">Observações por Tipo</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[250px] w-full">
-            <ChartContainer
-              config={{
-                value: { label: 'Quantidade' },
-              }}
-              className="h-full w-full"
-            >
+          <div className="h-[280px] w-full">
+            <ChartContainer config={typeConfig} className="h-full w-full">
               <PieChart>
                 <Pie
                   data={typeData}
                   cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
+                  cy="45%"
+                  innerRadius={55}
+                  outerRadius={75}
                   paddingAngle={5}
                   dataKey="value"
+                  nameKey="name"
                 >
-                  {typeData.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  {typeData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={`var(--color-${entry.name})`} />
                   ))}
                 </Pie>
                 <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent className="flex-wrap pt-4" />} />
               </PieChart>
             </ChartContainer>
           </div>
@@ -95,12 +95,15 @@ export function DashboardCharts() {
           <CardTitle className="text-base">Tendência Mensal</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[250px] w-full">
+          <div className="h-[280px] w-full">
             <ChartContainer
-              config={{ obs: { label: 'Observações', color: 'hsl(var(--primary))' } }}
+              config={{
+                abertos: { label: 'Comunicados abertos', color: '#f59e0b' },
+                fechados: { label: 'Comunicados fechados', color: '#10b981' },
+              }}
               className="h-full w-full"
             >
-              <LineChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+              <BarChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                 <XAxis
                   dataKey="name"
@@ -108,17 +111,17 @@ export function DashboardCharts() {
                   axisLine={false}
                   tick={{ fill: '#64748b', fontSize: 12 }}
                 />
-                <YAxis tickLine={false} axisLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Line
-                  type="monotone"
-                  dataKey="obs"
-                  stroke="var(--color-obs)"
-                  strokeWidth={3}
-                  dot={{ r: 4, fill: 'var(--color-obs)' }}
-                  activeDot={{ r: 6 }}
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: '#64748b', fontSize: 12 }}
+                  allowDecimals={false}
                 />
-              </LineChart>
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar dataKey="abertos" fill="var(--color-abertos)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="fechados" fill="var(--color-fechados)" radius={[4, 4, 0, 0]} />
+              </BarChart>
             </ChartContainer>
           </div>
         </CardContent>
@@ -131,7 +134,7 @@ export function DashboardCharts() {
         <CardContent>
           <div className="h-[250px] w-full">
             <ChartContainer
-              config={{ value: { label: 'Relatos', color: '#f59e0b' } }}
+              config={{ value: { label: 'Relatos', color: '#3b82f6' } }}
               className="h-full w-full"
             >
               <BarChart data={areaData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -149,6 +152,7 @@ export function DashboardCharts() {
                   allowDecimals={false}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
                 <Bar dataKey="value" fill="var(--color-value)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ChartContainer>

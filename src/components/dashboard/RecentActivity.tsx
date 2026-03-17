@@ -1,11 +1,10 @@
-import { useMainStore } from '@/stores/main'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TYPE_COLORS } from '@/lib/constants'
+import { Observation } from '@/types'
 
-export function RecentActivity() {
-  const { observations } = useMainStore()
-  const recent = [...observations]
+export function RecentActivity({ data }: { data: Observation[] }) {
+  const recent = [...data]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 5)
 
@@ -26,7 +25,7 @@ export function RecentActivity() {
                   <span className="font-semibold text-sm">{obs.id}</span>
                   <Badge
                     variant="outline"
-                    className={`text-[10px] px-1.5 py-0 ${TYPE_COLORS[obs.type]}`}
+                    className={`text-[10px] px-1.5 py-0 ${TYPE_COLORS?.[obs.type] || ''}`}
                   >
                     {obs.type}
                   </Badge>

@@ -988,6 +988,10 @@ section[aria-label='Notifications alt+T'] {
   height: 250px;
 }
 
+.h-\[280px\]{
+  height: 280px;
+}
+
 .h-\[var\(--radix-navigation-menu-viewport-height\)\]{
   height: var(--radix-navigation-menu-viewport-height);
 }
@@ -1146,6 +1150,10 @@ section[aria-label='Notifications alt+T'] {
 
 .w-\[120px\]{
   width: 120px;
+}
+
+.w-\[180px\]{
+  width: 180px;
 }
 
 .w-\[1px\]{
