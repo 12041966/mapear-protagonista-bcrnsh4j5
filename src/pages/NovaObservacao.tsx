@@ -19,7 +19,7 @@ const INITIAL_DATA = {
   area: '',
   shift: '',
   machine: '',
-  riskLevel: 'Leve',
+  riskLevel: '',
   description: '',
   resolutionType: undefined,
   resolutionAction: '',
@@ -78,6 +78,16 @@ export default function NovaObservacao() {
 
   return (
     <div className="w-full max-w-2xl mx-auto py-4">
+      <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg shadow-sm animate-fade-in">
+        <p className="text-sm text-blue-900 leading-relaxed">
+          <strong className="block mb-1 text-blue-950">Instruções de Uso:</strong>
+          Utilize este formulário para registrar observações de Segurança, Saúde e Meio Ambiente com
+          objetivo de corrigir ou melhorar condições de risco, alertar sobre comportamentos de risco
+          ou reforçar comportamentos seguros. Situações relacionadas a Acidentes e Quase acidentes
+          devem ser comunicadas diretamente à Supervisão ou Segurança do Trabalho.
+        </p>
+      </div>
+
       <Card className="shadow-elevation border-0 md:border">
         <CardHeader className="bg-slate-50 border-b pb-4 rounded-t-lg">
           <div className="flex items-center justify-between mb-2">

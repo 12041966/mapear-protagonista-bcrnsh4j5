@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import { CONDITIONS, BEHAVIORS } from '@/lib/constants'
+import { useMainStore } from '@/stores/main'
 
 interface Props {
   data: any
@@ -11,19 +11,20 @@ interface Props {
 
 export function Step3Detalhamento({ data, updateData }: Props) {
   const [search, setSearch] = useState('')
+  const { settings } = useMainStore()
 
-  const isCondition = data.type?.includes('Condição')
-  const isBehavior = data.type?.includes('Comportamento')
-  const isEvent = data.type === 'Acidente' || data.type === 'Quase acidente'
+  const isCondition = data.type?.toLowerCase().includes('condição')
+  const isBehavior = data.type?.toLowerCase().includes('comportamento')
+  const isEvent = data.type?.toLowerCase().includes('acidente') || data.type === 'Quase acidente'
 
   const options = useMemo(() => {
     let list: string[] = []
-    if (isCondition) list = CONDITIONS
-    else if (isBehavior) list = BEHAVIORS
+    if (isCondition) list = settings.conditions
+    else if (isBehavior) list = settings.behaviors
 
     if (!search) return list
     return list.filter((i) => i.toLowerCase().includes(search.toLowerCase()))
-  }, [isCondition, isBehavior, search])
+  }, [isCondition, isBehavior, search, settings.conditions, settings.behaviors])
 
   if (isEvent) {
     return (

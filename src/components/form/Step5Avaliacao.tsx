@@ -8,18 +8,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { RiskLevel, ResolutionType } from '@/types'
+import { ResolutionType } from '@/types'
 import { RISK_COLORS } from '@/lib/constants'
+import { useMainStore } from '@/stores/main'
 
 interface Props {
   data: any
   updateData: (data: any) => void
 }
 
-const RISKS: RiskLevel[] = ['Leve', 'Moderado', 'Grave', 'Muito Grave']
 const RESOLUTIONS: ResolutionType[] = ['Feedback fornecido', 'Ação tomada', 'Ação necessária']
 
 export function Step5Avaliacao({ data, updateData }: Props) {
+  const { settings } = useMainStore()
+
   return (
     <div className="space-y-6 animate-slide-in-right">
       <div className="space-y-2">
@@ -31,13 +33,14 @@ export function Step5Avaliacao({ data, updateData }: Props) {
         <div className="grid gap-2">
           <Label>Grau de Risco Estimado</Label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {RISKS.map((r) => (
+            {settings.risks.map((r) => (
               <div
                 key={r}
                 onClick={() => updateData({ riskLevel: r })}
                 className={`text-center py-2 border rounded-md cursor-pointer text-sm font-medium transition-all ${
                   data.riskLevel === r
-                    ? RISK_COLORS[r] + ' border-current shadow-sm'
+                    ? (RISK_COLORS[r] || 'text-slate-800 bg-slate-200') +
+                      ' border-current shadow-sm'
                     : 'hover:bg-slate-50 text-slate-600'
                 }`}
               >

@@ -1,32 +1,41 @@
-export type RiskLevel = 'Leve' | 'Moderado' | 'Grave' | 'Muito Grave'
-
-export type ObsType =
-  | 'Condição de risco'
-  | 'Condição segura'
-  | 'Comportamento de risco'
-  | 'Comportamento seguro'
-  | 'Acidente'
-  | 'Quase acidente'
-
 export type ObsStatus = 'Pendente' | 'Em Análise' | 'Concluído'
 
 export type ResolutionType = 'Feedback fornecido' | 'Ação tomada' | 'Ação necessária'
 
+export interface UserProfile {
+  id: string
+  name: string
+  whatsapp: string
+  cpf: string
+  companyId: string
+}
+
+export interface ObservationTypeConfig {
+  value: string
+  label: string
+  desc: string
+  color: string
+}
+
+export interface AppSettings {
+  areas: string[]
+  conditions: string[]
+  behaviors: string[]
+  shifts: string[]
+  risks: string[]
+  observationTypes: ObservationTypeConfig[]
+}
+
 export interface Observation {
   id: string
   date: string
-  observer: {
-    name: string
-    whatsapp: string
-    cpf: string
-    companyId: string
-  }
-  type: ObsType
+  observer: Omit<UserProfile, 'id'>
+  type: string
   detail: string
   area: string
   shift: string
   machine?: string
-  riskLevel: RiskLevel
+  riskLevel: string
   description: string
   resolutionType: ResolutionType
   resolutionAction?: string
@@ -40,4 +49,8 @@ export interface StoreContextType {
   observations: Observation[]
   addObservation: (obs: Omit<Observation, 'id' | 'date' | 'status'>) => void
   updateObservation: (id: string, updates: Partial<Observation>) => void
+  users: UserProfile[]
+  updateUser: (id: string, user: Partial<UserProfile>) => void
+  settings: AppSettings
+  updateSettings: (settings: AppSettings) => void
 }

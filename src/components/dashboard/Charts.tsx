@@ -10,8 +10,7 @@ import {
 } from '@/components/ui/chart'
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { Observation } from '@/types'
-
-const COLORS = ['#f59e0b', '#10b981', '#ef4444', '#3b82f6', '#8b5cf6', '#ec4899']
+import { CHART_COLORS } from '@/lib/constants'
 
 export function DashboardCharts({ data }: { data: Observation[] }) {
   const typeData = useMemo(() => {
@@ -24,7 +23,10 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
 
   const typeConfig = useMemo(() => {
     return typeData.reduce((acc, d, i) => {
-      acc[d.name] = { label: d.name, color: COLORS[i % COLORS.length] }
+      acc[d.name] = {
+        label: d.name,
+        color: CHART_COLORS[d.name] || `hsl(${(i * 137) % 360}, 70%, 50%)`,
+      }
       return acc
     }, {} as ChartConfig)
   }, [typeData])
@@ -85,7 +87,10 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
                   nameKey="name"
                 >
                   {typeData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={`var(--color-${entry.name})`} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={CHART_COLORS[entry.name] || `hsl(${(index * 137) % 360}, 70%, 50%)`}
+                    />
                   ))}
                 </Pie>
                 <ChartTooltip content={<ChartTooltipContent />} />

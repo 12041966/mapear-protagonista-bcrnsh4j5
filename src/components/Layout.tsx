@@ -1,12 +1,21 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, PlusCircle, ListTodo, Settings, Bell } from 'lucide-react'
+import { LayoutDashboard, PlusCircle, ListTodo, Settings, Bell, QrCode } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from '@/components/ui/dialog'
 
 const NAV_ITEMS = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
   { name: 'Nova Observação', path: '/nova-observacao', icon: PlusCircle },
   { name: 'Gestão de Relatos', path: '/gestao', icon: ListTodo },
+  { name: 'Configurações', path: '/settings', icon: Settings },
 ]
 
 export default function Layout() {
@@ -59,7 +68,30 @@ export default function Layout() {
               {NAV_ITEMS.find((i) => i.path === location.pathname)?.name || 'Dashboard'}
             </h1>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-slate-500 hover:text-slate-700">
+                  <QrCode className="w-5 h-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle className="text-center">Acesso Rápido Mobile</DialogTitle>
+                  <DialogDescription className="text-center">
+                    Escaneie o QR Code com a câmera do celular para relatar uma observação.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex items-center justify-center py-6">
+                  <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://cultura-de-seguranca-saas-2751a.goskip.app"
+                    alt="QR Code"
+                    className="w-48 h-48 rounded-lg shadow-sm border border-slate-200 p-2"
+                  />
+                </div>
+              </DialogContent>
+            </Dialog>
+
             <Button variant="ghost" size="icon" className="relative text-slate-500">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>

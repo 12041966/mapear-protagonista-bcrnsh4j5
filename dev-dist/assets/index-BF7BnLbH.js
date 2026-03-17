@@ -18848,7 +18848,7 @@ function focusFirst$2(candidates) {
 }
 var Provider$1 = ToastProvider$1;
 var Viewport$1 = ToastViewport$1;
-var Root2$3 = Toast$2;
+var Root2$4 = Toast$2;
 var Title$1 = ToastTitle$1;
 var Description$1 = ToastDescription$1;
 var Action = ToastAction$1;
@@ -19178,24 +19178,79 @@ var OctagonAlert = createLucideIcon("octagon-alert", [
 		key: "1fd625"
 	}]
 ]);
-var OctagonX = createLucideIcon("octagon-x", [
-	["path", {
-		d: "m15 9-6 6",
-		key: "1uzhvr"
-	}],
-	["path", {
-		d: "M2.586 16.726A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2h6.624a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586z",
-		key: "2d38gg"
-	}],
-	["path", {
-		d: "m9 9 6 6",
-		key: "z0biqf"
-	}]
-]);
 var Pen = createLucideIcon("pen", [["path", {
 	d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
 	key: "1a8usu"
 }]]);
+var Plus = createLucideIcon("plus", [["path", {
+	d: "M5 12h14",
+	key: "1ays0h"
+}], ["path", {
+	d: "M12 5v14",
+	key: "s699le"
+}]]);
+var QrCode = createLucideIcon("qr-code", [
+	["rect", {
+		width: "5",
+		height: "5",
+		x: "3",
+		y: "3",
+		rx: "1",
+		key: "1tu5fj"
+	}],
+	["rect", {
+		width: "5",
+		height: "5",
+		x: "16",
+		y: "3",
+		rx: "1",
+		key: "1v8r4q"
+	}],
+	["rect", {
+		width: "5",
+		height: "5",
+		x: "3",
+		y: "16",
+		rx: "1",
+		key: "1x03jg"
+	}],
+	["path", {
+		d: "M21 16h-3a2 2 0 0 0-2 2v3",
+		key: "177gqh"
+	}],
+	["path", {
+		d: "M21 21v.01",
+		key: "ents32"
+	}],
+	["path", {
+		d: "M12 7v3a2 2 0 0 1-2 2H7",
+		key: "8crl2c"
+	}],
+	["path", {
+		d: "M3 12h.01",
+		key: "nlz23k"
+	}],
+	["path", {
+		d: "M12 3h.01",
+		key: "n36tog"
+	}],
+	["path", {
+		d: "M12 16v.01",
+		key: "133mhm"
+	}],
+	["path", {
+		d: "M16 12h1",
+		key: "1slzba"
+	}],
+	["path", {
+		d: "M21 12v.01",
+		key: "1lwtk9"
+	}],
+	["path", {
+		d: "M12 21v-1",
+		key: "1880an"
+	}]
+]);
 var Search = createLucideIcon("search", [["path", {
 	d: "m21 21-4.34-4.34",
 	key: "14j7rj"
@@ -19205,7 +19260,7 @@ var Search = createLucideIcon("search", [["path", {
 	r: "8",
 	key: "4ej97u"
 }]]);
-var Settings = createLucideIcon("settings", [["path", {
+var Settings$1 = createLucideIcon("settings", [["path", {
 	d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
 	key: "1i5ecw"
 }], ["circle", {
@@ -19221,6 +19276,28 @@ var ShieldCheck = createLucideIcon("shield-check", [["path", {
 	d: "m9 12 2 2 4-4",
 	key: "dzmm74"
 }]]);
+var Trash2 = createLucideIcon("trash-2", [
+	["path", {
+		d: "M10 11v6",
+		key: "nco0om"
+	}],
+	["path", {
+		d: "M14 11v6",
+		key: "outv1u"
+	}],
+	["path", {
+		d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6",
+		key: "miytrc"
+	}],
+	["path", {
+		d: "M3 6h18",
+		key: "d0wm0j"
+	}],
+	["path", {
+		d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2",
+		key: "e791ji"
+	}]
+]);
 var TriangleAlert = createLucideIcon("triangle-alert", [
 	["path", {
 		d: "m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3",
@@ -20702,7 +20779,7 @@ var toastVariants = cva("group pointer-events-auto relative flex w-full items-ce
 	defaultVariants: { variant: "default" }
 });
 var Toast$1 = import_react.forwardRef(({ className, variant, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$4, {
 		"data-uid": "src/components/ui/toast.tsx:47:5",
 		"data-prohibitions": "[editContent]",
 		ref,
@@ -20710,7 +20787,7 @@ var Toast$1 = import_react.forwardRef(({ className, variant, ...props }, ref) =>
 		...props
 	});
 });
-Toast$1.displayName = Root2$3.displayName;
+Toast$1.displayName = Root2$4.displayName;
 var ToastAction = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Action, {
 	"data-uid": "src/components/ui/toast.tsx:60:3",
 	"data-prohibitions": "[editContent]",
@@ -23507,11 +23584,11 @@ var PopperAnchor = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 PopperAnchor.displayName = ANCHOR_NAME;
-var CONTENT_NAME$3 = "PopperContent";
-var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$3);
+var CONTENT_NAME$4 = "PopperContent";
+var [PopperContentProvider, useContentContext] = createPopperContext(CONTENT_NAME$4);
 var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopePopper, side = "bottom", sideOffset = 0, align = "center", alignOffset = 0, arrowPadding = 0, avoidCollisions = true, collisionBoundary = [], collisionPadding: collisionPaddingProp = 0, sticky = "partial", hideWhenDetached = false, updatePositionStrategy = "optimized", onPlaced, ...contentProps } = props;
-	const context = usePopperContext(CONTENT_NAME$3, __scopePopper);
+	const context = usePopperContext(CONTENT_NAME$4, __scopePopper);
 	const [content, setContent] = import_react.useState(null);
 	const composedRefs = useComposedRefs(forwardedRef, (node) => setContent(node));
 	const [arrow$4, setArrow] = import_react.useState(null);
@@ -23624,7 +23701,7 @@ var PopperContent = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-PopperContent.displayName = CONTENT_NAME$3;
+PopperContent.displayName = CONTENT_NAME$4;
 var ARROW_NAME$2 = "PopperArrow";
 var OPPOSITE_SIDE = {
 	top: "bottom",
@@ -23712,9 +23789,9 @@ function getSideAndAlignFromPlacement(placement) {
 	const [side, align = "center"] = placement.split("-");
 	return [side, align];
 }
-var Root2$2 = Popper;
+var Root2$3 = Popper;
 var Anchor = PopperAnchor;
-var Content$1 = PopperContent;
+var Content$2 = PopperContent;
 var Arrow = PopperArrow;
 //#endregion
 //#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-tooltip@1.2.8_@types+react-dom@19.2.3_@types+react@19.2.14__@types+reac_9074d9fb06315b089b2bee17c4c65951/node_modules/@radix-ui/react-tooltip/dist/index.mjs
@@ -23808,7 +23885,7 @@ var Tooltip$2 = (props) => {
 			}
 		};
 	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContextProvider, {
 			scope: __scopeTooltip,
@@ -23840,11 +23917,11 @@ var Tooltip$2 = (props) => {
 	});
 };
 Tooltip$2.displayName = TOOLTIP_NAME;
-var TRIGGER_NAME$2 = "TooltipTrigger";
+var TRIGGER_NAME$3 = "TooltipTrigger";
 var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, ...triggerProps } = props;
-	const context = useTooltipContext(TRIGGER_NAME$2, __scopeTooltip);
-	const providerContext = useTooltipProviderContext(TRIGGER_NAME$2, __scopeTooltip);
+	const context = useTooltipContext(TRIGGER_NAME$3, __scopeTooltip);
+	const providerContext = useTooltipProviderContext(TRIGGER_NAME$3, __scopeTooltip);
 	const popperScope = usePopperScope$1(__scopeTooltip);
 	const composedRefs = useComposedRefs(forwardedRef, import_react.useRef(null), context.onTriggerChange);
 	const isPointerDownRef = import_react.useRef(false);
@@ -23885,7 +23962,7 @@ var TooltipTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TooltipTrigger$1.displayName = TRIGGER_NAME$2;
+TooltipTrigger$1.displayName = TRIGGER_NAME$3;
 var PORTAL_NAME$2 = "TooltipPortal";
 var [PortalProvider$1, usePortalContext$1] = createTooltipContext(PORTAL_NAME$2, { forceMount: void 0 });
 var TooltipPortal = (props) => {
@@ -23905,11 +23982,11 @@ var TooltipPortal = (props) => {
 	});
 };
 TooltipPortal.displayName = PORTAL_NAME$2;
-var CONTENT_NAME$2 = "TooltipContent";
+var CONTENT_NAME$3 = "TooltipContent";
 var TooltipContent$1 = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext$1(CONTENT_NAME$2, props.__scopeTooltip);
+	const portalContext = usePortalContext$1(CONTENT_NAME$3, props.__scopeTooltip);
 	const { forceMount = portalContext.forceMount, side = "top", ...contentProps } = props;
-	const context = useTooltipContext(CONTENT_NAME$2, props.__scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$3, props.__scopeTooltip);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || context.open,
 		children: context.disableHoverableContent ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TooltipContentImpl, {
@@ -23924,8 +24001,8 @@ var TooltipContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 var TooltipContentHoverable = import_react.forwardRef((props, forwardedRef) => {
-	const context = useTooltipContext(CONTENT_NAME$2, props.__scopeTooltip);
-	const providerContext = useTooltipProviderContext(CONTENT_NAME$2, props.__scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$3, props.__scopeTooltip);
+	const providerContext = useTooltipProviderContext(CONTENT_NAME$3, props.__scopeTooltip);
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
 	const [pointerGraceArea, setPointerGraceArea] = import_react.useState(null);
@@ -24002,7 +24079,7 @@ var [VisuallyHiddenContentContextProvider, useVisuallyHiddenContentContext] = cr
 var Slottable = /* @__PURE__ */ createSlottable("TooltipContent");
 var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, children, "aria-label": ariaLabel, onEscapeKeyDown, onPointerDownOutside, ...contentProps } = props;
-	const context = useTooltipContext(CONTENT_NAME$2, __scopeTooltip);
+	const context = useTooltipContext(CONTENT_NAME$3, __scopeTooltip);
 	const popperScope = usePopperScope$1(__scopeTooltip);
 	const { onClose } = context;
 	import_react.useEffect(() => {
@@ -24025,7 +24102,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		onPointerDownOutside,
 		onFocusOutside: (event) => event.preventDefault(),
 		onDismiss: onClose,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$1, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$2, {
 			"data-state": context.stateAttribute,
 			...popperScope,
 			...contentProps,
@@ -24050,7 +24127,7 @@ var TooltipContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		})
 	});
 });
-TooltipContent$1.displayName = CONTENT_NAME$2;
+TooltipContent$1.displayName = CONTENT_NAME$3;
 var ARROW_NAME$1 = "TooltipArrow";
 var TooltipArrow = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeTooltip, ...arrowProps } = props;
@@ -24334,6 +24411,145 @@ var generateMockObservations = () => {
 	];
 };
 //#endregion
+//#region src/lib/constants.ts
+var TYPE_COLORS = {
+	"Condição de risco": "text-orange-600 bg-orange-100",
+	"Condição segura": "text-emerald-600 bg-emerald-100",
+	"Comportamento de risco": "text-red-600 bg-red-100",
+	"Comportamento seguro": "text-blue-600 bg-blue-100",
+	Acidente: "text-red-800 bg-red-200",
+	"Quase acidente": "text-amber-700 bg-amber-200"
+};
+var RISK_COLORS = {
+	Leve: "text-emerald-600 bg-emerald-100",
+	Moderado: "text-amber-600 bg-amber-100",
+	Grave: "text-orange-600 bg-orange-100",
+	"Muito Grave": "text-red-600 bg-red-100"
+};
+var CHART_COLORS = {
+	"Condição de risco": "#f59e0b",
+	"Condição segura": "#10b981",
+	"Comportamento de risco": "#ef4444",
+	"Comportamento seguro": "#3b82f6",
+	Acidente: "#991b1b",
+	"Quase acidente": "#b45309"
+};
+var INITIAL_SETTINGS = {
+	areas: [
+		"Produção L1",
+		"Produção L2",
+		"Manutenção",
+		"Logística",
+		"Almoxarifado",
+		"Administrativo",
+		"Pátio Externo"
+	],
+	shifts: [
+		"T1",
+		"T2",
+		"T3",
+		"Adm"
+	],
+	risks: [
+		"Leve",
+		"Moderado",
+		"Grave",
+		"Muito Grave"
+	],
+	conditions: [
+		"Mãos na linha de fogo",
+		"Pisos escorregadios",
+		"Iluminação inadequada",
+		"Falta de sinalização",
+		"Ferramentas defeituosas",
+		"Vazamento de produtos",
+		"Fiação exposta",
+		"Equipamento sem proteção",
+		"Bloqueio de emergência",
+		"Trabalho em altura sem EPI"
+	],
+	behaviors: [
+		"Uso inseguro de equipamentos",
+		"Brincadeira rude",
+		"Não uso de EPI",
+		"Postura inadequada",
+		"Uso de celular na operação",
+		"Atalho em procedimento",
+		"Velocidade excessiva",
+		"Falta de atenção"
+	],
+	observationTypes: [
+		{
+			value: "Condição de risco",
+			label: "Condição de risco (a corrigir)",
+			desc: "Algo a corrigir no ambiente",
+			color: "text-orange-500"
+		},
+		{
+			value: "Condição segura",
+			label: "Condição segura (a melhorar)",
+			desc: "Boas práticas observadas",
+			color: "text-emerald-500"
+		},
+		{
+			value: "Comportamento de risco",
+			label: "Comportamento de risco (alerta)",
+			desc: "Ação insegura de alguém",
+			color: "text-red-500"
+		},
+		{
+			value: "Comportamento seguro",
+			label: "Comportamento seguro (reforço)",
+			desc: "Ação correta e segura",
+			color: "text-blue-500"
+		}
+	]
+};
+var INITIAL_USERS = [
+	{
+		id: "USR-01",
+		name: "João Silva",
+		whatsapp: "11999999999",
+		cpf: "123.456.789-00",
+		companyId: "EMP-01"
+	},
+	{
+		id: "USR-02",
+		name: "Maria Souza",
+		whatsapp: "11888888888",
+		cpf: "098.765.432-11",
+		companyId: "EMP-02"
+	},
+	{
+		id: "USR-03",
+		name: "Carlos Santos",
+		whatsapp: "11777777777",
+		cpf: "111.222.333-44",
+		companyId: "EMP-03"
+	},
+	{
+		id: "USR-04",
+		name: "Ana Lima",
+		whatsapp: "11666666666",
+		cpf: "222.333.444-55",
+		companyId: "EMP-01"
+	},
+	{
+		id: "USR-05",
+		name: "Pedro Costa",
+		whatsapp: "11555555555",
+		cpf: "333.444.555-66",
+		companyId: "EMP-02"
+	},
+	{
+		id: "USR-06",
+		name: "Luiza Mendes",
+		whatsapp: "11444444444",
+		cpf: "444.555.666-77",
+		companyId: "EMP-03"
+	}
+];
+//#endregion
 //#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-slot@1.2.4_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-slot/dist/index.mjs
 var REACT_LAZY_TYPE = Symbol.for("react.lazy");
 var use = import_react[" use ".trim().toString()];
@@ -24466,6 +24682,1390 @@ var Button = import_react.forwardRef(({ className, variant, size, asChild = fals
 });
 Button.displayName = "Button";
 //#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-focus-scope@1.1.7_@types+react-dom@19.2.3_@types+react@19.2.14__@types+_f62f3af4ca2ba305a7aecf04c8534604/node_modules/@radix-ui/react-focus-scope/dist/index.mjs
+var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
+var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
+var EVENT_OPTIONS$1 = {
+	bubbles: false,
+	cancelable: true
+};
+var FOCUS_SCOPE_NAME = "FocusScope";
+var FocusScope = import_react.forwardRef((props, forwardedRef) => {
+	const { loop = false, trapped = false, onMountAutoFocus: onMountAutoFocusProp, onUnmountAutoFocus: onUnmountAutoFocusProp, ...scopeProps } = props;
+	const [container, setContainer] = import_react.useState(null);
+	const onMountAutoFocus = useCallbackRef$1(onMountAutoFocusProp);
+	const onUnmountAutoFocus = useCallbackRef$1(onUnmountAutoFocusProp);
+	const lastFocusedElementRef = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, (node) => setContainer(node));
+	const focusScope = import_react.useRef({
+		paused: false,
+		pause() {
+			this.paused = true;
+		},
+		resume() {
+			this.paused = false;
+		}
+	}).current;
+	import_react.useEffect(() => {
+		if (trapped) {
+			let handleFocusIn2 = function(event) {
+				if (focusScope.paused || !container) return;
+				const target = event.target;
+				if (container.contains(target)) lastFocusedElementRef.current = target;
+				else focus(lastFocusedElementRef.current, { select: true });
+			}, handleFocusOut2 = function(event) {
+				if (focusScope.paused || !container) return;
+				const relatedTarget = event.relatedTarget;
+				if (relatedTarget === null) return;
+				if (!container.contains(relatedTarget)) focus(lastFocusedElementRef.current, { select: true });
+			}, handleMutations2 = function(mutations) {
+				if (document.activeElement !== document.body) return;
+				for (const mutation of mutations) if (mutation.removedNodes.length > 0) focus(container);
+			};
+			document.addEventListener("focusin", handleFocusIn2);
+			document.addEventListener("focusout", handleFocusOut2);
+			const mutationObserver = new MutationObserver(handleMutations2);
+			if (container) mutationObserver.observe(container, {
+				childList: true,
+				subtree: true
+			});
+			return () => {
+				document.removeEventListener("focusin", handleFocusIn2);
+				document.removeEventListener("focusout", handleFocusOut2);
+				mutationObserver.disconnect();
+			};
+		}
+	}, [
+		trapped,
+		container,
+		focusScope.paused
+	]);
+	import_react.useEffect(() => {
+		if (container) {
+			focusScopesStack.add(focusScope);
+			const previouslyFocusedElement = document.activeElement;
+			if (!container.contains(previouslyFocusedElement)) {
+				const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS$1);
+				container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
+				container.dispatchEvent(mountEvent);
+				if (!mountEvent.defaultPrevented) {
+					focusFirst$1(removeLinks(getTabbableCandidates(container)), { select: true });
+					if (document.activeElement === previouslyFocusedElement) focus(container);
+				}
+			}
+			return () => {
+				container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
+				setTimeout(() => {
+					const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS$1);
+					container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
+					container.dispatchEvent(unmountEvent);
+					if (!unmountEvent.defaultPrevented) focus(previouslyFocusedElement ?? document.body, { select: true });
+					container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
+					focusScopesStack.remove(focusScope);
+				}, 0);
+			};
+		}
+	}, [
+		container,
+		onMountAutoFocus,
+		onUnmountAutoFocus,
+		focusScope
+	]);
+	const handleKeyDown = import_react.useCallback((event) => {
+		if (!loop && !trapped) return;
+		if (focusScope.paused) return;
+		const isTabKey = event.key === "Tab" && !event.altKey && !event.ctrlKey && !event.metaKey;
+		const focusedElement = document.activeElement;
+		if (isTabKey && focusedElement) {
+			const container2 = event.currentTarget;
+			const [first, last] = getTabbableEdges(container2);
+			if (!(first && last)) {
+				if (focusedElement === container2) event.preventDefault();
+			} else if (!event.shiftKey && focusedElement === last) {
+				event.preventDefault();
+				if (loop) focus(first, { select: true });
+			} else if (event.shiftKey && focusedElement === first) {
+				event.preventDefault();
+				if (loop) focus(last, { select: true });
+			}
+		}
+	}, [
+		loop,
+		trapped,
+		focusScope.paused
+	]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+		tabIndex: -1,
+		...scopeProps,
+		ref: composedRefs,
+		onKeyDown: handleKeyDown
+	});
+});
+FocusScope.displayName = FOCUS_SCOPE_NAME;
+function focusFirst$1(candidates, { select = false } = {}) {
+	const previouslyFocusedElement = document.activeElement;
+	for (const candidate of candidates) {
+		focus(candidate, { select });
+		if (document.activeElement !== previouslyFocusedElement) return;
+	}
+}
+function getTabbableEdges(container) {
+	const candidates = getTabbableCandidates(container);
+	return [findVisible(candidates, container), findVisible(candidates.reverse(), container)];
+}
+function getTabbableCandidates(container) {
+	const nodes = [];
+	const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, { acceptNode: (node) => {
+		const isHiddenInput = node.tagName === "INPUT" && node.type === "hidden";
+		if (node.disabled || node.hidden || isHiddenInput) return NodeFilter.FILTER_SKIP;
+		return node.tabIndex >= 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+	} });
+	while (walker.nextNode()) nodes.push(walker.currentNode);
+	return nodes;
+}
+function findVisible(elements, container) {
+	for (const element of elements) if (!isHidden(element, { upTo: container })) return element;
+}
+function isHidden(node, { upTo }) {
+	if (getComputedStyle(node).visibility === "hidden") return true;
+	while (node) {
+		if (upTo !== void 0 && node === upTo) return false;
+		if (getComputedStyle(node).display === "none") return true;
+		node = node.parentElement;
+	}
+	return false;
+}
+function isSelectableInput(element) {
+	return element instanceof HTMLInputElement && "select" in element;
+}
+function focus(element, { select = false } = {}) {
+	if (element && element.focus) {
+		const previouslyFocusedElement = document.activeElement;
+		element.focus({ preventScroll: true });
+		if (element !== previouslyFocusedElement && isSelectableInput(element) && select) element.select();
+	}
+}
+var focusScopesStack = createFocusScopesStack();
+function createFocusScopesStack() {
+	let stack = [];
+	return {
+		add(focusScope) {
+			const activeFocusScope = stack[0];
+			if (focusScope !== activeFocusScope) activeFocusScope?.pause();
+			stack = arrayRemove(stack, focusScope);
+			stack.unshift(focusScope);
+		},
+		remove(focusScope) {
+			stack = arrayRemove(stack, focusScope);
+			stack[0]?.resume();
+		}
+	};
+}
+function arrayRemove(array, item) {
+	const updatedArray = [...array];
+	const index = updatedArray.indexOf(item);
+	if (index !== -1) updatedArray.splice(index, 1);
+	return updatedArray;
+}
+function removeLinks(items) {
+	return items.filter((item) => item.tagName !== "A");
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-focus-guards@1.1.3_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-focus-guards/dist/index.mjs
+var count = 0;
+function useFocusGuards() {
+	import_react.useEffect(() => {
+		const edgeGuards = document.querySelectorAll("[data-radix-focus-guard]");
+		document.body.insertAdjacentElement("afterbegin", edgeGuards[0] ?? createFocusGuard());
+		document.body.insertAdjacentElement("beforeend", edgeGuards[1] ?? createFocusGuard());
+		count++;
+		return () => {
+			if (count === 1) document.querySelectorAll("[data-radix-focus-guard]").forEach((node) => node.remove());
+			count--;
+		};
+	}, []);
+}
+function createFocusGuard() {
+	const element = document.createElement("span");
+	element.setAttribute("data-radix-focus-guard", "");
+	element.tabIndex = 0;
+	element.style.outline = "none";
+	element.style.opacity = "0";
+	element.style.position = "fixed";
+	element.style.pointerEvents = "none";
+	return element;
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs
+var __assign = function() {
+	__assign = Object.assign || function __assign(t) {
+		for (var s, i = 1, n = arguments.length; i < n; i++) {
+			s = arguments[i];
+			for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+		}
+		return t;
+	};
+	return __assign.apply(this, arguments);
+};
+function __rest(s, e) {
+	var t = {};
+	for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+	if (s != null && typeof Object.getOwnPropertySymbols === "function") {
+		for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+	}
+	return t;
+}
+function __spreadArray(to, from, pack) {
+	if (pack || arguments.length === 2) {
+		for (var i = 0, l = from.length, ar; i < l; i++) if (ar || !(i in from)) {
+			if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+			ar[i] = from[i];
+		}
+	}
+	return to.concat(ar || Array.prototype.slice.call(from));
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll-bar@2.3.8_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll-bar/dist/es2015/constants.js
+var zeroRightClassName = "right-scroll-bar-position";
+var fullWidthClassName = "width-before-scroll-bar";
+var noScrollbarsClassName = "with-scroll-bars-hidden";
+/**
+* Name of a CSS variable containing the amount of "hidden" scrollbar
+* ! might be undefined ! use will fallback!
+*/
+var removedBarSizeVariable = "--removed-body-scroll-bar-size";
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-callback-ref@1.3.3_@types+react@19.2.14_react@19.2.4/node_modules/use-callback-ref/dist/es2015/assignRef.js
+/**
+* Assigns a value for a given ref, no matter of the ref format
+* @param {RefObject} ref - a callback function or ref object
+* @param value - a new value
+*
+* @see https://github.com/theKashey/use-callback-ref#assignref
+* @example
+* const refObject = useRef();
+* const refFn = (ref) => {....}
+*
+* assignRef(refObject, "refValue");
+* assignRef(refFn, "refValue");
+*/
+function assignRef(ref, value) {
+	if (typeof ref === "function") ref(value);
+	else if (ref) ref.current = value;
+	return ref;
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-callback-ref@1.3.3_@types+react@19.2.14_react@19.2.4/node_modules/use-callback-ref/dist/es2015/useRef.js
+/**
+* creates a MutableRef with ref change callback
+* @param initialValue - initial ref value
+* @param {Function} callback - a callback to run when value changes
+*
+* @example
+* const ref = useCallbackRef(0, (newValue, oldValue) => console.log(oldValue, '->', newValue);
+* ref.current = 1;
+* // prints 0 -> 1
+*
+* @see https://reactjs.org/docs/hooks-reference.html#useref
+* @see https://github.com/theKashey/use-callback-ref#usecallbackref---to-replace-reactuseref
+* @returns {MutableRefObject}
+*/
+function useCallbackRef(initialValue, callback) {
+	var ref = (0, import_react.useState)(function() {
+		return {
+			value: initialValue,
+			callback,
+			facade: {
+				get current() {
+					return ref.value;
+				},
+				set current(value) {
+					var last = ref.value;
+					if (last !== value) {
+						ref.value = value;
+						ref.callback(value, last);
+					}
+				}
+			}
+		};
+	})[0];
+	ref.callback = callback;
+	return ref.facade;
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-callback-ref@1.3.3_@types+react@19.2.14_react@19.2.4/node_modules/use-callback-ref/dist/es2015/useMergeRef.js
+var useIsomorphicLayoutEffect = typeof window !== "undefined" ? import_react.useLayoutEffect : import_react.useEffect;
+var currentValues = /* @__PURE__ */ new WeakMap();
+/**
+* Merges two or more refs together providing a single interface to set their value
+* @param {RefObject|Ref} refs
+* @returns {MutableRefObject} - a new ref, which translates all changes to {refs}
+*
+* @see {@link mergeRefs} a version without buit-in memoization
+* @see https://github.com/theKashey/use-callback-ref#usemergerefs
+* @example
+* const Component = React.forwardRef((props, ref) => {
+*   const ownRef = useRef();
+*   const domRef = useMergeRefs([ref, ownRef]); // 👈 merge together
+*   return <div ref={domRef}>...</div>
+* }
+*/
+function useMergeRefs(refs, defaultValue) {
+	var callbackRef = useCallbackRef(defaultValue || null, function(newValue) {
+		return refs.forEach(function(ref) {
+			return assignRef(ref, newValue);
+		});
+	});
+	useIsomorphicLayoutEffect(function() {
+		var oldValue = currentValues.get(callbackRef);
+		if (oldValue) {
+			var prevRefs_1 = new Set(oldValue);
+			var nextRefs_1 = new Set(refs);
+			var current_1 = callbackRef.current;
+			prevRefs_1.forEach(function(ref) {
+				if (!nextRefs_1.has(ref)) assignRef(ref, null);
+			});
+			nextRefs_1.forEach(function(ref) {
+				if (!prevRefs_1.has(ref)) assignRef(ref, current_1);
+			});
+		}
+		currentValues.set(callbackRef, refs);
+	}, [refs]);
+	return callbackRef;
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-sidecar@1.1.3_@types+react@19.2.14_react@19.2.4/node_modules/use-sidecar/dist/es2015/medium.js
+function ItoI(a) {
+	return a;
+}
+function innerCreateMedium(defaults, middleware) {
+	if (middleware === void 0) middleware = ItoI;
+	var buffer = [];
+	var assigned = false;
+	return {
+		read: function() {
+			if (assigned) throw new Error("Sidecar: could not `read` from an `assigned` medium. `read` could be used only with `useMedium`.");
+			if (buffer.length) return buffer[buffer.length - 1];
+			return defaults;
+		},
+		useMedium: function(data) {
+			var item = middleware(data, assigned);
+			buffer.push(item);
+			return function() {
+				buffer = buffer.filter(function(x) {
+					return x !== item;
+				});
+			};
+		},
+		assignSyncMedium: function(cb) {
+			assigned = true;
+			while (buffer.length) {
+				var cbs = buffer;
+				buffer = [];
+				cbs.forEach(cb);
+			}
+			buffer = {
+				push: function(x) {
+					return cb(x);
+				},
+				filter: function() {
+					return buffer;
+				}
+			};
+		},
+		assignMedium: function(cb) {
+			assigned = true;
+			var pendingQueue = [];
+			if (buffer.length) {
+				var cbs = buffer;
+				buffer = [];
+				cbs.forEach(cb);
+				pendingQueue = buffer;
+			}
+			var executeQueue = function() {
+				var cbs = pendingQueue;
+				pendingQueue = [];
+				cbs.forEach(cb);
+			};
+			var cycle = function() {
+				return Promise.resolve().then(executeQueue);
+			};
+			cycle();
+			buffer = {
+				push: function(x) {
+					pendingQueue.push(x);
+					cycle();
+				},
+				filter: function(filter) {
+					pendingQueue = pendingQueue.filter(filter);
+					return buffer;
+				}
+			};
+		}
+	};
+}
+function createSidecarMedium(options) {
+	if (options === void 0) options = {};
+	var medium = innerCreateMedium(null);
+	medium.options = __assign({
+		async: true,
+		ssr: false
+	}, options);
+	return medium;
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-sidecar@1.1.3_@types+react@19.2.14_react@19.2.4/node_modules/use-sidecar/dist/es2015/exports.js
+var SideCar = function(_a) {
+	var sideCar = _a.sideCar, rest = __rest(_a, ["sideCar"]);
+	if (!sideCar) throw new Error("Sidecar: please provide `sideCar` property to import the right car");
+	var Target = sideCar.read();
+	if (!Target) throw new Error("Sidecar medium not found");
+	return import_react.createElement(Target, __assign({}, rest));
+};
+SideCar.isSideCarExport = true;
+function exportSidecar(medium, exported) {
+	medium.useMedium(exported);
+	return SideCar;
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/medium.js
+var effectCar = createSidecarMedium();
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/UI.js
+var nothing = function() {};
+/**
+* Removes scrollbar from the page and contain the scroll within the Lock
+*/
+var RemoveScroll = import_react.forwardRef(function(props, parentRef) {
+	var ref = import_react.useRef(null);
+	var _a = import_react.useState({
+		onScrollCapture: nothing,
+		onWheelCapture: nothing,
+		onTouchMoveCapture: nothing
+	}), callbacks = _a[0], setCallbacks = _a[1];
+	var forwardProps = props.forwardProps, children = props.children, className = props.className, removeScrollBar = props.removeScrollBar, enabled = props.enabled, shards = props.shards, sideCar = props.sideCar, noRelative = props.noRelative, noIsolation = props.noIsolation, inert = props.inert, allowPinchZoom = props.allowPinchZoom, _b = props.as, Container = _b === void 0 ? "div" : _b, gapMode = props.gapMode, rest = __rest(props, [
+		"forwardProps",
+		"children",
+		"className",
+		"removeScrollBar",
+		"enabled",
+		"shards",
+		"sideCar",
+		"noRelative",
+		"noIsolation",
+		"inert",
+		"allowPinchZoom",
+		"as",
+		"gapMode"
+	]);
+	var SideCar = sideCar;
+	var containerRef = useMergeRefs([ref, parentRef]);
+	var containerProps = __assign(__assign({}, rest), callbacks);
+	return import_react.createElement(import_react.Fragment, null, enabled && import_react.createElement(SideCar, {
+		sideCar: effectCar,
+		removeScrollBar,
+		shards,
+		noRelative,
+		noIsolation,
+		inert,
+		setCallbacks,
+		allowPinchZoom: !!allowPinchZoom,
+		lockRef: ref,
+		gapMode
+	}), forwardProps ? import_react.cloneElement(import_react.Children.only(children), __assign(__assign({}, containerProps), { ref: containerRef })) : import_react.createElement(Container, __assign({}, containerProps, {
+		className,
+		ref: containerRef
+	}), children));
+});
+RemoveScroll.defaultProps = {
+	enabled: true,
+	removeScrollBar: true,
+	inert: false
+};
+RemoveScroll.classNames = {
+	fullWidth: fullWidthClassName,
+	zeroRight: zeroRightClassName
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/get-nonce@1.0.1/node_modules/get-nonce/dist/es2015/index.js
+var currentNonce;
+var getNonce = function() {
+	if (currentNonce) return currentNonce;
+	if (typeof __webpack_nonce__ !== "undefined") return __webpack_nonce__;
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-style-singleton@2.2.3_@types+react@19.2.14_react@19.2.4/node_modules/react-style-singleton/dist/es2015/singleton.js
+function makeStyleTag() {
+	if (!document) return null;
+	var tag = document.createElement("style");
+	tag.type = "text/css";
+	var nonce = getNonce();
+	if (nonce) tag.setAttribute("nonce", nonce);
+	return tag;
+}
+function injectStyles(tag, css) {
+	if (tag.styleSheet) tag.styleSheet.cssText = css;
+	else tag.appendChild(document.createTextNode(css));
+}
+function insertStyleTag(tag) {
+	(document.head || document.getElementsByTagName("head")[0]).appendChild(tag);
+}
+var stylesheetSingleton = function() {
+	var counter = 0;
+	var stylesheet = null;
+	return {
+		add: function(style) {
+			if (counter == 0) {
+				if (stylesheet = makeStyleTag()) {
+					injectStyles(stylesheet, style);
+					insertStyleTag(stylesheet);
+				}
+			}
+			counter++;
+		},
+		remove: function() {
+			counter--;
+			if (!counter && stylesheet) {
+				stylesheet.parentNode && stylesheet.parentNode.removeChild(stylesheet);
+				stylesheet = null;
+			}
+		}
+	};
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-style-singleton@2.2.3_@types+react@19.2.14_react@19.2.4/node_modules/react-style-singleton/dist/es2015/hook.js
+/**
+* creates a hook to control style singleton
+* @see {@link styleSingleton} for a safer component version
+* @example
+* ```tsx
+* const useStyle = styleHookSingleton();
+* ///
+* useStyle('body { overflow: hidden}');
+*/
+var styleHookSingleton = function() {
+	var sheet = stylesheetSingleton();
+	return function(styles, isDynamic) {
+		import_react.useEffect(function() {
+			sheet.add(styles);
+			return function() {
+				sheet.remove();
+			};
+		}, [styles && isDynamic]);
+	};
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-style-singleton@2.2.3_@types+react@19.2.14_react@19.2.4/node_modules/react-style-singleton/dist/es2015/component.js
+/**
+* create a Component to add styles on demand
+* - styles are added when first instance is mounted
+* - styles are removed when the last instance is unmounted
+* - changing styles in runtime does nothing unless dynamic is set. But with multiple components that can lead to the undefined behavior
+*/
+var styleSingleton = function() {
+	var useStyle = styleHookSingleton();
+	var Sheet = function(_a) {
+		var styles = _a.styles, dynamic = _a.dynamic;
+		useStyle(styles, dynamic);
+		return null;
+	};
+	return Sheet;
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll-bar@2.3.8_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll-bar/dist/es2015/utils.js
+var zeroGap = {
+	left: 0,
+	top: 0,
+	right: 0,
+	gap: 0
+};
+var parse = function(x) {
+	return parseInt(x || "", 10) || 0;
+};
+var getOffset$1 = function(gapMode) {
+	var cs = window.getComputedStyle(document.body);
+	var left = cs[gapMode === "padding" ? "paddingLeft" : "marginLeft"];
+	var top = cs[gapMode === "padding" ? "paddingTop" : "marginTop"];
+	var right = cs[gapMode === "padding" ? "paddingRight" : "marginRight"];
+	return [
+		parse(left),
+		parse(top),
+		parse(right)
+	];
+};
+var getGapWidth = function(gapMode) {
+	if (gapMode === void 0) gapMode = "margin";
+	if (typeof window === "undefined") return zeroGap;
+	var offsets = getOffset$1(gapMode);
+	var documentWidth = document.documentElement.clientWidth;
+	var windowWidth = window.innerWidth;
+	return {
+		left: offsets[0],
+		top: offsets[1],
+		right: offsets[2],
+		gap: Math.max(0, windowWidth - documentWidth + offsets[2] - offsets[0])
+	};
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll-bar@2.3.8_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll-bar/dist/es2015/component.js
+var Style = styleSingleton();
+var lockAttribute = "data-scroll-locked";
+var getStyles = function(_a, allowRelative, gapMode, important) {
+	var left = _a.left, top = _a.top, right = _a.right, gap = _a.gap;
+	if (gapMode === void 0) gapMode = "margin";
+	return "\n  .".concat(noScrollbarsClassName, " {\n   overflow: hidden ").concat(important, ";\n   padding-right: ").concat(gap, "px ").concat(important, ";\n  }\n  body[").concat(lockAttribute, "] {\n    overflow: hidden ").concat(important, ";\n    overscroll-behavior: contain;\n    ").concat([
+		allowRelative && "position: relative ".concat(important, ";"),
+		gapMode === "margin" && "\n    padding-left: ".concat(left, "px;\n    padding-top: ").concat(top, "px;\n    padding-right: ").concat(right, "px;\n    margin-left:0;\n    margin-top:0;\n    margin-right: ").concat(gap, "px ").concat(important, ";\n    "),
+		gapMode === "padding" && "padding-right: ".concat(gap, "px ").concat(important, ";")
+	].filter(Boolean).join(""), "\n  }\n  \n  .").concat(zeroRightClassName, " {\n    right: ").concat(gap, "px ").concat(important, ";\n  }\n  \n  .").concat(fullWidthClassName, " {\n    margin-right: ").concat(gap, "px ").concat(important, ";\n  }\n  \n  .").concat(zeroRightClassName, " .").concat(zeroRightClassName, " {\n    right: 0 ").concat(important, ";\n  }\n  \n  .").concat(fullWidthClassName, " .").concat(fullWidthClassName, " {\n    margin-right: 0 ").concat(important, ";\n  }\n  \n  body[").concat(lockAttribute, "] {\n    ").concat(removedBarSizeVariable, ": ").concat(gap, "px;\n  }\n");
+};
+var getCurrentUseCounter = function() {
+	var counter = parseInt(document.body.getAttribute("data-scroll-locked") || "0", 10);
+	return isFinite(counter) ? counter : 0;
+};
+var useLockAttribute = function() {
+	import_react.useEffect(function() {
+		document.body.setAttribute(lockAttribute, (getCurrentUseCounter() + 1).toString());
+		return function() {
+			var newCounter = getCurrentUseCounter() - 1;
+			if (newCounter <= 0) document.body.removeAttribute(lockAttribute);
+			else document.body.setAttribute(lockAttribute, newCounter.toString());
+		};
+	}, []);
+};
+/**
+* Removes page scrollbar and blocks page scroll when mounted
+*/
+var RemoveScrollBar = function(_a) {
+	var noRelative = _a.noRelative, noImportant = _a.noImportant, _b = _a.gapMode, gapMode = _b === void 0 ? "margin" : _b;
+	useLockAttribute();
+	var gap = import_react.useMemo(function() {
+		return getGapWidth(gapMode);
+	}, [gapMode]);
+	return import_react.createElement(Style, { styles: getStyles(gap, !noRelative, gapMode, !noImportant ? "!important" : "") });
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/aggresiveCapture.js
+var passiveSupported = false;
+if (typeof window !== "undefined") try {
+	var options = Object.defineProperty({}, "passive", { get: function() {
+		passiveSupported = true;
+		return true;
+	} });
+	window.addEventListener("test", options, options);
+	window.removeEventListener("test", options, options);
+} catch (err) {
+	passiveSupported = false;
+}
+var nonPassive = passiveSupported ? { passive: false } : false;
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/handleScroll.js
+var alwaysContainsScroll = function(node) {
+	return node.tagName === "TEXTAREA";
+};
+var elementCanBeScrolled = function(node, overflow) {
+	if (!(node instanceof Element)) return false;
+	var styles = window.getComputedStyle(node);
+	return styles[overflow] !== "hidden" && !(styles.overflowY === styles.overflowX && !alwaysContainsScroll(node) && styles[overflow] === "visible");
+};
+var elementCouldBeVScrolled = function(node) {
+	return elementCanBeScrolled(node, "overflowY");
+};
+var elementCouldBeHScrolled = function(node) {
+	return elementCanBeScrolled(node, "overflowX");
+};
+var locationCouldBeScrolled = function(axis, node) {
+	var ownerDocument = node.ownerDocument;
+	var current = node;
+	do {
+		if (typeof ShadowRoot !== "undefined" && current instanceof ShadowRoot) current = current.host;
+		if (elementCouldBeScrolled(axis, current)) {
+			var _a = getScrollVariables(axis, current);
+			if (_a[1] > _a[2]) return true;
+		}
+		current = current.parentNode;
+	} while (current && current !== ownerDocument.body);
+	return false;
+};
+var getVScrollVariables = function(_a) {
+	return [
+		_a.scrollTop,
+		_a.scrollHeight,
+		_a.clientHeight
+	];
+};
+var getHScrollVariables = function(_a) {
+	return [
+		_a.scrollLeft,
+		_a.scrollWidth,
+		_a.clientWidth
+	];
+};
+var elementCouldBeScrolled = function(axis, node) {
+	return axis === "v" ? elementCouldBeVScrolled(node) : elementCouldBeHScrolled(node);
+};
+var getScrollVariables = function(axis, node) {
+	return axis === "v" ? getVScrollVariables(node) : getHScrollVariables(node);
+};
+var getDirectionFactor = function(axis, direction) {
+	/**
+	* If the element's direction is rtl (right-to-left), then scrollLeft is 0 when the scrollbar is at its rightmost position,
+	* and then increasingly negative as you scroll towards the end of the content.
+	* @see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft
+	*/
+	return axis === "h" && direction === "rtl" ? -1 : 1;
+};
+var handleScroll = function(axis, endTarget, event, sourceDelta, noOverscroll) {
+	var directionFactor = getDirectionFactor(axis, window.getComputedStyle(endTarget).direction);
+	var delta = directionFactor * sourceDelta;
+	var target = event.target;
+	var targetInLock = endTarget.contains(target);
+	var shouldCancelScroll = false;
+	var isDeltaPositive = delta > 0;
+	var availableScroll = 0;
+	var availableScrollTop = 0;
+	do {
+		if (!target) break;
+		var _a = getScrollVariables(axis, target), position = _a[0];
+		var elementScroll = _a[1] - _a[2] - directionFactor * position;
+		if (position || elementScroll) {
+			if (elementCouldBeScrolled(axis, target)) {
+				availableScroll += elementScroll;
+				availableScrollTop += position;
+			}
+		}
+		var parent_1 = target.parentNode;
+		target = parent_1 && parent_1.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? parent_1.host : parent_1;
+	} while (!targetInLock && target !== document.body || targetInLock && (endTarget.contains(target) || endTarget === target));
+	if (isDeltaPositive && (noOverscroll && Math.abs(availableScroll) < 1 || !noOverscroll && delta > availableScroll)) shouldCancelScroll = true;
+	else if (!isDeltaPositive && (noOverscroll && Math.abs(availableScrollTop) < 1 || !noOverscroll && -delta > availableScrollTop)) shouldCancelScroll = true;
+	return shouldCancelScroll;
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/SideEffect.js
+var getTouchXY = function(event) {
+	return "changedTouches" in event ? [event.changedTouches[0].clientX, event.changedTouches[0].clientY] : [0, 0];
+};
+var getDeltaXY = function(event) {
+	return [event.deltaX, event.deltaY];
+};
+var extractRef = function(ref) {
+	return ref && "current" in ref ? ref.current : ref;
+};
+var deltaCompare = function(x, y) {
+	return x[0] === y[0] && x[1] === y[1];
+};
+var generateStyle = function(id) {
+	return "\n  .block-interactivity-".concat(id, " {pointer-events: none;}\n  .allow-interactivity-").concat(id, " {pointer-events: all;}\n");
+};
+var idCounter$1 = 0;
+var lockStack = [];
+function RemoveScrollSideCar(props) {
+	var shouldPreventQueue = import_react.useRef([]);
+	var touchStartRef = import_react.useRef([0, 0]);
+	var activeAxis = import_react.useRef();
+	var id = import_react.useState(idCounter$1++)[0];
+	var Style = import_react.useState(styleSingleton)[0];
+	var lastProps = import_react.useRef(props);
+	import_react.useEffect(function() {
+		lastProps.current = props;
+	}, [props]);
+	import_react.useEffect(function() {
+		if (props.inert) {
+			document.body.classList.add("block-interactivity-".concat(id));
+			var allow_1 = __spreadArray([props.lockRef.current], (props.shards || []).map(extractRef), true).filter(Boolean);
+			allow_1.forEach(function(el) {
+				return el.classList.add("allow-interactivity-".concat(id));
+			});
+			return function() {
+				document.body.classList.remove("block-interactivity-".concat(id));
+				allow_1.forEach(function(el) {
+					return el.classList.remove("allow-interactivity-".concat(id));
+				});
+			};
+		}
+	}, [
+		props.inert,
+		props.lockRef.current,
+		props.shards
+	]);
+	var shouldCancelEvent = import_react.useCallback(function(event, parent) {
+		if ("touches" in event && event.touches.length === 2 || event.type === "wheel" && event.ctrlKey) return !lastProps.current.allowPinchZoom;
+		var touch = getTouchXY(event);
+		var touchStart = touchStartRef.current;
+		var deltaX = "deltaX" in event ? event.deltaX : touchStart[0] - touch[0];
+		var deltaY = "deltaY" in event ? event.deltaY : touchStart[1] - touch[1];
+		var currentAxis;
+		var target = event.target;
+		var moveDirection = Math.abs(deltaX) > Math.abs(deltaY) ? "h" : "v";
+		if ("touches" in event && moveDirection === "h" && target.type === "range") return false;
+		var selection = window.getSelection();
+		var anchorNode = selection && selection.anchorNode;
+		if (anchorNode ? anchorNode === target || anchorNode.contains(target) : false) return false;
+		var canBeScrolledInMainDirection = locationCouldBeScrolled(moveDirection, target);
+		if (!canBeScrolledInMainDirection) return true;
+		if (canBeScrolledInMainDirection) currentAxis = moveDirection;
+		else {
+			currentAxis = moveDirection === "v" ? "h" : "v";
+			canBeScrolledInMainDirection = locationCouldBeScrolled(moveDirection, target);
+		}
+		if (!canBeScrolledInMainDirection) return false;
+		if (!activeAxis.current && "changedTouches" in event && (deltaX || deltaY)) activeAxis.current = currentAxis;
+		if (!currentAxis) return true;
+		var cancelingAxis = activeAxis.current || currentAxis;
+		return handleScroll(cancelingAxis, parent, event, cancelingAxis === "h" ? deltaX : deltaY, true);
+	}, []);
+	var shouldPrevent = import_react.useCallback(function(_event) {
+		var event = _event;
+		if (!lockStack.length || lockStack[lockStack.length - 1] !== Style) return;
+		var delta = "deltaY" in event ? getDeltaXY(event) : getTouchXY(event);
+		var sourceEvent = shouldPreventQueue.current.filter(function(e) {
+			return e.name === event.type && (e.target === event.target || event.target === e.shadowParent) && deltaCompare(e.delta, delta);
+		})[0];
+		if (sourceEvent && sourceEvent.should) {
+			if (event.cancelable) event.preventDefault();
+			return;
+		}
+		if (!sourceEvent) {
+			var shardNodes = (lastProps.current.shards || []).map(extractRef).filter(Boolean).filter(function(node) {
+				return node.contains(event.target);
+			});
+			if (shardNodes.length > 0 ? shouldCancelEvent(event, shardNodes[0]) : !lastProps.current.noIsolation) {
+				if (event.cancelable) event.preventDefault();
+			}
+		}
+	}, []);
+	var shouldCancel = import_react.useCallback(function(name, delta, target, should) {
+		var event = {
+			name,
+			delta,
+			target,
+			should,
+			shadowParent: getOutermostShadowParent(target)
+		};
+		shouldPreventQueue.current.push(event);
+		setTimeout(function() {
+			shouldPreventQueue.current = shouldPreventQueue.current.filter(function(e) {
+				return e !== event;
+			});
+		}, 1);
+	}, []);
+	var scrollTouchStart = import_react.useCallback(function(event) {
+		touchStartRef.current = getTouchXY(event);
+		activeAxis.current = void 0;
+	}, []);
+	var scrollWheel = import_react.useCallback(function(event) {
+		shouldCancel(event.type, getDeltaXY(event), event.target, shouldCancelEvent(event, props.lockRef.current));
+	}, []);
+	var scrollTouchMove = import_react.useCallback(function(event) {
+		shouldCancel(event.type, getTouchXY(event), event.target, shouldCancelEvent(event, props.lockRef.current));
+	}, []);
+	import_react.useEffect(function() {
+		lockStack.push(Style);
+		props.setCallbacks({
+			onScrollCapture: scrollWheel,
+			onWheelCapture: scrollWheel,
+			onTouchMoveCapture: scrollTouchMove
+		});
+		document.addEventListener("wheel", shouldPrevent, nonPassive);
+		document.addEventListener("touchmove", shouldPrevent, nonPassive);
+		document.addEventListener("touchstart", scrollTouchStart, nonPassive);
+		return function() {
+			lockStack = lockStack.filter(function(inst) {
+				return inst !== Style;
+			});
+			document.removeEventListener("wheel", shouldPrevent, nonPassive);
+			document.removeEventListener("touchmove", shouldPrevent, nonPassive);
+			document.removeEventListener("touchstart", scrollTouchStart, nonPassive);
+		};
+	}, []);
+	var removeScrollBar = props.removeScrollBar, inert = props.inert;
+	return import_react.createElement(import_react.Fragment, null, inert ? import_react.createElement(Style, { styles: generateStyle(id) }) : null, removeScrollBar ? import_react.createElement(RemoveScrollBar, {
+		noRelative: props.noRelative,
+		gapMode: props.gapMode
+	}) : null);
+}
+function getOutermostShadowParent(node) {
+	var shadowParent = null;
+	while (node !== null) {
+		if (node instanceof ShadowRoot) {
+			shadowParent = node.host;
+			node = node.host;
+		}
+		node = node.parentNode;
+	}
+	return shadowParent;
+}
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/sidecar.js
+var sidecar_default = exportSidecar(effectCar, RemoveScrollSideCar);
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/Combination.js
+var ReactRemoveScroll = import_react.forwardRef(function(props, ref) {
+	return import_react.createElement(RemoveScroll, __assign({}, props, {
+		ref,
+		sideCar: sidecar_default
+	}));
+});
+ReactRemoveScroll.classNames = RemoveScroll.classNames;
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/aria-hidden@1.2.6/node_modules/aria-hidden/dist/es2015/index.js
+var getDefaultParent = function(originalTarget) {
+	if (typeof document === "undefined") return null;
+	return (Array.isArray(originalTarget) ? originalTarget[0] : originalTarget).ownerDocument.body;
+};
+var counterMap = /* @__PURE__ */ new WeakMap();
+var uncontrolledNodes = /* @__PURE__ */ new WeakMap();
+var markerMap = {};
+var lockCount = 0;
+var unwrapHost = function(node) {
+	return node && (node.host || unwrapHost(node.parentNode));
+};
+var correctTargets = function(parent, targets) {
+	return targets.map(function(target) {
+		if (parent.contains(target)) return target;
+		var correctedTarget = unwrapHost(target);
+		if (correctedTarget && parent.contains(correctedTarget)) return correctedTarget;
+		console.error("aria-hidden", target, "in not contained inside", parent, ". Doing nothing");
+		return null;
+	}).filter(function(x) {
+		return Boolean(x);
+	});
+};
+/**
+* Marks everything except given node(or nodes) as aria-hidden
+* @param {Element | Element[]} originalTarget - elements to keep on the page
+* @param [parentNode] - top element, defaults to document.body
+* @param {String} [markerName] - a special attribute to mark every node
+* @param {String} [controlAttribute] - html Attribute to control
+* @return {Undo} undo command
+*/
+var applyAttributeToOthers = function(originalTarget, parentNode, markerName, controlAttribute) {
+	var targets = correctTargets(parentNode, Array.isArray(originalTarget) ? originalTarget : [originalTarget]);
+	if (!markerMap[markerName]) markerMap[markerName] = /* @__PURE__ */ new WeakMap();
+	var markerCounter = markerMap[markerName];
+	var hiddenNodes = [];
+	var elementsToKeep = /* @__PURE__ */ new Set();
+	var elementsToStop = new Set(targets);
+	var keep = function(el) {
+		if (!el || elementsToKeep.has(el)) return;
+		elementsToKeep.add(el);
+		keep(el.parentNode);
+	};
+	targets.forEach(keep);
+	var deep = function(parent) {
+		if (!parent || elementsToStop.has(parent)) return;
+		Array.prototype.forEach.call(parent.children, function(node) {
+			if (elementsToKeep.has(node)) deep(node);
+			else try {
+				var attr = node.getAttribute(controlAttribute);
+				var alreadyHidden = attr !== null && attr !== "false";
+				var counterValue = (counterMap.get(node) || 0) + 1;
+				var markerValue = (markerCounter.get(node) || 0) + 1;
+				counterMap.set(node, counterValue);
+				markerCounter.set(node, markerValue);
+				hiddenNodes.push(node);
+				if (counterValue === 1 && alreadyHidden) uncontrolledNodes.set(node, true);
+				if (markerValue === 1) node.setAttribute(markerName, "true");
+				if (!alreadyHidden) node.setAttribute(controlAttribute, "true");
+			} catch (e) {
+				console.error("aria-hidden: cannot operate on ", node, e);
+			}
+		});
+	};
+	deep(parentNode);
+	elementsToKeep.clear();
+	lockCount++;
+	return function() {
+		hiddenNodes.forEach(function(node) {
+			var counterValue = counterMap.get(node) - 1;
+			var markerValue = markerCounter.get(node) - 1;
+			counterMap.set(node, counterValue);
+			markerCounter.set(node, markerValue);
+			if (!counterValue) {
+				if (!uncontrolledNodes.has(node)) node.removeAttribute(controlAttribute);
+				uncontrolledNodes.delete(node);
+			}
+			if (!markerValue) node.removeAttribute(markerName);
+		});
+		lockCount--;
+		if (!lockCount) {
+			counterMap = /* @__PURE__ */ new WeakMap();
+			counterMap = /* @__PURE__ */ new WeakMap();
+			uncontrolledNodes = /* @__PURE__ */ new WeakMap();
+			markerMap = {};
+		}
+	};
+};
+/**
+* Marks everything except given node(or nodes) as aria-hidden
+* @param {Element | Element[]} originalTarget - elements to keep on the page
+* @param [parentNode] - top element, defaults to document.body
+* @param {String} [markerName] - a special attribute to mark every node
+* @return {Undo} undo command
+*/
+var hideOthers = function(originalTarget, parentNode, markerName) {
+	if (markerName === void 0) markerName = "data-aria-hidden";
+	var targets = Array.from(Array.isArray(originalTarget) ? originalTarget : [originalTarget]);
+	var activeParentNode = parentNode || getDefaultParent(originalTarget);
+	if (!activeParentNode) return function() {
+		return null;
+	};
+	targets.push.apply(targets, Array.from(activeParentNode.querySelectorAll("[aria-live], script")));
+	return applyAttributeToOthers(targets, activeParentNode, markerName, "aria-hidden");
+};
+//#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-dialog@1.1.15_@types+react-dom@19.2.3_@types+react@19.2.14__@types+reac_779045218dc2799d336e7197abef9d38/node_modules/@radix-ui/react-dialog/dist/index.mjs
+var DIALOG_NAME = "Dialog";
+var [createDialogContext, createDialogScope] = createContextScope$1(DIALOG_NAME);
+var [DialogProvider, useDialogContext] = createDialogContext(DIALOG_NAME);
+var Dialog$1 = (props) => {
+	const { __scopeDialog, children, open: openProp, defaultOpen, onOpenChange, modal = true } = props;
+	const triggerRef = import_react.useRef(null);
+	const contentRef = import_react.useRef(null);
+	const [open, setOpen] = useControllableState({
+		prop: openProp,
+		defaultProp: defaultOpen ?? false,
+		onChange: onOpenChange,
+		caller: DIALOG_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogProvider, {
+		scope: __scopeDialog,
+		triggerRef,
+		contentRef,
+		contentId: useId(),
+		titleId: useId(),
+		descriptionId: useId(),
+		open,
+		onOpenChange: setOpen,
+		onOpenToggle: import_react.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen]),
+		modal,
+		children
+	});
+};
+Dialog$1.displayName = DIALOG_NAME;
+var TRIGGER_NAME$2 = "DialogTrigger";
+var DialogTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDialog, ...triggerProps } = props;
+	const context = useDialogContext(TRIGGER_NAME$2, __scopeDialog);
+	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.button, {
+		type: "button",
+		"aria-haspopup": "dialog",
+		"aria-expanded": context.open,
+		"aria-controls": context.contentId,
+		"data-state": getState$1(context.open),
+		...triggerProps,
+		ref: composedTriggerRef,
+		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
+	});
+});
+DialogTrigger$1.displayName = TRIGGER_NAME$2;
+var PORTAL_NAME$1 = "DialogPortal";
+var [PortalProvider, usePortalContext] = createDialogContext(PORTAL_NAME$1, { forceMount: void 0 });
+var DialogPortal$1 = (props) => {
+	const { __scopeDialog, forceMount, children, container } = props;
+	const context = useDialogContext(PORTAL_NAME$1, __scopeDialog);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider, {
+		scope: __scopeDialog,
+		forceMount,
+		children: import_react.Children.map(children, (child) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+			present: forceMount || context.open,
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, {
+				asChild: true,
+				container,
+				children: child
+			})
+		}))
+	});
+};
+DialogPortal$1.displayName = PORTAL_NAME$1;
+var OVERLAY_NAME = "DialogOverlay";
+var DialogOverlay$1 = import_react.forwardRef((props, forwardedRef) => {
+	const portalContext = usePortalContext(OVERLAY_NAME, props.__scopeDialog);
+	const { forceMount = portalContext.forceMount, ...overlayProps } = props;
+	const context = useDialogContext(OVERLAY_NAME, props.__scopeDialog);
+	return context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+		present: forceMount || context.open,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlayImpl, {
+			...overlayProps,
+			ref: forwardedRef
+		})
+	}) : null;
+});
+DialogOverlay$1.displayName = OVERLAY_NAME;
+var Slot$1 = /* @__PURE__ */ createSlot$1("DialogOverlay.RemoveScroll");
+var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDialog, ...overlayProps } = props;
+	const context = useDialogContext(OVERLAY_NAME, __scopeDialog);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReactRemoveScroll, {
+		as: Slot$1,
+		allowPinchZoom: true,
+		shards: [context.contentRef],
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			"data-state": getState$1(context.open),
+			...overlayProps,
+			ref: forwardedRef,
+			style: {
+				pointerEvents: "auto",
+				...overlayProps.style
+			}
+		})
+	});
+});
+var CONTENT_NAME$2 = "DialogContent";
+var DialogContent$1 = import_react.forwardRef((props, forwardedRef) => {
+	const portalContext = usePortalContext(CONTENT_NAME$2, props.__scopeDialog);
+	const { forceMount = portalContext.forceMount, ...contentProps } = props;
+	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+		present: forceMount || context.open,
+		children: context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentModal, {
+			...contentProps,
+			ref: forwardedRef
+		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentNonModal, {
+			...contentProps,
+			ref: forwardedRef
+		})
+	});
+});
+DialogContent$1.displayName = CONTENT_NAME$2;
+var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
+	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	const contentRef = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
+	import_react.useEffect(() => {
+		const content = contentRef.current;
+		if (content) return hideOthers(content);
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentImpl, {
+		...props,
+		ref: composedRefs,
+		trapFocus: context.open,
+		disableOutsidePointerEvents: true,
+		onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, (event) => {
+			event.preventDefault();
+			context.triggerRef.current?.focus();
+		}),
+		onPointerDownOutside: composeEventHandlers(props.onPointerDownOutside, (event) => {
+			const originalEvent = event.detail.originalEvent;
+			const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true;
+			if (originalEvent.button === 2 || ctrlLeftClick) event.preventDefault();
+		}),
+		onFocusOutside: composeEventHandlers(props.onFocusOutside, (event) => event.preventDefault())
+	});
+});
+var DialogContentNonModal = import_react.forwardRef((props, forwardedRef) => {
+	const context = useDialogContext(CONTENT_NAME$2, props.__scopeDialog);
+	const hasInteractedOutsideRef = import_react.useRef(false);
+	const hasPointerDownOutsideRef = import_react.useRef(false);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentImpl, {
+		...props,
+		ref: forwardedRef,
+		trapFocus: false,
+		disableOutsidePointerEvents: false,
+		onCloseAutoFocus: (event) => {
+			props.onCloseAutoFocus?.(event);
+			if (!event.defaultPrevented) {
+				if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus();
+				event.preventDefault();
+			}
+			hasInteractedOutsideRef.current = false;
+			hasPointerDownOutsideRef.current = false;
+		},
+		onInteractOutside: (event) => {
+			props.onInteractOutside?.(event);
+			if (!event.defaultPrevented) {
+				hasInteractedOutsideRef.current = true;
+				if (event.detail.originalEvent.type === "pointerdown") hasPointerDownOutsideRef.current = true;
+			}
+			const target = event.target;
+			if (context.triggerRef.current?.contains(target)) event.preventDefault();
+			if (event.detail.originalEvent.type === "focusin" && hasPointerDownOutsideRef.current) event.preventDefault();
+		}
+	});
+});
+var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
+	const context = useDialogContext(CONTENT_NAME$2, __scopeDialog);
+	const contentRef = import_react.useRef(null);
+	const composedRefs = useComposedRefs(forwardedRef, contentRef);
+	useFocusGuards();
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
+		asChild: true,
+		loop: true,
+		trapped: trapFocus,
+		onMountAutoFocus: onOpenAutoFocus,
+		onUnmountAutoFocus: onCloseAutoFocus,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DismissableLayer, {
+			role: "dialog",
+			id: context.contentId,
+			"aria-describedby": context.descriptionId,
+			"aria-labelledby": context.titleId,
+			"data-state": getState$1(context.open),
+			...contentProps,
+			ref: composedRefs,
+			onDismiss: () => context.onOpenChange(false)
+		})
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TitleWarning, { titleId: context.titleId }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DescriptionWarning, {
+		contentRef,
+		descriptionId: context.descriptionId
+	})] })] });
+});
+var TITLE_NAME = "DialogTitle";
+var DialogTitle$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDialog, ...titleProps } = props;
+	const context = useDialogContext(TITLE_NAME, __scopeDialog);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.h2, {
+		id: context.titleId,
+		...titleProps,
+		ref: forwardedRef
+	});
+});
+DialogTitle$1.displayName = TITLE_NAME;
+var DESCRIPTION_NAME = "DialogDescription";
+var DialogDescription$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDialog, ...descriptionProps } = props;
+	const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.p, {
+		id: context.descriptionId,
+		...descriptionProps,
+		ref: forwardedRef
+	});
+});
+DialogDescription$1.displayName = DESCRIPTION_NAME;
+var CLOSE_NAME = "DialogClose";
+var DialogClose$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeDialog, ...closeProps } = props;
+	const context = useDialogContext(CLOSE_NAME, __scopeDialog);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.button, {
+		type: "button",
+		...closeProps,
+		ref: forwardedRef,
+		onClick: composeEventHandlers(props.onClick, () => context.onOpenChange(false))
+	});
+});
+DialogClose$1.displayName = CLOSE_NAME;
+function getState$1(open) {
+	return open ? "open" : "closed";
+}
+var TITLE_WARNING_NAME = "DialogTitleWarning";
+var [WarningProvider, useWarningContext] = createContext2(TITLE_WARNING_NAME, {
+	contentName: CONTENT_NAME$2,
+	titleName: TITLE_NAME,
+	docsSlug: "dialog"
+});
+var TitleWarning = ({ titleId }) => {
+	const titleWarningContext = useWarningContext(TITLE_WARNING_NAME);
+	const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
+
+If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/${titleWarningContext.docsSlug}`;
+	import_react.useEffect(() => {
+		if (titleId) {
+			if (!document.getElementById(titleId)) console.error(MESSAGE);
+		}
+	}, [MESSAGE, titleId]);
+	return null;
+};
+var DESCRIPTION_WARNING_NAME = "DialogDescriptionWarning";
+var DescriptionWarning = ({ contentRef, descriptionId }) => {
+	const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${useWarningContext(DESCRIPTION_WARNING_NAME).contentName}}.`;
+	import_react.useEffect(() => {
+		const describedById = contentRef.current?.getAttribute("aria-describedby");
+		if (descriptionId && describedById) {
+			if (!document.getElementById(descriptionId)) console.warn(MESSAGE);
+		}
+	}, [
+		MESSAGE,
+		contentRef,
+		descriptionId
+	]);
+	return null;
+};
+var Root$3 = Dialog$1;
+var Trigger$2 = DialogTrigger$1;
+var Portal$1 = DialogPortal$1;
+var Overlay = DialogOverlay$1;
+var Content$1 = DialogContent$1;
+var Title = DialogTitle$1;
+var Description = DialogDescription$1;
+var Close = DialogClose$1;
+//#endregion
+//#region src/components/ui/dialog.tsx
+var Dialog = Root$3;
+var DialogTrigger = Trigger$2;
+var DialogPortal = Portal$1;
+var DialogOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
+	"data-uid": "src/components/ui/dialog.tsx:20:3",
+	"data-prohibitions": "[editContent]",
+	ref,
+	className: cn$1("fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0", className),
+	...props
+}));
+DialogOverlay.displayName = Overlay.displayName;
+var DialogContent = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogPortal, {
+	"data-uid": "src/components/ui/dialog.tsx:35:3",
+	"data-prohibitions": "[editContent]",
+	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlay, {
+		"data-uid": "src/components/ui/dialog.tsx:36:5",
+		"data-prohibitions": "[editContent]"
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$1, {
+		"data-uid": "src/components/ui/dialog.tsx:37:5",
+		"data-prohibitions": "[editContent]",
+		ref,
+		className: cn$1("fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg overflow-y-auto max-h-screen", className),
+		...props,
+		children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Close, {
+			"data-uid": "src/components/ui/dialog.tsx:46:7",
+			"data-prohibitions": "[]",
+			className: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, {
+				"data-uid": "src/components/ui/dialog.tsx:47:9",
+				"data-prohibitions": "[editContent]",
+				className: "h-4 w-4"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				"data-uid": "src/components/ui/dialog.tsx:48:9",
+				"data-prohibitions": "[]",
+				className: "sr-only",
+				children: "Close"
+			})]
+		})]
+	})]
+}));
+DialogContent.displayName = Content$1.displayName;
+var DialogHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	"data-uid": "src/components/ui/dialog.tsx:56:3",
+	"data-prohibitions": "[editContent]",
+	className: cn$1("flex flex-col space-y-1.5 text-center sm:text-left", className),
+	...props
+});
+DialogHeader.displayName = "DialogHeader";
+var DialogFooter = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	"data-uid": "src/components/ui/dialog.tsx:61:3",
+	"data-prohibitions": "[editContent]",
+	className: cn$1("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className),
+	...props
+});
+DialogFooter.displayName = "DialogFooter";
+var DialogTitle = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Title, {
+	"data-uid": "src/components/ui/dialog.tsx:72:3",
+	"data-prohibitions": "[editContent]",
+	ref,
+	className: cn$1("text-lg font-semibold leading-none tracking-tight", className),
+	...props
+}));
+DialogTitle.displayName = Title.displayName;
+var DialogDescription = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Description, {
+	"data-uid": "src/components/ui/dialog.tsx:84:3",
+	"data-prohibitions": "[editContent]",
+	ref,
+	className: cn$1("text-sm text-muted-foreground", className),
+	...props
+}));
+DialogDescription.displayName = Description.displayName;
+//#endregion
 //#region src/components/Layout.tsx
 var NAV_ITEMS = [
 	{
@@ -24482,56 +26082,61 @@ var NAV_ITEMS = [
 		name: "Gestão de Relatos",
 		path: "/gestao",
 		icon: ListTodo
+	},
+	{
+		name: "Configurações",
+		path: "/settings",
+		icon: Settings$1
 	}
 ];
 function Layout() {
 	const location = useLocation();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/Layout.tsx:16:5",
+		"data-uid": "src/components/Layout.tsx:25:5",
 		"data-prohibitions": "[editContent]",
 		className: "flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
-				"data-uid": "src/components/Layout.tsx:18:7",
+				"data-uid": "src/components/Layout.tsx:27:7",
 				"data-prohibitions": "[editContent]",
 				className: "hidden md:flex flex-col w-64 border-r bg-white shadow-sm z-10",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/Layout.tsx:19:9",
+					"data-uid": "src/components/Layout.tsx:28:9",
 					"data-prohibitions": "[]",
 					className: "p-6 flex items-center space-x-3 border-b",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/Layout.tsx:20:11",
+						"data-uid": "src/components/Layout.tsx:29:11",
 						"data-prohibitions": "[]",
 						className: "w-8 h-8 rounded bg-primary flex items-center justify-center",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {
-							"data-uid": "src/components/Layout.tsx:21:13",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings$1, {
+							"data-uid": "src/components/Layout.tsx:30:13",
 							"data-prohibitions": "[editContent]",
 							className: "w-5 h-5 text-white"
 						})
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-						"data-uid": "src/components/Layout.tsx:23:11",
+						"data-uid": "src/components/Layout.tsx:32:11",
 						"data-prohibitions": "[]",
 						className: "font-bold text-lg text-primary",
 						children: "MAPEAR"
 					})]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
-					"data-uid": "src/components/Layout.tsx:25:9",
+					"data-uid": "src/components/Layout.tsx:34:9",
 					"data-prohibitions": "[editContent]",
 					className: "flex-1 px-4 py-6 space-y-2 overflow-y-auto",
 					children: NAV_ITEMS.map((item) => {
 						const Icon = item.icon;
 						const isActive = location.pathname === item.path;
 						return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
-							"data-uid": "src/components/Layout.tsx:30:15",
+							"data-uid": "src/components/Layout.tsx:39:15",
 							"data-prohibitions": "[editContent]",
 							to: item.path,
 							className: cn$1("flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors", isActive ? "bg-primary text-primary-foreground" : "hover:bg-slate-100 text-slate-600"),
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-								"data-uid": "src/components/Layout.tsx:40:17",
+								"data-uid": "src/components/Layout.tsx:49:17",
 								"data-prohibitions": "[editContent]",
 								className: "w-5 h-5"
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								"data-uid": "src/components/Layout.tsx:41:17",
+								"data-uid": "src/components/Layout.tsx:50:17",
 								"data-prohibitions": "[editContent]",
 								className: "font-medium",
 								children: item.name
@@ -24541,105 +26146,159 @@ function Layout() {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				"data-uid": "src/components/Layout.tsx:48:7",
+				"data-uid": "src/components/Layout.tsx:57:7",
 				"data-prohibitions": "[editContent]",
 				className: "flex flex-1 flex-col overflow-hidden relative",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-					"data-uid": "src/components/Layout.tsx:50:9",
+					"data-uid": "src/components/Layout.tsx:59:9",
 					"data-prohibitions": "[editContent]",
 					className: "h-16 flex items-center justify-between px-4 md:px-8 border-b bg-white z-10",
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							"data-uid": "src/components/Layout.tsx:51:11",
+							"data-uid": "src/components/Layout.tsx:60:11",
 							"data-prohibitions": "[]",
 							className: "flex items-center md:hidden space-x-2",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								"data-uid": "src/components/Layout.tsx:52:13",
+								"data-uid": "src/components/Layout.tsx:61:13",
 								"data-prohibitions": "[]",
 								className: "w-6 h-6 rounded bg-primary flex items-center justify-center",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {
-									"data-uid": "src/components/Layout.tsx:53:15",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings$1, {
+									"data-uid": "src/components/Layout.tsx:62:15",
 									"data-prohibitions": "[editContent]",
 									className: "w-4 h-4 text-white"
 								})
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								"data-uid": "src/components/Layout.tsx:55:13",
+								"data-uid": "src/components/Layout.tsx:64:13",
 								"data-prohibitions": "[]",
 								className: "font-bold text-primary",
 								children: "MAPEAR"
 							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							"data-uid": "src/components/Layout.tsx:57:11",
+							"data-uid": "src/components/Layout.tsx:66:11",
 							"data-prohibitions": "[editContent]",
 							className: "hidden md:flex",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-								"data-uid": "src/components/Layout.tsx:58:13",
+								"data-uid": "src/components/Layout.tsx:67:13",
 								"data-prohibitions": "[editContent]",
 								className: "text-xl font-semibold text-slate-800",
 								children: NAV_ITEMS.find((i) => i.path === location.pathname)?.name || "Dashboard"
 							})
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							"data-uid": "src/components/Layout.tsx:62:11",
+							"data-uid": "src/components/Layout.tsx:71:11",
 							"data-prohibitions": "[]",
-							className: "flex items-center space-x-4",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-								"data-uid": "src/components/Layout.tsx:63:13",
-								"data-prohibitions": "[]",
-								variant: "ghost",
-								size: "icon",
-								className: "relative text-slate-500",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, {
-									"data-uid": "src/components/Layout.tsx:64:15",
-									"data-prohibitions": "[editContent]",
-									className: "w-5 h-5"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									"data-uid": "src/components/Layout.tsx:65:15",
+							className: "flex items-center space-x-2 md:space-x-4",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Dialog, {
+									"data-uid": "src/components/Layout.tsx:72:13",
 									"data-prohibitions": "[]",
-									className: "absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"
-								})]
-							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-								"data-uid": "src/components/Layout.tsx:67:13",
-								"data-prohibitions": "[]",
-								className: "w-8 h-8 rounded-full bg-slate-200 overflow-hidden border",
-								children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
-									"data-uid": "src/components/Layout.tsx:68:15",
-									"data-prohibitions": "[editContent]",
-									src: "https://img.usecurling.com/ppl/thumbnail?gender=female&seed=1",
-									alt: "User"
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTrigger, {
+										"data-uid": "src/components/Layout.tsx:73:15",
+										"data-prohibitions": "[]",
+										asChild: true,
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+											"data-uid": "src/components/Layout.tsx:74:17",
+											"data-prohibitions": "[]",
+											variant: "ghost",
+											size: "icon",
+											className: "text-slate-500 hover:text-slate-700",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QrCode, {
+												"data-uid": "src/components/Layout.tsx:75:19",
+												"data-prohibitions": "[editContent]",
+												className: "w-5 h-5"
+											})
+										})
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+										"data-uid": "src/components/Layout.tsx:78:15",
+										"data-prohibitions": "[]",
+										className: "sm:max-w-md",
+										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogHeader, {
+											"data-uid": "src/components/Layout.tsx:79:17",
+											"data-prohibitions": "[]",
+											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogTitle, {
+												"data-uid": "src/components/Layout.tsx:80:19",
+												"data-prohibitions": "[]",
+												className: "text-center",
+												children: "Acesso Rápido Mobile"
+											}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogDescription, {
+												"data-uid": "src/components/Layout.tsx:81:19",
+												"data-prohibitions": "[]",
+												className: "text-center",
+												children: "Escaneie o QR Code com a câmera do celular para relatar uma observação."
+											})]
+										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+											"data-uid": "src/components/Layout.tsx:85:17",
+											"data-prohibitions": "[]",
+											className: "flex items-center justify-center py-6",
+											children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+												"data-uid": "src/components/Layout.tsx:86:19",
+												"data-prohibitions": "[editContent]",
+												src: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://cultura-de-seguranca-saas-2751a.goskip.app",
+												alt: "QR Code",
+												className: "w-48 h-48 rounded-lg shadow-sm border border-slate-200 p-2"
+											})
+										})]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+									"data-uid": "src/components/Layout.tsx:95:13",
+									"data-prohibitions": "[]",
+									variant: "ghost",
+									size: "icon",
+									className: "relative text-slate-500",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bell, {
+										"data-uid": "src/components/Layout.tsx:96:15",
+										"data-prohibitions": "[editContent]",
+										className: "w-5 h-5"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										"data-uid": "src/components/Layout.tsx:97:15",
+										"data-prohibitions": "[]",
+										className: "absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									"data-uid": "src/components/Layout.tsx:99:13",
+									"data-prohibitions": "[]",
+									className: "w-8 h-8 rounded-full bg-slate-200 overflow-hidden border",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
+										"data-uid": "src/components/Layout.tsx:100:15",
+										"data-prohibitions": "[editContent]",
+										src: "https://img.usecurling.com/ppl/thumbnail?gender=female&seed=1",
+										alt: "User"
+									})
 								})
-							})]
+							]
 						})
 					]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
-					"data-uid": "src/components/Layout.tsx:74:9",
+					"data-uid": "src/components/Layout.tsx:106:9",
 					"data-prohibitions": "[]",
 					className: "flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 animate-fade-in-up",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {
-						"data-uid": "src/components/Layout.tsx:75:11",
+						"data-uid": "src/components/Layout.tsx:107:11",
 						"data-prohibitions": "[editContent]"
 					})
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
-				"data-uid": "src/components/Layout.tsx:80:7",
+				"data-uid": "src/components/Layout.tsx:112:7",
 				"data-prohibitions": "[editContent]",
 				className: "md:hidden fixed bottom-0 left-0 right-0 border-t bg-white flex justify-around items-center h-16 px-2 z-50 pb-safe shadow-[0_-2px_10px_rgba(0,0,0,0.05)]",
 				children: NAV_ITEMS.map((item) => {
 					const Icon = item.icon;
 					const isActive = location.pathname === item.path;
 					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
-						"data-uid": "src/components/Layout.tsx:85:13",
+						"data-uid": "src/components/Layout.tsx:117:13",
 						"data-prohibitions": "[editContent]",
 						to: item.path,
 						className: cn$1("flex flex-col items-center justify-center w-full h-full space-y-1", isActive ? "text-primary" : "text-slate-400 hover:text-slate-600"),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-							"data-uid": "src/components/Layout.tsx:93:15",
+							"data-uid": "src/components/Layout.tsx:125:15",
 							"data-prohibitions": "[editContent]",
 							className: "w-5 h-5"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							"data-uid": "src/components/Layout.tsx:94:15",
+							"data-uid": "src/components/Layout.tsx:126:15",
 							"data-prohibitions": "[editContent]",
 							className: "text-[10px] font-medium",
 							children: item.name
@@ -26299,9 +27958,9 @@ var isNullish = function isNullish(value) {
 var isNumOrStr = function isNumOrStr(value) {
 	return isNumber$1(value) || (0, import_isString.default)(value);
 };
-var idCounter$1 = 0;
+var idCounter = 0;
 var uniqueId = function uniqueId(prefix) {
-	var id = ++idCounter$1;
+	var id = ++idCounter;
 	return "".concat(prefix || "").concat(id);
 };
 /**
@@ -32466,7 +34125,7 @@ var getStringSize = function getStringSize(text) {
 		};
 	}
 };
-var getOffset$1 = function getOffset(rect) {
+var getOffset = function getOffset(rect) {
 	return {
 		top: rect.top + window.scrollY - document.documentElement.clientTop,
 		left: rect.left + window.scrollX - document.documentElement.clientLeft
@@ -50058,7 +51717,7 @@ var generateCategoricalChart = function generateCategoricalChart(_ref6) {
 					if (!this.container) return null;
 					var element = this.container;
 					var boundingRect = element.getBoundingClientRect();
-					var containerOffset = getOffset$1(boundingRect);
+					var containerOffset = getOffset(boundingRect);
 					var e = {
 						chartX: Math.round(event.pageX - containerOffset.left),
 						chartY: Math.round(event.pageY - containerOffset.top)
@@ -50615,14 +52274,6 @@ function getPayloadConfigFromPayload(config, payload, key) {
 }
 //#endregion
 //#region src/components/dashboard/Charts.tsx
-var COLORS = [
-	"#f59e0b",
-	"#10b981",
-	"#ef4444",
-	"#3b82f6",
-	"#8b5cf6",
-	"#ec4899"
-];
 function DashboardCharts({ data }) {
 	const typeData = (0, import_react.useMemo)(() => {
 		const counts = data.reduce((acc, curr) => ({
@@ -50638,7 +52289,7 @@ function DashboardCharts({ data }) {
 		return typeData.reduce((acc, d, i) => {
 			acc[d.name] = {
 				label: d.name,
-				color: COLORS[i % COLORS.length]
+				color: CHART_COLORS[d.name] || `hsl(${i * 137 % 360}, 70%, 50%)`
 			};
 			return acc;
 		}, {});
@@ -50672,41 +52323,41 @@ function DashboardCharts({ data }) {
 		})).sort((a, b) => b.value - a.value).slice(0, 5);
 	}, [data]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/dashboard/Charts.tsx:68:5",
+		"data-uid": "src/components/dashboard/Charts.tsx:70:5",
 		"data-prohibitions": "[editContent]",
 		className: "grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:69:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:71:7",
 				"data-prohibitions": "[editContent]",
 				className: "col-span-1",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:70:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:72:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:71:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:73:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Observações por Tipo"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:73:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:75:9",
 					"data-prohibitions": "[editContent]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:74:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:76:11",
 						"data-prohibitions": "[editContent]",
 						className: "h-[280px] w-full",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:75:13",
+							"data-uid": "src/components/dashboard/Charts.tsx:77:13",
 							"data-prohibitions": "[editContent]",
 							config: typeConfig,
 							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(PieChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:76:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:78:15",
 								"data-prohibitions": "[editContent]",
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pie, {
-										"data-uid": "src/components/dashboard/Charts.tsx:77:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:79:17",
 										"data-prohibitions": "[editContent]",
 										data: typeData,
 										cx: "50%",
@@ -50717,24 +52368,24 @@ function DashboardCharts({ data }) {
 										dataKey: "value",
 										nameKey: "name",
 										children: typeData.map((entry, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Cell, {
-											"data-uid": "src/components/dashboard/Charts.tsx:88:21",
+											"data-uid": "src/components/dashboard/Charts.tsx:90:21",
 											"data-prohibitions": "[editContent]",
-											fill: `var(--color-${entry.name})`
+											fill: CHART_COLORS[entry.name] || `hsl(${index * 137 % 360}, 70%, 50%)`
 										}, `cell-${index}`))
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-										"data-uid": "src/components/dashboard/Charts.tsx:91:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:96:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:91:40",
+											"data-uid": "src/components/dashboard/Charts.tsx:96:40",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
-										"data-uid": "src/components/dashboard/Charts.tsx:92:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:97:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:92:39",
+											"data-uid": "src/components/dashboard/Charts.tsx:97:39",
 											"data-prohibitions": "[editContent]",
 											className: "flex-wrap pt-4"
 										})
@@ -50746,27 +52397,27 @@ function DashboardCharts({ data }) {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:99:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:104:7",
 				"data-prohibitions": "[]",
 				className: "col-span-1 lg:col-span-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:100:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:105:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:101:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:106:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Tendência Mensal"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:103:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:108:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:104:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:109:11",
 						"data-prohibitions": "[]",
 						className: "h-[280px] w-full",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:105:13",
+							"data-uid": "src/components/dashboard/Charts.tsx:110:13",
 							"data-prohibitions": "[]",
 							config: {
 								abertos: {
@@ -50780,7 +52431,7 @@ function DashboardCharts({ data }) {
 							},
 							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:112:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:117:15",
 								"data-prohibitions": "[]",
 								data: trendData,
 								margin: {
@@ -50791,14 +52442,14 @@ function DashboardCharts({ data }) {
 								},
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-										"data-uid": "src/components/dashboard/Charts.tsx:113:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:118:17",
 										"data-prohibitions": "[editContent]",
 										strokeDasharray: "3 3",
 										vertical: false,
 										stroke: "#e2e8f0"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:114:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:119:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "name",
 										tickLine: false,
@@ -50809,7 +52460,7 @@ function DashboardCharts({ data }) {
 										}
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:120:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:125:17",
 										"data-prohibitions": "[editContent]",
 										tickLine: false,
 										axisLine: false,
@@ -50820,23 +52471,23 @@ function DashboardCharts({ data }) {
 										allowDecimals: false
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-										"data-uid": "src/components/dashboard/Charts.tsx:126:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:131:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:126:40",
+											"data-uid": "src/components/dashboard/Charts.tsx:131:40",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
-										"data-uid": "src/components/dashboard/Charts.tsx:127:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:132:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:127:39",
+											"data-uid": "src/components/dashboard/Charts.tsx:132:39",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-										"data-uid": "src/components/dashboard/Charts.tsx:128:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:133:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "abertos",
 										fill: "var(--color-abertos)",
@@ -50848,7 +52499,7 @@ function DashboardCharts({ data }) {
 										]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-										"data-uid": "src/components/dashboard/Charts.tsx:129:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:134:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "fechados",
 										fill: "var(--color-fechados)",
@@ -50866,27 +52517,27 @@ function DashboardCharts({ data }) {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				"data-uid": "src/components/dashboard/Charts.tsx:136:7",
+				"data-uid": "src/components/dashboard/Charts.tsx:141:7",
 				"data-prohibitions": "[]",
 				className: "col-span-1 md:col-span-2 lg:col-span-3",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-					"data-uid": "src/components/dashboard/Charts.tsx:137:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:142:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-						"data-uid": "src/components/dashboard/Charts.tsx:138:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:143:11",
 						"data-prohibitions": "[]",
 						className: "text-base",
 						children: "Distribuição por Área"
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardContent, {
-					"data-uid": "src/components/dashboard/Charts.tsx:140:9",
+					"data-uid": "src/components/dashboard/Charts.tsx:145:9",
 					"data-prohibitions": "[]",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/dashboard/Charts.tsx:141:11",
+						"data-uid": "src/components/dashboard/Charts.tsx:146:11",
 						"data-prohibitions": "[]",
 						className: "h-[250px] w-full",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartContainer, {
-							"data-uid": "src/components/dashboard/Charts.tsx:142:13",
+							"data-uid": "src/components/dashboard/Charts.tsx:147:13",
 							"data-prohibitions": "[]",
 							config: { value: {
 								label: "Relatos",
@@ -50894,7 +52545,7 @@ function DashboardCharts({ data }) {
 							} },
 							className: "h-full w-full",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(BarChart, {
-								"data-uid": "src/components/dashboard/Charts.tsx:146:15",
+								"data-uid": "src/components/dashboard/Charts.tsx:151:15",
 								"data-prohibitions": "[]",
 								data: areaData,
 								margin: {
@@ -50905,14 +52556,14 @@ function DashboardCharts({ data }) {
 								},
 								children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CartesianGrid, {
-										"data-uid": "src/components/dashboard/Charts.tsx:147:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:152:17",
 										"data-prohibitions": "[editContent]",
 										strokeDasharray: "3 3",
 										vertical: false,
 										stroke: "#e2e8f0"
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(XAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:148:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:153:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "name",
 										tickLine: false,
@@ -50923,7 +52574,7 @@ function DashboardCharts({ data }) {
 										}
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(YAxis, {
-										"data-uid": "src/components/dashboard/Charts.tsx:154:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:159:17",
 										"data-prohibitions": "[editContent]",
 										tickLine: false,
 										axisLine: false,
@@ -50934,23 +52585,23 @@ function DashboardCharts({ data }) {
 										allowDecimals: false
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltip, {
-										"data-uid": "src/components/dashboard/Charts.tsx:160:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:165:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartTooltipContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:160:40",
+											"data-uid": "src/components/dashboard/Charts.tsx:165:40",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegend, {
-										"data-uid": "src/components/dashboard/Charts.tsx:161:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:166:17",
 										"data-prohibitions": "[editContent]",
 										content: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ChartLegendContent, {
-											"data-uid": "src/components/dashboard/Charts.tsx:161:39",
+											"data-uid": "src/components/dashboard/Charts.tsx:166:39",
 											"data-prohibitions": "[editContent]"
 										})
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Bar, {
-										"data-uid": "src/components/dashboard/Charts.tsx:162:17",
+										"data-uid": "src/components/dashboard/Charts.tsx:167:17",
 										"data-prohibitions": "[editContent]",
 										dataKey: "value",
 										fill: "var(--color-value)",
@@ -50989,59 +52640,6 @@ function Badge({ className, variant, ...props }) {
 		...props
 	});
 }
-//#endregion
-//#region src/lib/constants.ts
-var CONDITIONS = [
-	"Mãos na linha de fogo",
-	"Pisos escorregadios",
-	"Iluminação inadequada",
-	"Falta de sinalização",
-	"Ferramentas defeituosas",
-	"Vazamento de produtos",
-	"Fiação exposta",
-	"Equipamento sem proteção",
-	"Bloqueio de emergência",
-	"Trabalho em altura sem EPI"
-];
-var BEHAVIORS = [
-	"Uso inseguro de equipamentos",
-	"Brincadeira rude",
-	"Não uso de EPI",
-	"Postura inadequada",
-	"Uso de celular na operação",
-	"Atalho em procedimento",
-	"Velocidade excessiva",
-	"Falta de atenção"
-];
-var AREAS = [
-	"Produção L1",
-	"Produção L2",
-	"Manutenção",
-	"Logística",
-	"Almoxarifado",
-	"Administrativo",
-	"Pátio Externo"
-];
-var SHIFTS = [
-	"T1",
-	"T2",
-	"T3",
-	"Adm"
-];
-var TYPE_COLORS = {
-	"Condição de risco": "text-orange-600 bg-orange-100",
-	"Condição segura": "text-emerald-600 bg-emerald-100",
-	"Comportamento de risco": "text-red-600 bg-red-100",
-	"Comportamento seguro": "text-emerald-600 bg-emerald-100",
-	Acidente: "text-red-700 bg-red-200",
-	"Quase acidente": "text-amber-600 bg-amber-100"
-};
-var RISK_COLORS = {
-	Leve: "text-emerald-600 bg-emerald-100",
-	Moderado: "text-amber-600 bg-amber-100",
-	Grave: "text-orange-600 bg-orange-100",
-	"Muito Grave": "text-red-600 bg-red-100"
-};
 //#endregion
 //#region src/components/dashboard/RecentActivity.tsx
 function RecentActivity({ data }) {
@@ -51130,220 +52728,6 @@ function useDirection(localDir) {
 	return localDir || globalDir || "ltr";
 }
 //#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-focus-guards@1.1.3_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-focus-guards/dist/index.mjs
-var count = 0;
-function useFocusGuards() {
-	import_react.useEffect(() => {
-		const edgeGuards = document.querySelectorAll("[data-radix-focus-guard]");
-		document.body.insertAdjacentElement("afterbegin", edgeGuards[0] ?? createFocusGuard());
-		document.body.insertAdjacentElement("beforeend", edgeGuards[1] ?? createFocusGuard());
-		count++;
-		return () => {
-			if (count === 1) document.querySelectorAll("[data-radix-focus-guard]").forEach((node) => node.remove());
-			count--;
-		};
-	}, []);
-}
-function createFocusGuard() {
-	const element = document.createElement("span");
-	element.setAttribute("data-radix-focus-guard", "");
-	element.tabIndex = 0;
-	element.style.outline = "none";
-	element.style.opacity = "0";
-	element.style.position = "fixed";
-	element.style.pointerEvents = "none";
-	return element;
-}
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-focus-scope@1.1.7_@types+react-dom@19.2.3_@types+react@19.2.14__@types+_f62f3af4ca2ba305a7aecf04c8534604/node_modules/@radix-ui/react-focus-scope/dist/index.mjs
-var AUTOFOCUS_ON_MOUNT = "focusScope.autoFocusOnMount";
-var AUTOFOCUS_ON_UNMOUNT = "focusScope.autoFocusOnUnmount";
-var EVENT_OPTIONS$1 = {
-	bubbles: false,
-	cancelable: true
-};
-var FOCUS_SCOPE_NAME = "FocusScope";
-var FocusScope = import_react.forwardRef((props, forwardedRef) => {
-	const { loop = false, trapped = false, onMountAutoFocus: onMountAutoFocusProp, onUnmountAutoFocus: onUnmountAutoFocusProp, ...scopeProps } = props;
-	const [container, setContainer] = import_react.useState(null);
-	const onMountAutoFocus = useCallbackRef$1(onMountAutoFocusProp);
-	const onUnmountAutoFocus = useCallbackRef$1(onUnmountAutoFocusProp);
-	const lastFocusedElementRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, (node) => setContainer(node));
-	const focusScope = import_react.useRef({
-		paused: false,
-		pause() {
-			this.paused = true;
-		},
-		resume() {
-			this.paused = false;
-		}
-	}).current;
-	import_react.useEffect(() => {
-		if (trapped) {
-			let handleFocusIn2 = function(event) {
-				if (focusScope.paused || !container) return;
-				const target = event.target;
-				if (container.contains(target)) lastFocusedElementRef.current = target;
-				else focus(lastFocusedElementRef.current, { select: true });
-			}, handleFocusOut2 = function(event) {
-				if (focusScope.paused || !container) return;
-				const relatedTarget = event.relatedTarget;
-				if (relatedTarget === null) return;
-				if (!container.contains(relatedTarget)) focus(lastFocusedElementRef.current, { select: true });
-			}, handleMutations2 = function(mutations) {
-				if (document.activeElement !== document.body) return;
-				for (const mutation of mutations) if (mutation.removedNodes.length > 0) focus(container);
-			};
-			document.addEventListener("focusin", handleFocusIn2);
-			document.addEventListener("focusout", handleFocusOut2);
-			const mutationObserver = new MutationObserver(handleMutations2);
-			if (container) mutationObserver.observe(container, {
-				childList: true,
-				subtree: true
-			});
-			return () => {
-				document.removeEventListener("focusin", handleFocusIn2);
-				document.removeEventListener("focusout", handleFocusOut2);
-				mutationObserver.disconnect();
-			};
-		}
-	}, [
-		trapped,
-		container,
-		focusScope.paused
-	]);
-	import_react.useEffect(() => {
-		if (container) {
-			focusScopesStack.add(focusScope);
-			const previouslyFocusedElement = document.activeElement;
-			if (!container.contains(previouslyFocusedElement)) {
-				const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS$1);
-				container.addEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
-				container.dispatchEvent(mountEvent);
-				if (!mountEvent.defaultPrevented) {
-					focusFirst$1(removeLinks(getTabbableCandidates(container)), { select: true });
-					if (document.activeElement === previouslyFocusedElement) focus(container);
-				}
-			}
-			return () => {
-				container.removeEventListener(AUTOFOCUS_ON_MOUNT, onMountAutoFocus);
-				setTimeout(() => {
-					const unmountEvent = new CustomEvent(AUTOFOCUS_ON_UNMOUNT, EVENT_OPTIONS$1);
-					container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
-					container.dispatchEvent(unmountEvent);
-					if (!unmountEvent.defaultPrevented) focus(previouslyFocusedElement ?? document.body, { select: true });
-					container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus);
-					focusScopesStack.remove(focusScope);
-				}, 0);
-			};
-		}
-	}, [
-		container,
-		onMountAutoFocus,
-		onUnmountAutoFocus,
-		focusScope
-	]);
-	const handleKeyDown = import_react.useCallback((event) => {
-		if (!loop && !trapped) return;
-		if (focusScope.paused) return;
-		const isTabKey = event.key === "Tab" && !event.altKey && !event.ctrlKey && !event.metaKey;
-		const focusedElement = document.activeElement;
-		if (isTabKey && focusedElement) {
-			const container2 = event.currentTarget;
-			const [first, last] = getTabbableEdges(container2);
-			if (!(first && last)) {
-				if (focusedElement === container2) event.preventDefault();
-			} else if (!event.shiftKey && focusedElement === last) {
-				event.preventDefault();
-				if (loop) focus(first, { select: true });
-			} else if (event.shiftKey && focusedElement === first) {
-				event.preventDefault();
-				if (loop) focus(last, { select: true });
-			}
-		}
-	}, [
-		loop,
-		trapped,
-		focusScope.paused
-	]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
-		tabIndex: -1,
-		...scopeProps,
-		ref: composedRefs,
-		onKeyDown: handleKeyDown
-	});
-});
-FocusScope.displayName = FOCUS_SCOPE_NAME;
-function focusFirst$1(candidates, { select = false } = {}) {
-	const previouslyFocusedElement = document.activeElement;
-	for (const candidate of candidates) {
-		focus(candidate, { select });
-		if (document.activeElement !== previouslyFocusedElement) return;
-	}
-}
-function getTabbableEdges(container) {
-	const candidates = getTabbableCandidates(container);
-	return [findVisible(candidates, container), findVisible(candidates.reverse(), container)];
-}
-function getTabbableCandidates(container) {
-	const nodes = [];
-	const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, { acceptNode: (node) => {
-		const isHiddenInput = node.tagName === "INPUT" && node.type === "hidden";
-		if (node.disabled || node.hidden || isHiddenInput) return NodeFilter.FILTER_SKIP;
-		return node.tabIndex >= 0 ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
-	} });
-	while (walker.nextNode()) nodes.push(walker.currentNode);
-	return nodes;
-}
-function findVisible(elements, container) {
-	for (const element of elements) if (!isHidden(element, { upTo: container })) return element;
-}
-function isHidden(node, { upTo }) {
-	if (getComputedStyle(node).visibility === "hidden") return true;
-	while (node) {
-		if (upTo !== void 0 && node === upTo) return false;
-		if (getComputedStyle(node).display === "none") return true;
-		node = node.parentElement;
-	}
-	return false;
-}
-function isSelectableInput(element) {
-	return element instanceof HTMLInputElement && "select" in element;
-}
-function focus(element, { select = false } = {}) {
-	if (element && element.focus) {
-		const previouslyFocusedElement = document.activeElement;
-		element.focus({ preventScroll: true });
-		if (element !== previouslyFocusedElement && isSelectableInput(element) && select) element.select();
-	}
-}
-var focusScopesStack = createFocusScopesStack();
-function createFocusScopesStack() {
-	let stack = [];
-	return {
-		add(focusScope) {
-			const activeFocusScope = stack[0];
-			if (focusScope !== activeFocusScope) activeFocusScope?.pause();
-			stack = arrayRemove(stack, focusScope);
-			stack.unshift(focusScope);
-		},
-		remove(focusScope) {
-			stack = arrayRemove(stack, focusScope);
-			stack[0]?.resume();
-		}
-	};
-}
-function arrayRemove(array, item) {
-	const updatedArray = [...array];
-	const index = updatedArray.indexOf(item);
-	if (index !== -1) updatedArray.splice(index, 1);
-	return updatedArray;
-}
-function removeLinks(items) {
-	return items.filter((item) => item.tagName !== "A");
-}
-//#endregion
 //#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-use-previous@1.1.1_@types+react@19.2.14_react@19.2.4/node_modules/@radix-ui/react-use-previous/dist/index.mjs
 function usePrevious(value) {
 	const ref = import_react.useRef({
@@ -51358,825 +52742,6 @@ function usePrevious(value) {
 		return ref.current.previous;
 	}, [value]);
 }
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/aria-hidden@1.2.6/node_modules/aria-hidden/dist/es2015/index.js
-var getDefaultParent = function(originalTarget) {
-	if (typeof document === "undefined") return null;
-	return (Array.isArray(originalTarget) ? originalTarget[0] : originalTarget).ownerDocument.body;
-};
-var counterMap = /* @__PURE__ */ new WeakMap();
-var uncontrolledNodes = /* @__PURE__ */ new WeakMap();
-var markerMap = {};
-var lockCount = 0;
-var unwrapHost = function(node) {
-	return node && (node.host || unwrapHost(node.parentNode));
-};
-var correctTargets = function(parent, targets) {
-	return targets.map(function(target) {
-		if (parent.contains(target)) return target;
-		var correctedTarget = unwrapHost(target);
-		if (correctedTarget && parent.contains(correctedTarget)) return correctedTarget;
-		console.error("aria-hidden", target, "in not contained inside", parent, ". Doing nothing");
-		return null;
-	}).filter(function(x) {
-		return Boolean(x);
-	});
-};
-/**
-* Marks everything except given node(or nodes) as aria-hidden
-* @param {Element | Element[]} originalTarget - elements to keep on the page
-* @param [parentNode] - top element, defaults to document.body
-* @param {String} [markerName] - a special attribute to mark every node
-* @param {String} [controlAttribute] - html Attribute to control
-* @return {Undo} undo command
-*/
-var applyAttributeToOthers = function(originalTarget, parentNode, markerName, controlAttribute) {
-	var targets = correctTargets(parentNode, Array.isArray(originalTarget) ? originalTarget : [originalTarget]);
-	if (!markerMap[markerName]) markerMap[markerName] = /* @__PURE__ */ new WeakMap();
-	var markerCounter = markerMap[markerName];
-	var hiddenNodes = [];
-	var elementsToKeep = /* @__PURE__ */ new Set();
-	var elementsToStop = new Set(targets);
-	var keep = function(el) {
-		if (!el || elementsToKeep.has(el)) return;
-		elementsToKeep.add(el);
-		keep(el.parentNode);
-	};
-	targets.forEach(keep);
-	var deep = function(parent) {
-		if (!parent || elementsToStop.has(parent)) return;
-		Array.prototype.forEach.call(parent.children, function(node) {
-			if (elementsToKeep.has(node)) deep(node);
-			else try {
-				var attr = node.getAttribute(controlAttribute);
-				var alreadyHidden = attr !== null && attr !== "false";
-				var counterValue = (counterMap.get(node) || 0) + 1;
-				var markerValue = (markerCounter.get(node) || 0) + 1;
-				counterMap.set(node, counterValue);
-				markerCounter.set(node, markerValue);
-				hiddenNodes.push(node);
-				if (counterValue === 1 && alreadyHidden) uncontrolledNodes.set(node, true);
-				if (markerValue === 1) node.setAttribute(markerName, "true");
-				if (!alreadyHidden) node.setAttribute(controlAttribute, "true");
-			} catch (e) {
-				console.error("aria-hidden: cannot operate on ", node, e);
-			}
-		});
-	};
-	deep(parentNode);
-	elementsToKeep.clear();
-	lockCount++;
-	return function() {
-		hiddenNodes.forEach(function(node) {
-			var counterValue = counterMap.get(node) - 1;
-			var markerValue = markerCounter.get(node) - 1;
-			counterMap.set(node, counterValue);
-			markerCounter.set(node, markerValue);
-			if (!counterValue) {
-				if (!uncontrolledNodes.has(node)) node.removeAttribute(controlAttribute);
-				uncontrolledNodes.delete(node);
-			}
-			if (!markerValue) node.removeAttribute(markerName);
-		});
-		lockCount--;
-		if (!lockCount) {
-			counterMap = /* @__PURE__ */ new WeakMap();
-			counterMap = /* @__PURE__ */ new WeakMap();
-			uncontrolledNodes = /* @__PURE__ */ new WeakMap();
-			markerMap = {};
-		}
-	};
-};
-/**
-* Marks everything except given node(or nodes) as aria-hidden
-* @param {Element | Element[]} originalTarget - elements to keep on the page
-* @param [parentNode] - top element, defaults to document.body
-* @param {String} [markerName] - a special attribute to mark every node
-* @return {Undo} undo command
-*/
-var hideOthers = function(originalTarget, parentNode, markerName) {
-	if (markerName === void 0) markerName = "data-aria-hidden";
-	var targets = Array.from(Array.isArray(originalTarget) ? originalTarget : [originalTarget]);
-	var activeParentNode = parentNode || getDefaultParent(originalTarget);
-	if (!activeParentNode) return function() {
-		return null;
-	};
-	targets.push.apply(targets, Array.from(activeParentNode.querySelectorAll("[aria-live], script")));
-	return applyAttributeToOthers(targets, activeParentNode, markerName, "aria-hidden");
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/tslib.es6.mjs
-var __assign = function() {
-	__assign = Object.assign || function __assign(t) {
-		for (var s, i = 1, n = arguments.length; i < n; i++) {
-			s = arguments[i];
-			for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-		}
-		return t;
-	};
-	return __assign.apply(this, arguments);
-};
-function __rest(s, e) {
-	var t = {};
-	for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-	if (s != null && typeof Object.getOwnPropertySymbols === "function") {
-		for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-	}
-	return t;
-}
-function __spreadArray(to, from, pack) {
-	if (pack || arguments.length === 2) {
-		for (var i = 0, l = from.length, ar; i < l; i++) if (ar || !(i in from)) {
-			if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-			ar[i] = from[i];
-		}
-	}
-	return to.concat(ar || Array.prototype.slice.call(from));
-}
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll-bar@2.3.8_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll-bar/dist/es2015/constants.js
-var zeroRightClassName = "right-scroll-bar-position";
-var fullWidthClassName = "width-before-scroll-bar";
-var noScrollbarsClassName = "with-scroll-bars-hidden";
-/**
-* Name of a CSS variable containing the amount of "hidden" scrollbar
-* ! might be undefined ! use will fallback!
-*/
-var removedBarSizeVariable = "--removed-body-scroll-bar-size";
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-callback-ref@1.3.3_@types+react@19.2.14_react@19.2.4/node_modules/use-callback-ref/dist/es2015/assignRef.js
-/**
-* Assigns a value for a given ref, no matter of the ref format
-* @param {RefObject} ref - a callback function or ref object
-* @param value - a new value
-*
-* @see https://github.com/theKashey/use-callback-ref#assignref
-* @example
-* const refObject = useRef();
-* const refFn = (ref) => {....}
-*
-* assignRef(refObject, "refValue");
-* assignRef(refFn, "refValue");
-*/
-function assignRef(ref, value) {
-	if (typeof ref === "function") ref(value);
-	else if (ref) ref.current = value;
-	return ref;
-}
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-callback-ref@1.3.3_@types+react@19.2.14_react@19.2.4/node_modules/use-callback-ref/dist/es2015/useRef.js
-/**
-* creates a MutableRef with ref change callback
-* @param initialValue - initial ref value
-* @param {Function} callback - a callback to run when value changes
-*
-* @example
-* const ref = useCallbackRef(0, (newValue, oldValue) => console.log(oldValue, '->', newValue);
-* ref.current = 1;
-* // prints 0 -> 1
-*
-* @see https://reactjs.org/docs/hooks-reference.html#useref
-* @see https://github.com/theKashey/use-callback-ref#usecallbackref---to-replace-reactuseref
-* @returns {MutableRefObject}
-*/
-function useCallbackRef(initialValue, callback) {
-	var ref = (0, import_react.useState)(function() {
-		return {
-			value: initialValue,
-			callback,
-			facade: {
-				get current() {
-					return ref.value;
-				},
-				set current(value) {
-					var last = ref.value;
-					if (last !== value) {
-						ref.value = value;
-						ref.callback(value, last);
-					}
-				}
-			}
-		};
-	})[0];
-	ref.callback = callback;
-	return ref.facade;
-}
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-callback-ref@1.3.3_@types+react@19.2.14_react@19.2.4/node_modules/use-callback-ref/dist/es2015/useMergeRef.js
-var useIsomorphicLayoutEffect = typeof window !== "undefined" ? import_react.useLayoutEffect : import_react.useEffect;
-var currentValues = /* @__PURE__ */ new WeakMap();
-/**
-* Merges two or more refs together providing a single interface to set their value
-* @param {RefObject|Ref} refs
-* @returns {MutableRefObject} - a new ref, which translates all changes to {refs}
-*
-* @see {@link mergeRefs} a version without buit-in memoization
-* @see https://github.com/theKashey/use-callback-ref#usemergerefs
-* @example
-* const Component = React.forwardRef((props, ref) => {
-*   const ownRef = useRef();
-*   const domRef = useMergeRefs([ref, ownRef]); // 👈 merge together
-*   return <div ref={domRef}>...</div>
-* }
-*/
-function useMergeRefs(refs, defaultValue) {
-	var callbackRef = useCallbackRef(defaultValue || null, function(newValue) {
-		return refs.forEach(function(ref) {
-			return assignRef(ref, newValue);
-		});
-	});
-	useIsomorphicLayoutEffect(function() {
-		var oldValue = currentValues.get(callbackRef);
-		if (oldValue) {
-			var prevRefs_1 = new Set(oldValue);
-			var nextRefs_1 = new Set(refs);
-			var current_1 = callbackRef.current;
-			prevRefs_1.forEach(function(ref) {
-				if (!nextRefs_1.has(ref)) assignRef(ref, null);
-			});
-			nextRefs_1.forEach(function(ref) {
-				if (!prevRefs_1.has(ref)) assignRef(ref, current_1);
-			});
-		}
-		currentValues.set(callbackRef, refs);
-	}, [refs]);
-	return callbackRef;
-}
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-sidecar@1.1.3_@types+react@19.2.14_react@19.2.4/node_modules/use-sidecar/dist/es2015/medium.js
-function ItoI(a) {
-	return a;
-}
-function innerCreateMedium(defaults, middleware) {
-	if (middleware === void 0) middleware = ItoI;
-	var buffer = [];
-	var assigned = false;
-	return {
-		read: function() {
-			if (assigned) throw new Error("Sidecar: could not `read` from an `assigned` medium. `read` could be used only with `useMedium`.");
-			if (buffer.length) return buffer[buffer.length - 1];
-			return defaults;
-		},
-		useMedium: function(data) {
-			var item = middleware(data, assigned);
-			buffer.push(item);
-			return function() {
-				buffer = buffer.filter(function(x) {
-					return x !== item;
-				});
-			};
-		},
-		assignSyncMedium: function(cb) {
-			assigned = true;
-			while (buffer.length) {
-				var cbs = buffer;
-				buffer = [];
-				cbs.forEach(cb);
-			}
-			buffer = {
-				push: function(x) {
-					return cb(x);
-				},
-				filter: function() {
-					return buffer;
-				}
-			};
-		},
-		assignMedium: function(cb) {
-			assigned = true;
-			var pendingQueue = [];
-			if (buffer.length) {
-				var cbs = buffer;
-				buffer = [];
-				cbs.forEach(cb);
-				pendingQueue = buffer;
-			}
-			var executeQueue = function() {
-				var cbs = pendingQueue;
-				pendingQueue = [];
-				cbs.forEach(cb);
-			};
-			var cycle = function() {
-				return Promise.resolve().then(executeQueue);
-			};
-			cycle();
-			buffer = {
-				push: function(x) {
-					pendingQueue.push(x);
-					cycle();
-				},
-				filter: function(filter) {
-					pendingQueue = pendingQueue.filter(filter);
-					return buffer;
-				}
-			};
-		}
-	};
-}
-function createSidecarMedium(options) {
-	if (options === void 0) options = {};
-	var medium = innerCreateMedium(null);
-	medium.options = __assign({
-		async: true,
-		ssr: false
-	}, options);
-	return medium;
-}
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/use-sidecar@1.1.3_@types+react@19.2.14_react@19.2.4/node_modules/use-sidecar/dist/es2015/exports.js
-var SideCar = function(_a) {
-	var sideCar = _a.sideCar, rest = __rest(_a, ["sideCar"]);
-	if (!sideCar) throw new Error("Sidecar: please provide `sideCar` property to import the right car");
-	var Target = sideCar.read();
-	if (!Target) throw new Error("Sidecar medium not found");
-	return import_react.createElement(Target, __assign({}, rest));
-};
-SideCar.isSideCarExport = true;
-function exportSidecar(medium, exported) {
-	medium.useMedium(exported);
-	return SideCar;
-}
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/medium.js
-var effectCar = createSidecarMedium();
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/UI.js
-var nothing = function() {};
-/**
-* Removes scrollbar from the page and contain the scroll within the Lock
-*/
-var RemoveScroll = import_react.forwardRef(function(props, parentRef) {
-	var ref = import_react.useRef(null);
-	var _a = import_react.useState({
-		onScrollCapture: nothing,
-		onWheelCapture: nothing,
-		onTouchMoveCapture: nothing
-	}), callbacks = _a[0], setCallbacks = _a[1];
-	var forwardProps = props.forwardProps, children = props.children, className = props.className, removeScrollBar = props.removeScrollBar, enabled = props.enabled, shards = props.shards, sideCar = props.sideCar, noRelative = props.noRelative, noIsolation = props.noIsolation, inert = props.inert, allowPinchZoom = props.allowPinchZoom, _b = props.as, Container = _b === void 0 ? "div" : _b, gapMode = props.gapMode, rest = __rest(props, [
-		"forwardProps",
-		"children",
-		"className",
-		"removeScrollBar",
-		"enabled",
-		"shards",
-		"sideCar",
-		"noRelative",
-		"noIsolation",
-		"inert",
-		"allowPinchZoom",
-		"as",
-		"gapMode"
-	]);
-	var SideCar = sideCar;
-	var containerRef = useMergeRefs([ref, parentRef]);
-	var containerProps = __assign(__assign({}, rest), callbacks);
-	return import_react.createElement(import_react.Fragment, null, enabled && import_react.createElement(SideCar, {
-		sideCar: effectCar,
-		removeScrollBar,
-		shards,
-		noRelative,
-		noIsolation,
-		inert,
-		setCallbacks,
-		allowPinchZoom: !!allowPinchZoom,
-		lockRef: ref,
-		gapMode
-	}), forwardProps ? import_react.cloneElement(import_react.Children.only(children), __assign(__assign({}, containerProps), { ref: containerRef })) : import_react.createElement(Container, __assign({}, containerProps, {
-		className,
-		ref: containerRef
-	}), children));
-});
-RemoveScroll.defaultProps = {
-	enabled: true,
-	removeScrollBar: true,
-	inert: false
-};
-RemoveScroll.classNames = {
-	fullWidth: fullWidthClassName,
-	zeroRight: zeroRightClassName
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/get-nonce@1.0.1/node_modules/get-nonce/dist/es2015/index.js
-var currentNonce;
-var getNonce = function() {
-	if (currentNonce) return currentNonce;
-	if (typeof __webpack_nonce__ !== "undefined") return __webpack_nonce__;
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-style-singleton@2.2.3_@types+react@19.2.14_react@19.2.4/node_modules/react-style-singleton/dist/es2015/singleton.js
-function makeStyleTag() {
-	if (!document) return null;
-	var tag = document.createElement("style");
-	tag.type = "text/css";
-	var nonce = getNonce();
-	if (nonce) tag.setAttribute("nonce", nonce);
-	return tag;
-}
-function injectStyles(tag, css) {
-	if (tag.styleSheet) tag.styleSheet.cssText = css;
-	else tag.appendChild(document.createTextNode(css));
-}
-function insertStyleTag(tag) {
-	(document.head || document.getElementsByTagName("head")[0]).appendChild(tag);
-}
-var stylesheetSingleton = function() {
-	var counter = 0;
-	var stylesheet = null;
-	return {
-		add: function(style) {
-			if (counter == 0) {
-				if (stylesheet = makeStyleTag()) {
-					injectStyles(stylesheet, style);
-					insertStyleTag(stylesheet);
-				}
-			}
-			counter++;
-		},
-		remove: function() {
-			counter--;
-			if (!counter && stylesheet) {
-				stylesheet.parentNode && stylesheet.parentNode.removeChild(stylesheet);
-				stylesheet = null;
-			}
-		}
-	};
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-style-singleton@2.2.3_@types+react@19.2.14_react@19.2.4/node_modules/react-style-singleton/dist/es2015/hook.js
-/**
-* creates a hook to control style singleton
-* @see {@link styleSingleton} for a safer component version
-* @example
-* ```tsx
-* const useStyle = styleHookSingleton();
-* ///
-* useStyle('body { overflow: hidden}');
-*/
-var styleHookSingleton = function() {
-	var sheet = stylesheetSingleton();
-	return function(styles, isDynamic) {
-		import_react.useEffect(function() {
-			sheet.add(styles);
-			return function() {
-				sheet.remove();
-			};
-		}, [styles && isDynamic]);
-	};
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-style-singleton@2.2.3_@types+react@19.2.14_react@19.2.4/node_modules/react-style-singleton/dist/es2015/component.js
-/**
-* create a Component to add styles on demand
-* - styles are added when first instance is mounted
-* - styles are removed when the last instance is unmounted
-* - changing styles in runtime does nothing unless dynamic is set. But with multiple components that can lead to the undefined behavior
-*/
-var styleSingleton = function() {
-	var useStyle = styleHookSingleton();
-	var Sheet = function(_a) {
-		var styles = _a.styles, dynamic = _a.dynamic;
-		useStyle(styles, dynamic);
-		return null;
-	};
-	return Sheet;
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll-bar@2.3.8_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll-bar/dist/es2015/utils.js
-var zeroGap = {
-	left: 0,
-	top: 0,
-	right: 0,
-	gap: 0
-};
-var parse = function(x) {
-	return parseInt(x || "", 10) || 0;
-};
-var getOffset = function(gapMode) {
-	var cs = window.getComputedStyle(document.body);
-	var left = cs[gapMode === "padding" ? "paddingLeft" : "marginLeft"];
-	var top = cs[gapMode === "padding" ? "paddingTop" : "marginTop"];
-	var right = cs[gapMode === "padding" ? "paddingRight" : "marginRight"];
-	return [
-		parse(left),
-		parse(top),
-		parse(right)
-	];
-};
-var getGapWidth = function(gapMode) {
-	if (gapMode === void 0) gapMode = "margin";
-	if (typeof window === "undefined") return zeroGap;
-	var offsets = getOffset(gapMode);
-	var documentWidth = document.documentElement.clientWidth;
-	var windowWidth = window.innerWidth;
-	return {
-		left: offsets[0],
-		top: offsets[1],
-		right: offsets[2],
-		gap: Math.max(0, windowWidth - documentWidth + offsets[2] - offsets[0])
-	};
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll-bar@2.3.8_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll-bar/dist/es2015/component.js
-var Style = styleSingleton();
-var lockAttribute = "data-scroll-locked";
-var getStyles = function(_a, allowRelative, gapMode, important) {
-	var left = _a.left, top = _a.top, right = _a.right, gap = _a.gap;
-	if (gapMode === void 0) gapMode = "margin";
-	return "\n  .".concat(noScrollbarsClassName, " {\n   overflow: hidden ").concat(important, ";\n   padding-right: ").concat(gap, "px ").concat(important, ";\n  }\n  body[").concat(lockAttribute, "] {\n    overflow: hidden ").concat(important, ";\n    overscroll-behavior: contain;\n    ").concat([
-		allowRelative && "position: relative ".concat(important, ";"),
-		gapMode === "margin" && "\n    padding-left: ".concat(left, "px;\n    padding-top: ").concat(top, "px;\n    padding-right: ").concat(right, "px;\n    margin-left:0;\n    margin-top:0;\n    margin-right: ").concat(gap, "px ").concat(important, ";\n    "),
-		gapMode === "padding" && "padding-right: ".concat(gap, "px ").concat(important, ";")
-	].filter(Boolean).join(""), "\n  }\n  \n  .").concat(zeroRightClassName, " {\n    right: ").concat(gap, "px ").concat(important, ";\n  }\n  \n  .").concat(fullWidthClassName, " {\n    margin-right: ").concat(gap, "px ").concat(important, ";\n  }\n  \n  .").concat(zeroRightClassName, " .").concat(zeroRightClassName, " {\n    right: 0 ").concat(important, ";\n  }\n  \n  .").concat(fullWidthClassName, " .").concat(fullWidthClassName, " {\n    margin-right: 0 ").concat(important, ";\n  }\n  \n  body[").concat(lockAttribute, "] {\n    ").concat(removedBarSizeVariable, ": ").concat(gap, "px;\n  }\n");
-};
-var getCurrentUseCounter = function() {
-	var counter = parseInt(document.body.getAttribute("data-scroll-locked") || "0", 10);
-	return isFinite(counter) ? counter : 0;
-};
-var useLockAttribute = function() {
-	import_react.useEffect(function() {
-		document.body.setAttribute(lockAttribute, (getCurrentUseCounter() + 1).toString());
-		return function() {
-			var newCounter = getCurrentUseCounter() - 1;
-			if (newCounter <= 0) document.body.removeAttribute(lockAttribute);
-			else document.body.setAttribute(lockAttribute, newCounter.toString());
-		};
-	}, []);
-};
-/**
-* Removes page scrollbar and blocks page scroll when mounted
-*/
-var RemoveScrollBar = function(_a) {
-	var noRelative = _a.noRelative, noImportant = _a.noImportant, _b = _a.gapMode, gapMode = _b === void 0 ? "margin" : _b;
-	useLockAttribute();
-	var gap = import_react.useMemo(function() {
-		return getGapWidth(gapMode);
-	}, [gapMode]);
-	return import_react.createElement(Style, { styles: getStyles(gap, !noRelative, gapMode, !noImportant ? "!important" : "") });
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/aggresiveCapture.js
-var passiveSupported = false;
-if (typeof window !== "undefined") try {
-	var options = Object.defineProperty({}, "passive", { get: function() {
-		passiveSupported = true;
-		return true;
-	} });
-	window.addEventListener("test", options, options);
-	window.removeEventListener("test", options, options);
-} catch (err) {
-	passiveSupported = false;
-}
-var nonPassive = passiveSupported ? { passive: false } : false;
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/handleScroll.js
-var alwaysContainsScroll = function(node) {
-	return node.tagName === "TEXTAREA";
-};
-var elementCanBeScrolled = function(node, overflow) {
-	if (!(node instanceof Element)) return false;
-	var styles = window.getComputedStyle(node);
-	return styles[overflow] !== "hidden" && !(styles.overflowY === styles.overflowX && !alwaysContainsScroll(node) && styles[overflow] === "visible");
-};
-var elementCouldBeVScrolled = function(node) {
-	return elementCanBeScrolled(node, "overflowY");
-};
-var elementCouldBeHScrolled = function(node) {
-	return elementCanBeScrolled(node, "overflowX");
-};
-var locationCouldBeScrolled = function(axis, node) {
-	var ownerDocument = node.ownerDocument;
-	var current = node;
-	do {
-		if (typeof ShadowRoot !== "undefined" && current instanceof ShadowRoot) current = current.host;
-		if (elementCouldBeScrolled(axis, current)) {
-			var _a = getScrollVariables(axis, current);
-			if (_a[1] > _a[2]) return true;
-		}
-		current = current.parentNode;
-	} while (current && current !== ownerDocument.body);
-	return false;
-};
-var getVScrollVariables = function(_a) {
-	return [
-		_a.scrollTop,
-		_a.scrollHeight,
-		_a.clientHeight
-	];
-};
-var getHScrollVariables = function(_a) {
-	return [
-		_a.scrollLeft,
-		_a.scrollWidth,
-		_a.clientWidth
-	];
-};
-var elementCouldBeScrolled = function(axis, node) {
-	return axis === "v" ? elementCouldBeVScrolled(node) : elementCouldBeHScrolled(node);
-};
-var getScrollVariables = function(axis, node) {
-	return axis === "v" ? getVScrollVariables(node) : getHScrollVariables(node);
-};
-var getDirectionFactor = function(axis, direction) {
-	/**
-	* If the element's direction is rtl (right-to-left), then scrollLeft is 0 when the scrollbar is at its rightmost position,
-	* and then increasingly negative as you scroll towards the end of the content.
-	* @see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollLeft
-	*/
-	return axis === "h" && direction === "rtl" ? -1 : 1;
-};
-var handleScroll = function(axis, endTarget, event, sourceDelta, noOverscroll) {
-	var directionFactor = getDirectionFactor(axis, window.getComputedStyle(endTarget).direction);
-	var delta = directionFactor * sourceDelta;
-	var target = event.target;
-	var targetInLock = endTarget.contains(target);
-	var shouldCancelScroll = false;
-	var isDeltaPositive = delta > 0;
-	var availableScroll = 0;
-	var availableScrollTop = 0;
-	do {
-		if (!target) break;
-		var _a = getScrollVariables(axis, target), position = _a[0];
-		var elementScroll = _a[1] - _a[2] - directionFactor * position;
-		if (position || elementScroll) {
-			if (elementCouldBeScrolled(axis, target)) {
-				availableScroll += elementScroll;
-				availableScrollTop += position;
-			}
-		}
-		var parent_1 = target.parentNode;
-		target = parent_1 && parent_1.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? parent_1.host : parent_1;
-	} while (!targetInLock && target !== document.body || targetInLock && (endTarget.contains(target) || endTarget === target));
-	if (isDeltaPositive && (noOverscroll && Math.abs(availableScroll) < 1 || !noOverscroll && delta > availableScroll)) shouldCancelScroll = true;
-	else if (!isDeltaPositive && (noOverscroll && Math.abs(availableScrollTop) < 1 || !noOverscroll && -delta > availableScrollTop)) shouldCancelScroll = true;
-	return shouldCancelScroll;
-};
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/SideEffect.js
-var getTouchXY = function(event) {
-	return "changedTouches" in event ? [event.changedTouches[0].clientX, event.changedTouches[0].clientY] : [0, 0];
-};
-var getDeltaXY = function(event) {
-	return [event.deltaX, event.deltaY];
-};
-var extractRef = function(ref) {
-	return ref && "current" in ref ? ref.current : ref;
-};
-var deltaCompare = function(x, y) {
-	return x[0] === y[0] && x[1] === y[1];
-};
-var generateStyle = function(id) {
-	return "\n  .block-interactivity-".concat(id, " {pointer-events: none;}\n  .allow-interactivity-").concat(id, " {pointer-events: all;}\n");
-};
-var idCounter = 0;
-var lockStack = [];
-function RemoveScrollSideCar(props) {
-	var shouldPreventQueue = import_react.useRef([]);
-	var touchStartRef = import_react.useRef([0, 0]);
-	var activeAxis = import_react.useRef();
-	var id = import_react.useState(idCounter++)[0];
-	var Style = import_react.useState(styleSingleton)[0];
-	var lastProps = import_react.useRef(props);
-	import_react.useEffect(function() {
-		lastProps.current = props;
-	}, [props]);
-	import_react.useEffect(function() {
-		if (props.inert) {
-			document.body.classList.add("block-interactivity-".concat(id));
-			var allow_1 = __spreadArray([props.lockRef.current], (props.shards || []).map(extractRef), true).filter(Boolean);
-			allow_1.forEach(function(el) {
-				return el.classList.add("allow-interactivity-".concat(id));
-			});
-			return function() {
-				document.body.classList.remove("block-interactivity-".concat(id));
-				allow_1.forEach(function(el) {
-					return el.classList.remove("allow-interactivity-".concat(id));
-				});
-			};
-		}
-	}, [
-		props.inert,
-		props.lockRef.current,
-		props.shards
-	]);
-	var shouldCancelEvent = import_react.useCallback(function(event, parent) {
-		if ("touches" in event && event.touches.length === 2 || event.type === "wheel" && event.ctrlKey) return !lastProps.current.allowPinchZoom;
-		var touch = getTouchXY(event);
-		var touchStart = touchStartRef.current;
-		var deltaX = "deltaX" in event ? event.deltaX : touchStart[0] - touch[0];
-		var deltaY = "deltaY" in event ? event.deltaY : touchStart[1] - touch[1];
-		var currentAxis;
-		var target = event.target;
-		var moveDirection = Math.abs(deltaX) > Math.abs(deltaY) ? "h" : "v";
-		if ("touches" in event && moveDirection === "h" && target.type === "range") return false;
-		var selection = window.getSelection();
-		var anchorNode = selection && selection.anchorNode;
-		if (anchorNode ? anchorNode === target || anchorNode.contains(target) : false) return false;
-		var canBeScrolledInMainDirection = locationCouldBeScrolled(moveDirection, target);
-		if (!canBeScrolledInMainDirection) return true;
-		if (canBeScrolledInMainDirection) currentAxis = moveDirection;
-		else {
-			currentAxis = moveDirection === "v" ? "h" : "v";
-			canBeScrolledInMainDirection = locationCouldBeScrolled(moveDirection, target);
-		}
-		if (!canBeScrolledInMainDirection) return false;
-		if (!activeAxis.current && "changedTouches" in event && (deltaX || deltaY)) activeAxis.current = currentAxis;
-		if (!currentAxis) return true;
-		var cancelingAxis = activeAxis.current || currentAxis;
-		return handleScroll(cancelingAxis, parent, event, cancelingAxis === "h" ? deltaX : deltaY, true);
-	}, []);
-	var shouldPrevent = import_react.useCallback(function(_event) {
-		var event = _event;
-		if (!lockStack.length || lockStack[lockStack.length - 1] !== Style) return;
-		var delta = "deltaY" in event ? getDeltaXY(event) : getTouchXY(event);
-		var sourceEvent = shouldPreventQueue.current.filter(function(e) {
-			return e.name === event.type && (e.target === event.target || event.target === e.shadowParent) && deltaCompare(e.delta, delta);
-		})[0];
-		if (sourceEvent && sourceEvent.should) {
-			if (event.cancelable) event.preventDefault();
-			return;
-		}
-		if (!sourceEvent) {
-			var shardNodes = (lastProps.current.shards || []).map(extractRef).filter(Boolean).filter(function(node) {
-				return node.contains(event.target);
-			});
-			if (shardNodes.length > 0 ? shouldCancelEvent(event, shardNodes[0]) : !lastProps.current.noIsolation) {
-				if (event.cancelable) event.preventDefault();
-			}
-		}
-	}, []);
-	var shouldCancel = import_react.useCallback(function(name, delta, target, should) {
-		var event = {
-			name,
-			delta,
-			target,
-			should,
-			shadowParent: getOutermostShadowParent(target)
-		};
-		shouldPreventQueue.current.push(event);
-		setTimeout(function() {
-			shouldPreventQueue.current = shouldPreventQueue.current.filter(function(e) {
-				return e !== event;
-			});
-		}, 1);
-	}, []);
-	var scrollTouchStart = import_react.useCallback(function(event) {
-		touchStartRef.current = getTouchXY(event);
-		activeAxis.current = void 0;
-	}, []);
-	var scrollWheel = import_react.useCallback(function(event) {
-		shouldCancel(event.type, getDeltaXY(event), event.target, shouldCancelEvent(event, props.lockRef.current));
-	}, []);
-	var scrollTouchMove = import_react.useCallback(function(event) {
-		shouldCancel(event.type, getTouchXY(event), event.target, shouldCancelEvent(event, props.lockRef.current));
-	}, []);
-	import_react.useEffect(function() {
-		lockStack.push(Style);
-		props.setCallbacks({
-			onScrollCapture: scrollWheel,
-			onWheelCapture: scrollWheel,
-			onTouchMoveCapture: scrollTouchMove
-		});
-		document.addEventListener("wheel", shouldPrevent, nonPassive);
-		document.addEventListener("touchmove", shouldPrevent, nonPassive);
-		document.addEventListener("touchstart", scrollTouchStart, nonPassive);
-		return function() {
-			lockStack = lockStack.filter(function(inst) {
-				return inst !== Style;
-			});
-			document.removeEventListener("wheel", shouldPrevent, nonPassive);
-			document.removeEventListener("touchmove", shouldPrevent, nonPassive);
-			document.removeEventListener("touchstart", scrollTouchStart, nonPassive);
-		};
-	}, []);
-	var removeScrollBar = props.removeScrollBar, inert = props.inert;
-	return import_react.createElement(import_react.Fragment, null, inert ? import_react.createElement(Style, { styles: generateStyle(id) }) : null, removeScrollBar ? import_react.createElement(RemoveScrollBar, {
-		noRelative: props.noRelative,
-		gapMode: props.gapMode
-	}) : null);
-}
-function getOutermostShadowParent(node) {
-	var shadowParent = null;
-	while (node !== null) {
-		if (node instanceof ShadowRoot) {
-			shadowParent = node.host;
-			node = node.host;
-		}
-		node = node.parentNode;
-	}
-	return shadowParent;
-}
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/sidecar.js
-var sidecar_default = exportSidecar(effectCar, RemoveScrollSideCar);
-//#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/react-remove-scroll@2.7.2_@types+react@19.2.14_react@19.2.4/node_modules/react-remove-scroll/dist/es2015/Combination.js
-var ReactRemoveScroll = import_react.forwardRef(function(props, ref) {
-	return import_react.createElement(RemoveScroll, __assign({}, props, {
-		ref,
-		sideCar: sidecar_default
-	}));
-});
-ReactRemoveScroll.classNames = RemoveScroll.classNames;
 //#endregion
 //#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-select@2.2.6_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react_53894a32562cb9eeb6aef8b357a4f4e3/node_modules/@radix-ui/react-select/dist/index.mjs
 var OPEN_KEYS = [
@@ -52215,7 +52780,7 @@ var Select$1 = (props) => {
 	const isFormControl = trigger ? form || !!trigger.closest("form") : true;
 	const [nativeOptionsSet, setNativeOptionsSet] = import_react.useState(/* @__PURE__ */ new Set());
 	const nativeSelectKey = Array.from(nativeOptionsSet).map((option) => option.props.value).join(";");
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$3, {
 		...popperScope,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectProvider, {
 			required,
@@ -52362,14 +52927,14 @@ var SelectIcon = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 SelectIcon.displayName = ICON_NAME;
-var PORTAL_NAME$1 = "SelectPortal";
+var PORTAL_NAME = "SelectPortal";
 var SelectPortal = (props) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, {
 		asChild: true,
 		...props
 	});
 };
-SelectPortal.displayName = PORTAL_NAME$1;
+SelectPortal.displayName = PORTAL_NAME;
 var CONTENT_NAME$1 = "SelectContent";
 var SelectContent$1 = import_react.forwardRef((props, forwardedRef) => {
 	const context = useSelectContext(CONTENT_NAME$1, props.__scopeSelect);
@@ -52396,7 +52961,7 @@ SelectContent$1.displayName = CONTENT_NAME$1;
 var CONTENT_MARGIN = 10;
 var [SelectContentProvider, useSelectContentContext] = createSelectContext(CONTENT_NAME$1);
 var CONTENT_IMPL_NAME = "SelectContentImpl";
-var Slot$1 = /* @__PURE__ */ createSlot$1("SelectContent.RemoveScroll");
+var Slot = /* @__PURE__ */ createSlot$1("SelectContent.RemoveScroll");
 var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, position = "item-aligned", onCloseAutoFocus, onEscapeKeyDown, onPointerDownOutside, side, sideOffset, align, alignOffset, arrowPadding, collisionBoundary, collisionPadding, sticky, hideWhenDetached, avoidCollisions, ...contentProps } = props;
 	const context = useSelectContext(CONTENT_NAME$1, __scopeSelect);
@@ -52523,7 +53088,7 @@ var SelectContentImpl = import_react.forwardRef((props, forwardedRef) => {
 		isPositioned,
 		searchRef,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReactRemoveScroll, {
-			as: Slot$1,
+			as: Slot,
 			allowPinchZoom: true,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
 				asChild: true,
@@ -52716,7 +53281,7 @@ var POPPER_POSITION_NAME = "SelectPopperPosition";
 var SelectPopperPosition = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeSelect, align = "start", collisionPadding = CONTENT_MARGIN, ...popperProps } = props;
 	const popperScope = usePopperScope(__scopeSelect);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$1, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content$2, {
 		...popperScope,
 		...popperProps,
 		ref: forwardedRef,
@@ -53114,11 +53679,11 @@ function findNextItem(items, search, currentItem) {
 function wrapArray$1(array, startIndex) {
 	return array.map((_, index) => array[(startIndex + index) % array.length]);
 }
-var Root2$1 = Select$1;
+var Root2$2 = Select$1;
 var Trigger$1 = SelectTrigger$1;
 var Value = SelectValue$1;
 var Icon = SelectIcon;
-var Portal$1 = SelectPortal;
+var Portal = SelectPortal;
 var Content2 = SelectContent$1;
 var Viewport = SelectViewport;
 var Label$2 = SelectLabel$1;
@@ -53130,7 +53695,7 @@ var ScrollDownButton = SelectScrollDownButton$1;
 var Separator = SelectSeparator$1;
 //#endregion
 //#region src/components/ui/select.tsx
-var Select = Root2$1;
+var Select = Root2$2;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger$1, {
 	"data-uid": "src/components/ui/select.tsx:18:3",
@@ -53176,7 +53741,7 @@ var SelectScrollDownButton = import_react.forwardRef(({ className, ...props }, r
 	})
 }));
 SelectScrollDownButton.displayName = ScrollDownButton.displayName;
-var SelectContent = import_react.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, {
+var SelectContent = import_react.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal, {
 	"data-uid": "src/components/ui/select.tsx:66:3",
 	"data-prohibitions": "[editContent]",
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content2, {
@@ -53510,11 +54075,11 @@ function getInvalidValueError(propValue, componentName) {
 
 Defaulting to \`null\`.`;
 }
-var Root$3 = Progress$1;
+var Root$2 = Progress$1;
 var Indicator$1 = ProgressIndicator;
 //#endregion
 //#region src/components/ui/progress.tsx
-var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$3, {
+var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
 	"data-uid": "src/components/ui/progress.tsx:11:3",
 	"data-prohibitions": "[editContent]",
 	ref,
@@ -53527,7 +54092,7 @@ var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => 
 		style: { transform: `translateX(-${100 - (value || 0)}%)` }
 	})
 }));
-Progress.displayName = Root$3.displayName;
+Progress.displayName = Root$2.displayName;
 //#endregion
 //#region src/components/ui/input.tsx
 var Input = import_react.forwardRef(({ className, type, ...props }, ref) => {
@@ -53556,18 +54121,18 @@ var Label$1 = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 Label$1.displayName = NAME;
-var Root$2 = Label$1;
+var Root$1 = Label$1;
 //#endregion
 //#region src/components/ui/label.tsx
 var labelVariants = cva("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
-var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$2, {
+var Label = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
 	"data-uid": "src/components/ui/label.tsx:16:3",
 	"data-prohibitions": "[editContent]",
 	ref,
 	className: cn$1(labelVariants(), className),
 	...props
 }));
-Label.displayName = Root$2.displayName;
+Label.displayName = Root$1.displayName;
 //#endregion
 //#region src/components/form/Step1Identificador.tsx
 function Step1Identificador({ data, updateData }) {
@@ -53870,7 +54435,7 @@ function focusFirst(candidates, preventScroll = false) {
 function wrapArray(array, startIndex) {
 	return array.map((_, index) => array[(startIndex + index) % array.length]);
 }
-var Root$1 = RovingFocusGroup;
+var Root = RovingFocusGroup;
 var Item = RovingFocusGroupItem;
 //#endregion
 //#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-radio-group@1.3.8_@types+react-dom@19.2.3_@types+react@19.2.14__@types+_cc2a70da647cefa06e7f90fd9b481f08/node_modules/@radix-ui/react-radio-group/dist/index.mjs
@@ -53891,7 +54456,7 @@ var Radio = import_react.forwardRef((props, forwardedRef) => {
 			type: "button",
 			role: "radio",
 			"aria-checked": checked,
-			"data-state": getState$1(checked),
+			"data-state": getState(checked),
 			"data-disabled": disabled ? "" : void 0,
 			disabled,
 			value,
@@ -53925,7 +54490,7 @@ var RadioIndicator = import_react.forwardRef((props, forwardedRef) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
 		present: forceMount || context.checked,
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.span, {
-			"data-state": getState$1(context.checked),
+			"data-state": getState(context.checked),
 			"data-disabled": context.disabled ? "" : void 0,
 			...indicatorProps,
 			ref: forwardedRef
@@ -53972,7 +54537,7 @@ var RadioBubbleInput = import_react.forwardRef(({ __scopeRadio, control, checked
 	});
 });
 RadioBubbleInput.displayName = BUBBLE_INPUT_NAME;
-function getState$1(checked) {
+function getState(checked) {
 	return checked ? "checked" : "unchecked";
 }
 var ARROW_KEYS = [
@@ -53983,12 +54548,12 @@ var ARROW_KEYS = [
 ];
 var RADIO_GROUP_NAME = "RadioGroup";
 var [createRadioGroupContext, createRadioGroupScope] = createContextScope$1(RADIO_GROUP_NAME, [createRovingFocusGroupScope, createRadioScope]);
-var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var useRovingFocusGroupScope$1 = createRovingFocusGroupScope();
 var useRadioScope = createRadioScope();
 var [RadioGroupProvider, useRadioGroupContext] = createRadioGroupContext(RADIO_GROUP_NAME);
 var RadioGroup$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRadioGroup, name, defaultValue, value: valueProp, required = false, disabled = false, orientation, dir, loop = true, onValueChange, ...groupProps } = props;
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeRadioGroup);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeRadioGroup);
 	const direction = useDirection(dir);
 	const [value, setValue] = useControllableState({
 		prop: valueProp,
@@ -54003,7 +54568,7 @@ var RadioGroup$1 = import_react.forwardRef((props, forwardedRef) => {
 		disabled,
 		value,
 		onValueChange: setValue,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root$1, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
 			asChild: true,
 			...rovingFocusGroupScope,
 			orientation,
@@ -54027,7 +54592,7 @@ var RadioGroupItem$1 = import_react.forwardRef((props, forwardedRef) => {
 	const { __scopeRadioGroup, disabled, ...itemProps } = props;
 	const context = useRadioGroupContext(ITEM_NAME, __scopeRadioGroup);
 	const isDisabled = context.disabled || disabled;
-	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeRadioGroup);
+	const rovingFocusGroupScope = useRovingFocusGroupScope$1(__scopeRadioGroup);
 	const radioScope = useRadioScope(__scopeRadioGroup);
 	const ref = import_react.useRef(null);
 	const composedRefs = useComposedRefs(forwardedRef, ref);
@@ -54079,13 +54644,13 @@ var RadioGroupIndicator = import_react.forwardRef((props, forwardedRef) => {
 	});
 });
 RadioGroupIndicator.displayName = INDICATOR_NAME2;
-var Root2 = RadioGroup$1;
+var Root2$1 = RadioGroup$1;
 var Item2 = RadioGroupItem$1;
 var Indicator = RadioGroupIndicator;
 //#endregion
 //#region src/components/ui/radio-group.tsx
 var RadioGroup = import_react.forwardRef(({ className, ...props }, ref) => {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2, {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root2$1, {
 		"data-uid": "src/components/ui/radio-group.tsx:12:10",
 		"data-prohibitions": "[editContent]",
 		className: cn$1("grid gap-2", className),
@@ -54093,7 +54658,7 @@ var RadioGroup = import_react.forwardRef(({ className, ...props }, ref) => {
 		ref
 	});
 });
-RadioGroup.displayName = Root2.displayName;
+RadioGroup.displayName = Root2$1.displayName;
 var RadioGroupItem = import_react.forwardRef(({ className, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item2, {
 		"data-uid": "src/components/ui/radio-group.tsx:21:5",
@@ -54116,72 +54681,37 @@ var RadioGroupItem = import_react.forwardRef(({ className, ...props }, ref) => {
 RadioGroupItem.displayName = Item2.displayName;
 //#endregion
 //#region src/components/form/Step2Tipo.tsx
-var TYPES = [
-	{
-		value: "Condição de risco",
-		label: "Condição de Risco",
-		desc: "Algo a corrigir no ambiente",
-		icon: TriangleAlert,
-		color: "text-orange-500"
-	},
-	{
-		value: "Condição segura",
-		label: "Condição Segura",
-		desc: "Boas práticas observadas",
-		icon: CircleCheckBig,
-		color: "text-emerald-500"
-	},
-	{
-		value: "Comportamento de risco",
-		label: "Comport. de Risco",
-		desc: "Ação insegura de alguém",
-		icon: Flame,
-		color: "text-red-500"
-	},
-	{
-		value: "Comportamento seguro",
-		label: "Comport. Seguro",
-		desc: "Ação correta e segura",
-		icon: ShieldCheck,
-		color: "text-emerald-600"
-	},
-	{
-		value: "Acidente",
-		label: "Acidente",
-		desc: "Houve lesão ou dano",
-		icon: OctagonX,
-		color: "text-red-700"
-	},
-	{
-		value: "Quase acidente",
-		label: "Quase Acidente",
-		desc: "Quase ocorreu um dano",
-		icon: Activity,
-		color: "text-amber-500"
-	}
-];
 function Step2Tipo({ data, updateData }) {
+	const { settings } = useMainStore();
+	const getIcon = (val) => {
+		const v = val.toLowerCase();
+		if (v.includes("condição de risco")) return TriangleAlert;
+		if (v.includes("condição segura")) return CircleCheckBig;
+		if (v.includes("comportamento de risco")) return Flame;
+		if (v.includes("comportamento seguro")) return ShieldCheck;
+		return Activity;
+	};
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/form/Step2Tipo.tsx:59:5",
+		"data-uid": "src/components/form/Step2Tipo.tsx:24:5",
 		"data-prohibitions": "[editContent]",
 		className: "space-y-4 animate-slide-in-right",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			"data-uid": "src/components/form/Step2Tipo.tsx:60:7",
+			"data-uid": "src/components/form/Step2Tipo.tsx:25:7",
 			"data-prohibitions": "[]",
 			className: "space-y-2",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-				"data-uid": "src/components/form/Step2Tipo.tsx:61:9",
+				"data-uid": "src/components/form/Step2Tipo.tsx:26:9",
 				"data-prohibitions": "[]",
 				className: "text-lg font-medium",
 				children: "Tipo de Observação"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				"data-uid": "src/components/form/Step2Tipo.tsx:62:9",
+				"data-uid": "src/components/form/Step2Tipo.tsx:27:9",
 				"data-prohibitions": "[]",
 				className: "text-sm text-slate-500",
 				children: "Selecione a categoria principal do seu relato."
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroup, {
-			"data-uid": "src/components/form/Step2Tipo.tsx:65:7",
+			"data-uid": "src/components/form/Step2Tipo.tsx:30:7",
 			"data-prohibitions": "[editContent]",
 			value: data.type,
 			onValueChange: (val) => updateData({
@@ -54189,38 +54719,38 @@ function Step2Tipo({ data, updateData }) {
 				detail: ""
 			}),
 			className: "grid grid-cols-1 md:grid-cols-2 gap-4",
-			children: TYPES.map((t) => {
-				const Icon = t.icon;
+			children: settings.observationTypes.map((t) => {
+				const Icon = getIcon(t.value);
 				const isActive = data.type === t.value;
 				return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/form/Step2Tipo.tsx:74:13",
+					"data-uid": "src/components/form/Step2Tipo.tsx:39:13",
 					"data-prohibitions": "[editContent]",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RadioGroupItem, {
-						"data-uid": "src/components/form/Step2Tipo.tsx:75:15",
+						"data-uid": "src/components/form/Step2Tipo.tsx:40:15",
 						"data-prohibitions": "[editContent]",
 						value: t.value,
 						id: t.value,
 						className: "peer sr-only"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Label, {
-						"data-uid": "src/components/form/Step2Tipo.tsx:76:15",
+						"data-uid": "src/components/form/Step2Tipo.tsx:41:15",
 						"data-prohibitions": "[editContent]",
 						htmlFor: t.value,
 						className: `flex items-start gap-4 rounded-lg border-2 p-4 cursor-pointer transition-all hover:bg-slate-50 ${isActive ? "border-primary bg-primary/5" : "border-muted"}`,
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-							"data-uid": "src/components/form/Step2Tipo.tsx:82:17",
+							"data-uid": "src/components/form/Step2Tipo.tsx:47:17",
 							"data-prohibitions": "[editContent]",
 							className: `w-6 h-6 mt-0.5 ${t.color}`
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							"data-uid": "src/components/form/Step2Tipo.tsx:83:17",
+							"data-uid": "src/components/form/Step2Tipo.tsx:48:17",
 							"data-prohibitions": "[editContent]",
 							className: "space-y-1",
 							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								"data-uid": "src/components/form/Step2Tipo.tsx:84:19",
+								"data-uid": "src/components/form/Step2Tipo.tsx:49:19",
 								"data-prohibitions": "[editContent]",
 								className: "font-semibold text-slate-900",
 								children: t.label
 							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								"data-uid": "src/components/form/Step2Tipo.tsx:85:19",
+								"data-uid": "src/components/form/Step2Tipo.tsx:50:19",
 								"data-prohibitions": "[editContent]",
 								className: "text-xs text-slate-500 font-normal",
 								children: t.desc
@@ -54236,49 +54766,52 @@ function Step2Tipo({ data, updateData }) {
 //#region src/components/form/Step3Detalhamento.tsx
 function Step3Detalhamento({ data, updateData }) {
 	const [search, setSearch] = (0, import_react.useState)("");
-	const isCondition = data.type?.includes("Condição");
-	const isBehavior = data.type?.includes("Comportamento");
-	const isEvent = data.type === "Acidente" || data.type === "Quase acidente";
+	const { settings } = useMainStore();
+	const isCondition = data.type?.toLowerCase().includes("condição");
+	const isBehavior = data.type?.toLowerCase().includes("comportamento");
+	const isEvent = data.type?.toLowerCase().includes("acidente") || data.type === "Quase acidente";
 	const options = (0, import_react.useMemo)(() => {
 		let list = [];
-		if (isCondition) list = CONDITIONS;
-		else if (isBehavior) list = BEHAVIORS;
+		if (isCondition) list = settings.conditions;
+		else if (isBehavior) list = settings.behaviors;
 		if (!search) return list;
 		return list.filter((i) => i.toLowerCase().includes(search.toLowerCase()));
 	}, [
 		isCondition,
 		isBehavior,
-		search
+		search,
+		settings.conditions,
+		settings.behaviors
 	]);
 	if (isEvent) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/form/Step3Detalhamento.tsx:30:7",
+		"data-uid": "src/components/form/Step3Detalhamento.tsx:31:7",
 		"data-prohibitions": "[]",
 		className: "space-y-4 animate-slide-in-right",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			"data-uid": "src/components/form/Step3Detalhamento.tsx:31:9",
+			"data-uid": "src/components/form/Step3Detalhamento.tsx:32:9",
 			"data-prohibitions": "[]",
 			className: "space-y-2",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-				"data-uid": "src/components/form/Step3Detalhamento.tsx:32:11",
+				"data-uid": "src/components/form/Step3Detalhamento.tsx:33:11",
 				"data-prohibitions": "[]",
 				className: "text-lg font-medium",
 				children: "Classificação do Evento"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				"data-uid": "src/components/form/Step3Detalhamento.tsx:33:11",
+				"data-uid": "src/components/form/Step3Detalhamento.tsx:34:11",
 				"data-prohibitions": "[]",
 				className: "text-sm text-slate-500",
 				children: "Descreva brevemente a natureza do evento."
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			"data-uid": "src/components/form/Step3Detalhamento.tsx:35:9",
+			"data-uid": "src/components/form/Step3Detalhamento.tsx:36:9",
 			"data-prohibitions": "[]",
 			className: "grid gap-2",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-				"data-uid": "src/components/form/Step3Detalhamento.tsx:36:11",
+				"data-uid": "src/components/form/Step3Detalhamento.tsx:37:11",
 				"data-prohibitions": "[]",
 				children: "Natureza"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-				"data-uid": "src/components/form/Step3Detalhamento.tsx:37:11",
+				"data-uid": "src/components/form/Step3Detalhamento.tsx:38:11",
 				"data-prohibitions": "[editContent]",
 				value: data.detail,
 				onChange: (e) => updateData({ detail: e.target.value }),
@@ -54287,29 +54820,29 @@ function Step3Detalhamento({ data, updateData }) {
 		})]
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/form/Step3Detalhamento.tsx:48:5",
+		"data-uid": "src/components/form/Step3Detalhamento.tsx:49:5",
 		"data-prohibitions": "[editContent]",
 		className: "space-y-4 animate-slide-in-right",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				"data-uid": "src/components/form/Step3Detalhamento.tsx:49:7",
+				"data-uid": "src/components/form/Step3Detalhamento.tsx:50:7",
 				"data-prohibitions": "[editContent]",
 				className: "space-y-2",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-						"data-uid": "src/components/form/Step3Detalhamento.tsx:50:9",
+						"data-uid": "src/components/form/Step3Detalhamento.tsx:51:9",
 						"data-prohibitions": "[]",
 						className: "text-lg font-medium",
 						children: "Detalhamento Específico"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						"data-uid": "src/components/form/Step3Detalhamento.tsx:51:9",
+						"data-uid": "src/components/form/Step3Detalhamento.tsx:52:9",
 						"data-prohibitions": "[]",
 						className: "text-sm text-slate-500",
 						children: "Selecione o tipo específico da observação."
 					}),
 					isBehavior && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-						"data-uid": "src/components/form/Step3Detalhamento.tsx:53:11",
+						"data-uid": "src/components/form/Step3Detalhamento.tsx:54:11",
 						"data-prohibitions": "[]",
 						className: "text-xs text-red-500 font-medium bg-red-50 p-2 rounded border border-red-100",
 						children: "Importante: Não cite nomes de pessoas na descrição de comportamentos de risco."
@@ -54317,15 +54850,15 @@ function Step3Detalhamento({ data, updateData }) {
 				]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				"data-uid": "src/components/form/Step3Detalhamento.tsx:59:7",
+				"data-uid": "src/components/form/Step3Detalhamento.tsx:60:7",
 				"data-prohibitions": "[]",
 				className: "relative",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Search, {
-					"data-uid": "src/components/form/Step3Detalhamento.tsx:60:9",
+					"data-uid": "src/components/form/Step3Detalhamento.tsx:61:9",
 					"data-prohibitions": "[editContent]",
 					className: "absolute left-3 top-2.5 h-4 w-4 text-muted-foreground"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-					"data-uid": "src/components/form/Step3Detalhamento.tsx:61:9",
+					"data-uid": "src/components/form/Step3Detalhamento.tsx:62:9",
 					"data-prohibitions": "[editContent]",
 					placeholder: "Buscar...",
 					className: "pl-9",
@@ -54334,17 +54867,17 @@ function Step3Detalhamento({ data, updateData }) {
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				"data-uid": "src/components/form/Step3Detalhamento.tsx:69:7",
+				"data-uid": "src/components/form/Step3Detalhamento.tsx:70:7",
 				"data-prohibitions": "[editContent]",
 				className: "grid gap-2 max-h-[300px] overflow-y-auto pr-2",
 				children: [options.map((opt) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					"data-uid": "src/components/form/Step3Detalhamento.tsx:71:11",
+					"data-uid": "src/components/form/Step3Detalhamento.tsx:72:11",
 					"data-prohibitions": "[editContent]",
 					onClick: () => updateData({ detail: opt }),
 					className: `p-3 rounded-md border cursor-pointer transition-colors text-sm ${data.detail === opt ? "bg-primary text-primary-foreground border-primary" : "hover:bg-slate-50 bg-white"}`,
 					children: opt
 				}, opt)), options.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					"data-uid": "src/components/form/Step3Detalhamento.tsx:84:11",
+					"data-uid": "src/components/form/Step3Detalhamento.tsx:85:11",
 					"data-prohibitions": "[]",
 					className: "text-center py-4 text-slate-500 text-sm",
 					children: "Nenhum resultado encontrado."
@@ -54356,56 +54889,57 @@ function Step3Detalhamento({ data, updateData }) {
 //#endregion
 //#region src/components/form/Step4Contexto.tsx
 function Step4Contexto({ data, updateData }) {
+	const { settings } = useMainStore();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/form/Step4Contexto.tsx:19:5",
+		"data-uid": "src/components/form/Step4Contexto.tsx:21:5",
 		"data-prohibitions": "[editContent]",
 		className: "space-y-6 animate-slide-in-right",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			"data-uid": "src/components/form/Step4Contexto.tsx:20:7",
+			"data-uid": "src/components/form/Step4Contexto.tsx:22:7",
 			"data-prohibitions": "[]",
 			className: "space-y-2",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-				"data-uid": "src/components/form/Step4Contexto.tsx:21:9",
+				"data-uid": "src/components/form/Step4Contexto.tsx:23:9",
 				"data-prohibitions": "[]",
 				className: "text-lg font-medium",
 				children: "Contexto e Localização"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				"data-uid": "src/components/form/Step4Contexto.tsx:22:9",
+				"data-uid": "src/components/form/Step4Contexto.tsx:24:9",
 				"data-prohibitions": "[]",
 				className: "text-sm text-slate-500",
 				children: "Onde e quando a observação ocorreu?"
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			"data-uid": "src/components/form/Step4Contexto.tsx:25:7",
+			"data-uid": "src/components/form/Step4Contexto.tsx:27:7",
 			"data-prohibitions": "[editContent]",
 			className: "grid gap-4",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/form/Step4Contexto.tsx:26:9",
+					"data-uid": "src/components/form/Step4Contexto.tsx:28:9",
 					"data-prohibitions": "[editContent]",
 					className: "grid gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-						"data-uid": "src/components/form/Step4Contexto.tsx:27:11",
+						"data-uid": "src/components/form/Step4Contexto.tsx:29:11",
 						"data-prohibitions": "[]",
 						children: "Área/Setor"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-						"data-uid": "src/components/form/Step4Contexto.tsx:28:11",
+						"data-uid": "src/components/form/Step4Contexto.tsx:30:11",
 						"data-prohibitions": "[editContent]",
 						value: data.area,
 						onValueChange: (val) => updateData({ area: val }),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
-							"data-uid": "src/components/form/Step4Contexto.tsx:29:13",
+							"data-uid": "src/components/form/Step4Contexto.tsx:31:13",
 							"data-prohibitions": "[]",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {
-								"data-uid": "src/components/form/Step4Contexto.tsx:30:15",
+								"data-uid": "src/components/form/Step4Contexto.tsx:32:15",
 								"data-prohibitions": "[editContent]",
 								placeholder: "Selecione a área"
 							})
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, {
-							"data-uid": "src/components/form/Step4Contexto.tsx:32:13",
+							"data-uid": "src/components/form/Step4Contexto.tsx:34:13",
 							"data-prohibitions": "[editContent]",
-							children: AREAS.map((a) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								"data-uid": "src/components/form/Step4Contexto.tsx:34:17",
+							children: settings.areas.map((a) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
+								"data-uid": "src/components/form/Step4Contexto.tsx:36:17",
 								"data-prohibitions": "[editContent]",
 								value: a,
 								children: a
@@ -54414,36 +54948,36 @@ function Step4Contexto({ data, updateData }) {
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/form/Step4Contexto.tsx:42:9",
+					"data-uid": "src/components/form/Step4Contexto.tsx:44:9",
 					"data-prohibitions": "[editContent]",
 					className: "grid gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-						"data-uid": "src/components/form/Step4Contexto.tsx:43:11",
+						"data-uid": "src/components/form/Step4Contexto.tsx:45:11",
 						"data-prohibitions": "[]",
 						children: "Turno"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/form/Step4Contexto.tsx:44:11",
+						"data-uid": "src/components/form/Step4Contexto.tsx:46:11",
 						"data-prohibitions": "[editContent]",
-						className: "flex gap-3",
-						children: SHIFTS.map((shift) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							"data-uid": "src/components/form/Step4Contexto.tsx:46:15",
+						className: "flex gap-3 flex-wrap",
+						children: settings.shifts.map((shift) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							"data-uid": "src/components/form/Step4Contexto.tsx:48:15",
 							"data-prohibitions": "[editContent]",
 							onClick: () => updateData({ shift }),
-							className: `flex-1 text-center py-2 border rounded-md cursor-pointer transition-colors ${data.shift === shift ? "bg-primary text-primary-foreground border-primary font-medium" : "hover:bg-slate-50"}`,
+							className: `px-4 py-2 border rounded-md cursor-pointer transition-colors ${data.shift === shift ? "bg-primary text-primary-foreground border-primary font-medium" : "hover:bg-slate-50"}`,
 							children: shift
 						}, shift))
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/form/Step4Contexto.tsx:61:9",
+					"data-uid": "src/components/form/Step4Contexto.tsx:63:9",
 					"data-prohibitions": "[]",
 					className: "grid gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-						"data-uid": "src/components/form/Step4Contexto.tsx:62:11",
+						"data-uid": "src/components/form/Step4Contexto.tsx:64:11",
 						"data-prohibitions": "[]",
 						children: "ID Máquina/Equipamento (Opcional)"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-						"data-uid": "src/components/form/Step4Contexto.tsx:63:11",
+						"data-uid": "src/components/form/Step4Contexto.tsx:65:11",
 						"data-prohibitions": "[editContent]",
 						value: data.machine || "",
 						onChange: (e) => updateData({ machine: e.target.value }),
@@ -54468,73 +55002,68 @@ var Textarea = import_react.forwardRef(({ className, ...props }, ref) => {
 Textarea.displayName = "Textarea";
 //#endregion
 //#region src/components/form/Step5Avaliacao.tsx
-var RISKS = [
-	"Leve",
-	"Moderado",
-	"Grave",
-	"Muito Grave"
-];
 var RESOLUTIONS = [
 	"Feedback fornecido",
 	"Ação tomada",
 	"Ação necessária"
 ];
 function Step5Avaliacao({ data, updateData }) {
+	const { settings } = useMainStore();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-uid": "src/components/form/Step5Avaliacao.tsx:24:5",
+		"data-uid": "src/components/form/Step5Avaliacao.tsx:26:5",
 		"data-prohibitions": "[editContent]",
 		className: "space-y-6 animate-slide-in-right",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			"data-uid": "src/components/form/Step5Avaliacao.tsx:25:7",
+			"data-uid": "src/components/form/Step5Avaliacao.tsx:27:7",
 			"data-prohibitions": "[]",
 			className: "space-y-2",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-				"data-uid": "src/components/form/Step5Avaliacao.tsx:26:9",
+				"data-uid": "src/components/form/Step5Avaliacao.tsx:28:9",
 				"data-prohibitions": "[]",
 				className: "text-lg font-medium",
 				children: "Avaliação e Descrição"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				"data-uid": "src/components/form/Step5Avaliacao.tsx:27:9",
+				"data-uid": "src/components/form/Step5Avaliacao.tsx:29:9",
 				"data-prohibitions": "[]",
 				className: "text-sm text-slate-500",
 				children: "Detalhe o que ocorreu e as ações tomadas."
 			})]
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			"data-uid": "src/components/form/Step5Avaliacao.tsx:30:7",
+			"data-uid": "src/components/form/Step5Avaliacao.tsx:32:7",
 			"data-prohibitions": "[editContent]",
 			className: "grid gap-4",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/form/Step5Avaliacao.tsx:31:9",
+					"data-uid": "src/components/form/Step5Avaliacao.tsx:33:9",
 					"data-prohibitions": "[editContent]",
 					className: "grid gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-						"data-uid": "src/components/form/Step5Avaliacao.tsx:32:11",
+						"data-uid": "src/components/form/Step5Avaliacao.tsx:34:11",
 						"data-prohibitions": "[]",
 						children: "Grau de Risco Estimado"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						"data-uid": "src/components/form/Step5Avaliacao.tsx:33:11",
+						"data-uid": "src/components/form/Step5Avaliacao.tsx:35:11",
 						"data-prohibitions": "[editContent]",
 						className: "grid grid-cols-2 md:grid-cols-4 gap-2",
-						children: RISKS.map((r) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							"data-uid": "src/components/form/Step5Avaliacao.tsx:35:15",
+						children: settings.risks.map((r) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							"data-uid": "src/components/form/Step5Avaliacao.tsx:37:15",
 							"data-prohibitions": "[editContent]",
 							onClick: () => updateData({ riskLevel: r }),
-							className: `text-center py-2 border rounded-md cursor-pointer text-sm font-medium transition-all ${data.riskLevel === r ? RISK_COLORS[r] + " border-current shadow-sm" : "hover:bg-slate-50 text-slate-600"}`,
+							className: `text-center py-2 border rounded-md cursor-pointer text-sm font-medium transition-all ${data.riskLevel === r ? (RISK_COLORS[r] || "text-slate-800 bg-slate-200") + " border-current shadow-sm" : "hover:bg-slate-50 text-slate-600"}`,
 							children: r
 						}, r))
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/form/Step5Avaliacao.tsx:50:9",
+					"data-uid": "src/components/form/Step5Avaliacao.tsx:53:9",
 					"data-prohibitions": "[]",
 					className: "grid gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-						"data-uid": "src/components/form/Step5Avaliacao.tsx:51:11",
+						"data-uid": "src/components/form/Step5Avaliacao.tsx:54:11",
 						"data-prohibitions": "[]",
 						children: "Descrição Detalhada"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
-						"data-uid": "src/components/form/Step5Avaliacao.tsx:52:11",
+						"data-uid": "src/components/form/Step5Avaliacao.tsx:55:11",
 						"data-prohibitions": "[editContent]",
 						value: data.description,
 						onChange: (e) => updateData({ description: e.target.value }),
@@ -54543,31 +55072,31 @@ function Step5Avaliacao({ data, updateData }) {
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/form/Step5Avaliacao.tsx:60:9",
+					"data-uid": "src/components/form/Step5Avaliacao.tsx:63:9",
 					"data-prohibitions": "[editContent]",
 					className: "grid gap-2",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-						"data-uid": "src/components/form/Step5Avaliacao.tsx:61:11",
+						"data-uid": "src/components/form/Step5Avaliacao.tsx:64:11",
 						"data-prohibitions": "[]",
 						children: "Tipo de Resolução"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-						"data-uid": "src/components/form/Step5Avaliacao.tsx:62:11",
+						"data-uid": "src/components/form/Step5Avaliacao.tsx:65:11",
 						"data-prohibitions": "[editContent]",
 						value: data.resolutionType,
 						onValueChange: (val) => updateData({ resolutionType: val }),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
-							"data-uid": "src/components/form/Step5Avaliacao.tsx:66:13",
+							"data-uid": "src/components/form/Step5Avaliacao.tsx:69:13",
 							"data-prohibitions": "[]",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, {
-								"data-uid": "src/components/form/Step5Avaliacao.tsx:67:15",
+								"data-uid": "src/components/form/Step5Avaliacao.tsx:70:15",
 								"data-prohibitions": "[editContent]",
 								placeholder: "Selecione..."
 							})
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectContent, {
-							"data-uid": "src/components/form/Step5Avaliacao.tsx:69:13",
+							"data-uid": "src/components/form/Step5Avaliacao.tsx:72:13",
 							"data-prohibitions": "[editContent]",
 							children: RESOLUTIONS.map((r) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
-								"data-uid": "src/components/form/Step5Avaliacao.tsx:71:17",
+								"data-uid": "src/components/form/Step5Avaliacao.tsx:74:17",
 								"data-prohibitions": "[editContent]",
 								value: r,
 								children: r
@@ -54576,15 +55105,15 @@ function Step5Avaliacao({ data, updateData }) {
 					})]
 				}),
 				data.resolutionType && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					"data-uid": "src/components/form/Step5Avaliacao.tsx:80:11",
+					"data-uid": "src/components/form/Step5Avaliacao.tsx:83:11",
 					"data-prohibitions": "[]",
 					className: "grid gap-2 animate-fade-in",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-						"data-uid": "src/components/form/Step5Avaliacao.tsx:81:13",
+						"data-uid": "src/components/form/Step5Avaliacao.tsx:84:13",
 						"data-prohibitions": "[]",
 						children: "Ação Tomada / Feedback / Ação Necessária"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-						"data-uid": "src/components/form/Step5Avaliacao.tsx:82:13",
+						"data-uid": "src/components/form/Step5Avaliacao.tsx:85:13",
 						"data-prohibitions": "[editContent]",
 						value: data.resolutionAction || "",
 						onChange: (e) => updateData({ resolutionAction: e.target.value }),
@@ -54609,7 +55138,7 @@ var INITIAL_DATA = {
 	area: "",
 	shift: "",
 	machine: "",
-	riskLevel: "Leve",
+	riskLevel: "",
 	description: "",
 	resolutionType: void 0,
 	resolutionAction: ""
@@ -54654,30 +55183,45 @@ function NovaObservacao() {
 		if (step === 5) return data.description.length > 5 && !!data.resolutionType;
 		return false;
 	};
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		"data-uid": "src/pages/NovaObservacao.tsx:80:5",
 		"data-prohibitions": "[editContent]",
 		className: "w-full max-w-2xl mx-auto py-4",
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 			"data-uid": "src/pages/NovaObservacao.tsx:81:7",
+			"data-prohibitions": "[]",
+			className: "mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg shadow-sm animate-fade-in",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				"data-uid": "src/pages/NovaObservacao.tsx:82:9",
+				"data-prohibitions": "[]",
+				className: "text-sm text-blue-900 leading-relaxed",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+					"data-uid": "src/pages/NovaObservacao.tsx:83:11",
+					"data-prohibitions": "[]",
+					className: "block mb-1 text-blue-950",
+					children: "Instruções de Uso:"
+				}), "Utilize este formulário para registrar observações de Segurança, Saúde e Meio Ambiente com objetivo de corrigir ou melhorar condições de risco, alertar sobre comportamentos de risco ou reforçar comportamentos seguros. Situações relacionadas a Acidentes e Quase acidentes devem ser comunicadas diretamente à Supervisão ou Segurança do Trabalho."]
+			})
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+			"data-uid": "src/pages/NovaObservacao.tsx:91:7",
 			"data-prohibitions": "[editContent]",
 			className: "shadow-elevation border-0 md:border",
 			children: [
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, {
-					"data-uid": "src/pages/NovaObservacao.tsx:82:9",
+					"data-uid": "src/pages/NovaObservacao.tsx:92:9",
 					"data-prohibitions": "[editContent]",
 					className: "bg-slate-50 border-b pb-4 rounded-t-lg",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						"data-uid": "src/pages/NovaObservacao.tsx:83:11",
+						"data-uid": "src/pages/NovaObservacao.tsx:93:11",
 						"data-prohibitions": "[editContent]",
 						className: "flex items-center justify-between mb-2",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, {
-							"data-uid": "src/pages/NovaObservacao.tsx:84:13",
+							"data-uid": "src/pages/NovaObservacao.tsx:94:13",
 							"data-prohibitions": "[]",
 							className: "text-xl",
 							children: "Novo Relatório"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-							"data-uid": "src/pages/NovaObservacao.tsx:85:13",
+							"data-uid": "src/pages/NovaObservacao.tsx:95:13",
 							"data-prohibitions": "[editContent]",
 							className: "text-sm text-slate-500 font-medium",
 							children: [
@@ -54688,43 +55232,43 @@ function NovaObservacao() {
 							]
 						})]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
-						"data-uid": "src/pages/NovaObservacao.tsx:89:11",
+						"data-uid": "src/pages/NovaObservacao.tsx:99:11",
 						"data-prohibitions": "[editContent]",
 						value: progress,
 						className: "h-2"
 					})]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-					"data-uid": "src/pages/NovaObservacao.tsx:92:9",
+					"data-uid": "src/pages/NovaObservacao.tsx:102:9",
 					"data-prohibitions": "[editContent]",
 					className: "pt-6 min-h-[400px]",
 					children: [
 						step === 1 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Step1Identificador, {
-							"data-uid": "src/pages/NovaObservacao.tsx:93:26",
+							"data-uid": "src/pages/NovaObservacao.tsx:103:26",
 							"data-prohibitions": "[editContent]",
 							data,
 							updateData
 						}),
 						step === 2 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Step2Tipo, {
-							"data-uid": "src/pages/NovaObservacao.tsx:94:26",
+							"data-uid": "src/pages/NovaObservacao.tsx:104:26",
 							"data-prohibitions": "[editContent]",
 							data,
 							updateData
 						}),
 						step === 3 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Step3Detalhamento, {
-							"data-uid": "src/pages/NovaObservacao.tsx:95:26",
+							"data-uid": "src/pages/NovaObservacao.tsx:105:26",
 							"data-prohibitions": "[editContent]",
 							data,
 							updateData
 						}),
 						step === 4 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Step4Contexto, {
-							"data-uid": "src/pages/NovaObservacao.tsx:96:26",
+							"data-uid": "src/pages/NovaObservacao.tsx:106:26",
 							"data-prohibitions": "[editContent]",
 							data,
 							updateData
 						}),
 						step === 5 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Step5Avaliacao, {
-							"data-uid": "src/pages/NovaObservacao.tsx:97:26",
+							"data-uid": "src/pages/NovaObservacao.tsx:107:26",
 							"data-prohibitions": "[editContent]",
 							data,
 							updateData
@@ -54732,25 +55276,25 @@ function NovaObservacao() {
 					]
 				}),
 				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardFooter, {
-					"data-uid": "src/pages/NovaObservacao.tsx:100:9",
+					"data-uid": "src/pages/NovaObservacao.tsx:110:9",
 					"data-prohibitions": "[editContent]",
 					className: "flex justify-between border-t bg-slate-50 p-4 rounded-b-lg",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						"data-uid": "src/pages/NovaObservacao.tsx:101:11",
+						"data-uid": "src/pages/NovaObservacao.tsx:111:11",
 						"data-prohibitions": "[]",
 						variant: "outline",
 						onClick: handleBack,
 						disabled: step === 1,
 						children: "Voltar"
 					}), step < TOTAL_STEPS ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						"data-uid": "src/pages/NovaObservacao.tsx:105:13",
+						"data-uid": "src/pages/NovaObservacao.tsx:115:13",
 						"data-prohibitions": "[]",
 						onClick: handleNext,
 						disabled: !isStepValid(),
 						className: "w-32",
 						children: "Avançar"
 					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						"data-uid": "src/pages/NovaObservacao.tsx:109:13",
+						"data-uid": "src/pages/NovaObservacao.tsx:119:13",
 						"data-prohibitions": "[]",
 						onClick: handleSubmit,
 						disabled: !isStepValid(),
@@ -54759,7 +55303,7 @@ function NovaObservacao() {
 					})]
 				})
 			]
-		})
+		})]
 	});
 }
 //#endregion
@@ -54929,13 +55473,13 @@ function DataTable({ data, onEdit }) {
 									"data-uid": "src/components/management/DataTable.tsx:53:21",
 									"data-prohibitions": "[editContent]",
 									variant: "outline",
-									className: `text-[10px] px-1.5 py-0 ${TYPE_COLORS[obs.type]}`,
+									className: `text-[10px] px-1.5 py-0 ${TYPE_COLORS[obs.type] || "text-slate-600 bg-slate-100"}`,
 									children: obs.type
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 									"data-uid": "src/components/management/DataTable.tsx:59:21",
 									"data-prohibitions": "[editContent]",
 									variant: "outline",
-									className: `text-[10px] px-1.5 py-0 ${RISK_COLORS[obs.riskLevel]}`,
+									className: `text-[10px] px-1.5 py-0 ${RISK_COLORS[obs.riskLevel] || "text-slate-600 bg-slate-100"}`,
 									children: obs.riskLevel
 								})]
 							})
@@ -54986,286 +55530,9 @@ function DataTable({ data, onEdit }) {
 	});
 }
 //#endregion
-//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-dialog@1.1.15_@types+react-dom@19.2.3_@types+react@19.2.14__@types+reac_779045218dc2799d336e7197abef9d38/node_modules/@radix-ui/react-dialog/dist/index.mjs
-var DIALOG_NAME = "Dialog";
-var [createDialogContext, createDialogScope] = createContextScope$1(DIALOG_NAME);
-var [DialogProvider, useDialogContext] = createDialogContext(DIALOG_NAME);
-var Dialog = (props) => {
-	const { __scopeDialog, children, open: openProp, defaultOpen, onOpenChange, modal = true } = props;
-	const triggerRef = import_react.useRef(null);
-	const contentRef = import_react.useRef(null);
-	const [open, setOpen] = useControllableState({
-		prop: openProp,
-		defaultProp: defaultOpen ?? false,
-		onChange: onOpenChange,
-		caller: DIALOG_NAME
-	});
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogProvider, {
-		scope: __scopeDialog,
-		triggerRef,
-		contentRef,
-		contentId: useId(),
-		titleId: useId(),
-		descriptionId: useId(),
-		open,
-		onOpenChange: setOpen,
-		onOpenToggle: import_react.useCallback(() => setOpen((prevOpen) => !prevOpen), [setOpen]),
-		modal,
-		children
-	});
-};
-Dialog.displayName = DIALOG_NAME;
-var TRIGGER_NAME = "DialogTrigger";
-var DialogTrigger = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeDialog, ...triggerProps } = props;
-	const context = useDialogContext(TRIGGER_NAME, __scopeDialog);
-	const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.button, {
-		type: "button",
-		"aria-haspopup": "dialog",
-		"aria-expanded": context.open,
-		"aria-controls": context.contentId,
-		"data-state": getState(context.open),
-		...triggerProps,
-		ref: composedTriggerRef,
-		onClick: composeEventHandlers(props.onClick, context.onOpenToggle)
-	});
-});
-DialogTrigger.displayName = TRIGGER_NAME;
-var PORTAL_NAME = "DialogPortal";
-var [PortalProvider, usePortalContext] = createDialogContext(PORTAL_NAME, { forceMount: void 0 });
-var DialogPortal = (props) => {
-	const { __scopeDialog, forceMount, children, container } = props;
-	const context = useDialogContext(PORTAL_NAME, __scopeDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PortalProvider, {
-		scope: __scopeDialog,
-		forceMount,
-		children: import_react.Children.map(children, (child) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
-			present: forceMount || context.open,
-			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$2, {
-				asChild: true,
-				container,
-				children: child
-			})
-		}))
-	});
-};
-DialogPortal.displayName = PORTAL_NAME;
-var OVERLAY_NAME = "DialogOverlay";
-var DialogOverlay = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext(OVERLAY_NAME, props.__scopeDialog);
-	const { forceMount = portalContext.forceMount, ...overlayProps } = props;
-	const context = useDialogContext(OVERLAY_NAME, props.__scopeDialog);
-	return context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
-		present: forceMount || context.open,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogOverlayImpl, {
-			...overlayProps,
-			ref: forwardedRef
-		})
-	}) : null;
-});
-DialogOverlay.displayName = OVERLAY_NAME;
-var Slot = /* @__PURE__ */ createSlot$1("DialogOverlay.RemoveScroll");
-var DialogOverlayImpl = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeDialog, ...overlayProps } = props;
-	const context = useDialogContext(OVERLAY_NAME, __scopeDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ReactRemoveScroll, {
-		as: Slot,
-		allowPinchZoom: true,
-		shards: [context.contentRef],
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
-			"data-state": getState(context.open),
-			...overlayProps,
-			ref: forwardedRef,
-			style: {
-				pointerEvents: "auto",
-				...overlayProps.style
-			}
-		})
-	});
-});
-var CONTENT_NAME = "DialogContent";
-var DialogContent = import_react.forwardRef((props, forwardedRef) => {
-	const portalContext = usePortalContext(CONTENT_NAME, props.__scopeDialog);
-	const { forceMount = portalContext.forceMount, ...contentProps } = props;
-	const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
-		present: forceMount || context.open,
-		children: context.modal ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentModal, {
-			...contentProps,
-			ref: forwardedRef
-		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentNonModal, {
-			...contentProps,
-			ref: forwardedRef
-		})
-	});
-});
-DialogContent.displayName = CONTENT_NAME;
-var DialogContentModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
-	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef);
-	import_react.useEffect(() => {
-		const content = contentRef.current;
-		if (content) return hideOthers(content);
-	}, []);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentImpl, {
-		...props,
-		ref: composedRefs,
-		trapFocus: context.open,
-		disableOutsidePointerEvents: true,
-		onCloseAutoFocus: composeEventHandlers(props.onCloseAutoFocus, (event) => {
-			event.preventDefault();
-			context.triggerRef.current?.focus();
-		}),
-		onPointerDownOutside: composeEventHandlers(props.onPointerDownOutside, (event) => {
-			const originalEvent = event.detail.originalEvent;
-			const ctrlLeftClick = originalEvent.button === 0 && originalEvent.ctrlKey === true;
-			if (originalEvent.button === 2 || ctrlLeftClick) event.preventDefault();
-		}),
-		onFocusOutside: composeEventHandlers(props.onFocusOutside, (event) => event.preventDefault())
-	});
-});
-var DialogContentNonModal = import_react.forwardRef((props, forwardedRef) => {
-	const context = useDialogContext(CONTENT_NAME, props.__scopeDialog);
-	const hasInteractedOutsideRef = import_react.useRef(false);
-	const hasPointerDownOutsideRef = import_react.useRef(false);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogContentImpl, {
-		...props,
-		ref: forwardedRef,
-		trapFocus: false,
-		disableOutsidePointerEvents: false,
-		onCloseAutoFocus: (event) => {
-			props.onCloseAutoFocus?.(event);
-			if (!event.defaultPrevented) {
-				if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus();
-				event.preventDefault();
-			}
-			hasInteractedOutsideRef.current = false;
-			hasPointerDownOutsideRef.current = false;
-		},
-		onInteractOutside: (event) => {
-			props.onInteractOutside?.(event);
-			if (!event.defaultPrevented) {
-				hasInteractedOutsideRef.current = true;
-				if (event.detail.originalEvent.type === "pointerdown") hasPointerDownOutsideRef.current = true;
-			}
-			const target = event.target;
-			if (context.triggerRef.current?.contains(target)) event.preventDefault();
-			if (event.detail.originalEvent.type === "focusin" && hasPointerDownOutsideRef.current) event.preventDefault();
-		}
-	});
-});
-var DialogContentImpl = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeDialog, trapFocus, onOpenAutoFocus, onCloseAutoFocus, ...contentProps } = props;
-	const context = useDialogContext(CONTENT_NAME, __scopeDialog);
-	const contentRef = import_react.useRef(null);
-	const composedRefs = useComposedRefs(forwardedRef, contentRef);
-	useFocusGuards();
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FocusScope, {
-		asChild: true,
-		loop: true,
-		trapped: trapFocus,
-		onMountAutoFocus: onOpenAutoFocus,
-		onUnmountAutoFocus: onCloseAutoFocus,
-		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DismissableLayer, {
-			role: "dialog",
-			id: context.contentId,
-			"aria-describedby": context.descriptionId,
-			"aria-labelledby": context.titleId,
-			"data-state": getState(context.open),
-			...contentProps,
-			ref: composedRefs,
-			onDismiss: () => context.onOpenChange(false)
-		})
-	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TitleWarning, { titleId: context.titleId }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(DescriptionWarning, {
-		contentRef,
-		descriptionId: context.descriptionId
-	})] })] });
-});
-var TITLE_NAME = "DialogTitle";
-var DialogTitle = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeDialog, ...titleProps } = props;
-	const context = useDialogContext(TITLE_NAME, __scopeDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.h2, {
-		id: context.titleId,
-		...titleProps,
-		ref: forwardedRef
-	});
-});
-DialogTitle.displayName = TITLE_NAME;
-var DESCRIPTION_NAME = "DialogDescription";
-var DialogDescription = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeDialog, ...descriptionProps } = props;
-	const context = useDialogContext(DESCRIPTION_NAME, __scopeDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.p, {
-		id: context.descriptionId,
-		...descriptionProps,
-		ref: forwardedRef
-	});
-});
-DialogDescription.displayName = DESCRIPTION_NAME;
-var CLOSE_NAME = "DialogClose";
-var DialogClose = import_react.forwardRef((props, forwardedRef) => {
-	const { __scopeDialog, ...closeProps } = props;
-	const context = useDialogContext(CLOSE_NAME, __scopeDialog);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.button, {
-		type: "button",
-		...closeProps,
-		ref: forwardedRef,
-		onClick: composeEventHandlers(props.onClick, () => context.onOpenChange(false))
-	});
-});
-DialogClose.displayName = CLOSE_NAME;
-function getState(open) {
-	return open ? "open" : "closed";
-}
-var TITLE_WARNING_NAME = "DialogTitleWarning";
-var [WarningProvider, useWarningContext] = createContext2(TITLE_WARNING_NAME, {
-	contentName: CONTENT_NAME,
-	titleName: TITLE_NAME,
-	docsSlug: "dialog"
-});
-var TitleWarning = ({ titleId }) => {
-	const titleWarningContext = useWarningContext(TITLE_WARNING_NAME);
-	const MESSAGE = `\`${titleWarningContext.contentName}\` requires a \`${titleWarningContext.titleName}\` for the component to be accessible for screen reader users.
-
-If you want to hide the \`${titleWarningContext.titleName}\`, you can wrap it with our VisuallyHidden component.
-
-For more information, see https://radix-ui.com/primitives/docs/components/${titleWarningContext.docsSlug}`;
-	import_react.useEffect(() => {
-		if (titleId) {
-			if (!document.getElementById(titleId)) console.error(MESSAGE);
-		}
-	}, [MESSAGE, titleId]);
-	return null;
-};
-var DESCRIPTION_WARNING_NAME = "DialogDescriptionWarning";
-var DescriptionWarning = ({ contentRef, descriptionId }) => {
-	const MESSAGE = `Warning: Missing \`Description\` or \`aria-describedby={undefined}\` for {${useWarningContext(DESCRIPTION_WARNING_NAME).contentName}}.`;
-	import_react.useEffect(() => {
-		const describedById = contentRef.current?.getAttribute("aria-describedby");
-		if (descriptionId && describedById) {
-			if (!document.getElementById(descriptionId)) console.warn(MESSAGE);
-		}
-	}, [
-		MESSAGE,
-		contentRef,
-		descriptionId
-	]);
-	return null;
-};
-var Root = Dialog;
-var Portal = DialogPortal;
-var Overlay = DialogOverlay;
-var Content = DialogContent;
-var Title = DialogTitle;
-var Description = DialogDescription;
-var Close = DialogClose;
-//#endregion
 //#region src/components/ui/sheet.tsx
-var Sheet = Root;
-var SheetPortal = Portal;
+var Sheet = Root$3;
+var SheetPortal = Portal$1;
 var SheetOverlay = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Overlay, {
 	"data-uid": "src/components/ui/sheet.tsx:21:3",
 	"data-prohibitions": "[editContent]",
@@ -55289,7 +55556,7 @@ var SheetContent = import_react.forwardRef(({ side = "right", className, childre
 	children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SheetOverlay, {
 		"data-uid": "src/components/ui/sheet.tsx:61:5",
 		"data-prohibitions": "[editContent]"
-	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content, {
+	}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content$1, {
 		"data-uid": "src/components/ui/sheet.tsx:62:5",
 		"data-prohibitions": "[editContent]",
 		ref,
@@ -55312,7 +55579,7 @@ var SheetContent = import_react.forwardRef(({ side = "right", className, childre
 		})]
 	})]
 }));
-SheetContent.displayName = Content.displayName;
+SheetContent.displayName = Content$1.displayName;
 var SheetHeader = ({ className, ...props }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	"data-uid": "src/components/ui/sheet.tsx:74:3",
 	"data-prohibitions": "[editContent]",
@@ -55681,6 +55948,643 @@ function Gestao() {
 	});
 }
 //#endregion
+//#region ../../cache/modules/cultura-de-seguranca-saas-2751a/node_modules/.pnpm/@radix-ui+react-tabs@1.1.13_@types+react-dom@19.2.3_@types+react@19.2.14__@types+react@_2ad0945e3cb98dc5bbfaaf29c105e977/node_modules/@radix-ui/react-tabs/dist/index.mjs
+var TABS_NAME = "Tabs";
+var [createTabsContext, createTabsScope] = createContextScope$1(TABS_NAME, [createRovingFocusGroupScope]);
+var useRovingFocusGroupScope = createRovingFocusGroupScope();
+var [TabsProvider, useTabsContext] = createTabsContext(TABS_NAME);
+var Tabs$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeTabs, value: valueProp, onValueChange, defaultValue, orientation = "horizontal", dir, activationMode = "automatic", ...tabsProps } = props;
+	const direction = useDirection(dir);
+	const [value, setValue] = useControllableState({
+		prop: valueProp,
+		onChange: onValueChange,
+		defaultProp: defaultValue ?? "",
+		caller: TABS_NAME
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsProvider, {
+		scope: __scopeTabs,
+		baseId: useId(),
+		value,
+		onValueChange: setValue,
+		orientation,
+		dir: direction,
+		activationMode,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			dir: direction,
+			"data-orientation": orientation,
+			...tabsProps,
+			ref: forwardedRef
+		})
+	});
+});
+Tabs$1.displayName = TABS_NAME;
+var TAB_LIST_NAME = "TabsList";
+var TabsList$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeTabs, loop = true, ...listProps } = props;
+	const context = useTabsContext(TAB_LIST_NAME, __scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
+		asChild: true,
+		...rovingFocusGroupScope,
+		orientation: context.orientation,
+		dir: context.dir,
+		loop,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			role: "tablist",
+			"aria-orientation": context.orientation,
+			...listProps,
+			ref: forwardedRef
+		})
+	});
+});
+TabsList$1.displayName = TAB_LIST_NAME;
+var TRIGGER_NAME = "TabsTrigger";
+var TabsTrigger$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeTabs, value, disabled = false, ...triggerProps } = props;
+	const context = useTabsContext(TRIGGER_NAME, __scopeTabs);
+	const rovingFocusGroupScope = useRovingFocusGroupScope(__scopeTabs);
+	const triggerId = makeTriggerId(context.baseId, value);
+	const contentId = makeContentId(context.baseId, value);
+	const isSelected = value === context.value;
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Item, {
+		asChild: true,
+		...rovingFocusGroupScope,
+		focusable: !disabled,
+		active: isSelected,
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.button, {
+			type: "button",
+			role: "tab",
+			"aria-selected": isSelected,
+			"aria-controls": contentId,
+			"data-state": isSelected ? "active" : "inactive",
+			"data-disabled": disabled ? "" : void 0,
+			disabled,
+			id: triggerId,
+			...triggerProps,
+			ref: forwardedRef,
+			onMouseDown: composeEventHandlers(props.onMouseDown, (event) => {
+				if (!disabled && event.button === 0 && event.ctrlKey === false) context.onValueChange(value);
+				else event.preventDefault();
+			}),
+			onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+				if ([" ", "Enter"].includes(event.key)) context.onValueChange(value);
+			}),
+			onFocus: composeEventHandlers(props.onFocus, () => {
+				const isAutomaticActivation = context.activationMode !== "manual";
+				if (!isSelected && !disabled && isAutomaticActivation) context.onValueChange(value);
+			})
+		})
+	});
+});
+TabsTrigger$1.displayName = TRIGGER_NAME;
+var CONTENT_NAME = "TabsContent";
+var TabsContent$1 = import_react.forwardRef((props, forwardedRef) => {
+	const { __scopeTabs, value, forceMount, children, ...contentProps } = props;
+	const context = useTabsContext(CONTENT_NAME, __scopeTabs);
+	const triggerId = makeTriggerId(context.baseId, value);
+	const contentId = makeContentId(context.baseId, value);
+	const isSelected = value === context.value;
+	const isMountAnimationPreventedRef = import_react.useRef(isSelected);
+	import_react.useEffect(() => {
+		const rAF = requestAnimationFrame(() => isMountAnimationPreventedRef.current = false);
+		return () => cancelAnimationFrame(rAF);
+	}, []);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Presence, {
+		present: forceMount || isSelected,
+		children: ({ present }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Primitive$1.div, {
+			"data-state": isSelected ? "active" : "inactive",
+			"data-orientation": context.orientation,
+			role: "tabpanel",
+			"aria-labelledby": triggerId,
+			hidden: !present,
+			id: contentId,
+			tabIndex: 0,
+			...contentProps,
+			ref: forwardedRef,
+			style: {
+				...props.style,
+				animationDuration: isMountAnimationPreventedRef.current ? "0s" : void 0
+			},
+			children: present && children
+		})
+	});
+});
+TabsContent$1.displayName = CONTENT_NAME;
+function makeTriggerId(baseId, value) {
+	return `${baseId}-trigger-${value}`;
+}
+function makeContentId(baseId, value) {
+	return `${baseId}-content-${value}`;
+}
+var Root2 = Tabs$1;
+var List = TabsList$1;
+var Trigger = TabsTrigger$1;
+var Content = TabsContent$1;
+//#endregion
+//#region src/components/ui/tabs.tsx
+var Tabs = Root2;
+var TabsList = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(List, {
+	"data-uid": "src/components/ui/tabs.tsx:13:3",
+	"data-prohibitions": "[editContent]",
+	ref,
+	className: cn$1("inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground", className),
+	...props
+}));
+TabsList.displayName = List.displayName;
+var TabsTrigger = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trigger, {
+	"data-uid": "src/components/ui/tabs.tsx:28:3",
+	"data-prohibitions": "[editContent]",
+	ref,
+	className: cn$1("inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm", className),
+	...props
+}));
+TabsTrigger.displayName = Trigger.displayName;
+var TabsContent = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Content, {
+	"data-uid": "src/components/ui/tabs.tsx:43:3",
+	"data-prohibitions": "[editContent]",
+	ref,
+	className: cn$1("mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", className),
+	...props
+}));
+TabsContent.displayName = Content.displayName;
+//#endregion
+//#region src/components/settings/UsersList.tsx
+function UsersList() {
+	const { users, updateUser } = useMainStore();
+	const [editing, setEditing] = (0, import_react.useState)(null);
+	const handleSave = () => {
+		if (editing) updateUser(editing.id, editing);
+		setEditing(null);
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		"data-uid": "src/components/settings/UsersList.tsx:28:5",
+		"data-prohibitions": "[editContent]",
+		className: "bg-white rounded-lg border shadow-sm overflow-hidden",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Table, {
+			"data-uid": "src/components/settings/UsersList.tsx:29:7",
+			"data-prohibitions": "[editContent]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHeader, {
+				"data-uid": "src/components/settings/UsersList.tsx:30:9",
+				"data-prohibitions": "[]",
+				className: "bg-slate-50",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+					"data-uid": "src/components/settings/UsersList.tsx:31:11",
+					"data-prohibitions": "[]",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							"data-uid": "src/components/settings/UsersList.tsx:32:13",
+							"data-prohibitions": "[]",
+							children: "Nome"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							"data-uid": "src/components/settings/UsersList.tsx:33:13",
+							"data-prohibitions": "[]",
+							children: "CPF"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							"data-uid": "src/components/settings/UsersList.tsx:34:13",
+							"data-prohibitions": "[]",
+							children: "ID Empresa"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							"data-uid": "src/components/settings/UsersList.tsx:35:13",
+							"data-prohibitions": "[]",
+							children: "WhatsApp"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableHead, {
+							"data-uid": "src/components/settings/UsersList.tsx:36:13",
+							"data-prohibitions": "[]",
+							className: "text-right",
+							children: "Ação"
+						})
+					]
+				})
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableBody, {
+				"data-uid": "src/components/settings/UsersList.tsx:39:9",
+				"data-prohibitions": "[editContent]",
+				children: users.map((u) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TableRow, {
+					"data-uid": "src/components/settings/UsersList.tsx:41:13",
+					"data-prohibitions": "[editContent]",
+					className: "hover:bg-slate-50/50",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							"data-uid": "src/components/settings/UsersList.tsx:42:15",
+							"data-prohibitions": "[editContent]",
+							className: "font-medium",
+							children: u.name
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							"data-uid": "src/components/settings/UsersList.tsx:43:15",
+							"data-prohibitions": "[editContent]",
+							children: u.cpf
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							"data-uid": "src/components/settings/UsersList.tsx:44:15",
+							"data-prohibitions": "[editContent]",
+							children: u.companyId
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							"data-uid": "src/components/settings/UsersList.tsx:45:15",
+							"data-prohibitions": "[editContent]",
+							children: u.whatsapp
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TableCell, {
+							"data-uid": "src/components/settings/UsersList.tsx:46:15",
+							"data-prohibitions": "[]",
+							className: "text-right",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								"data-uid": "src/components/settings/UsersList.tsx:47:17",
+								"data-prohibitions": "[]",
+								variant: "ghost",
+								size: "sm",
+								onClick: () => setEditing(u),
+								className: "text-primary",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Pen, {
+									"data-uid": "src/components/settings/UsersList.tsx:53:19",
+									"data-prohibitions": "[editContent]",
+									className: "w-4 h-4 mr-2"
+								}), "Editar"]
+							})
+						})
+					]
+				}, u.id))
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Dialog, {
+			"data-uid": "src/components/settings/UsersList.tsx:62:7",
+			"data-prohibitions": "[editContent]",
+			open: !!editing,
+			onOpenChange: (o) => !o && setEditing(null),
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogContent, {
+				"data-uid": "src/components/settings/UsersList.tsx:63:9",
+				"data-prohibitions": "[editContent]",
+				className: "sm:max-w-md",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(DialogHeader, {
+					"data-uid": "src/components/settings/UsersList.tsx:64:11",
+					"data-prohibitions": "[editContent]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(DialogTitle, {
+						"data-uid": "src/components/settings/UsersList.tsx:65:13",
+						"data-prohibitions": "[editContent]",
+						children: ["Editar Perfil: ", editing?.name]
+					})
+				}), editing && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					"data-uid": "src/components/settings/UsersList.tsx:68:13",
+					"data-prohibitions": "[]",
+					className: "space-y-4 py-4",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							"data-uid": "src/components/settings/UsersList.tsx:69:15",
+							"data-prohibitions": "[]",
+							className: "grid gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+								"data-uid": "src/components/settings/UsersList.tsx:70:17",
+								"data-prohibitions": "[]",
+								children: "Nome Completo"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								"data-uid": "src/components/settings/UsersList.tsx:71:17",
+								"data-prohibitions": "[editContent]",
+								value: editing.name,
+								onChange: (e) => setEditing({
+									...editing,
+									name: e.target.value
+								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							"data-uid": "src/components/settings/UsersList.tsx:76:15",
+							"data-prohibitions": "[]",
+							className: "grid gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+								"data-uid": "src/components/settings/UsersList.tsx:77:17",
+								"data-prohibitions": "[]",
+								children: "CPF"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								"data-uid": "src/components/settings/UsersList.tsx:78:17",
+								"data-prohibitions": "[editContent]",
+								value: editing.cpf,
+								onChange: (e) => setEditing({
+									...editing,
+									cpf: e.target.value
+								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							"data-uid": "src/components/settings/UsersList.tsx:83:15",
+							"data-prohibitions": "[]",
+							className: "grid gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+								"data-uid": "src/components/settings/UsersList.tsx:84:17",
+								"data-prohibitions": "[]",
+								children: "ID da Empresa (Matrícula)"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								"data-uid": "src/components/settings/UsersList.tsx:85:17",
+								"data-prohibitions": "[editContent]",
+								value: editing.companyId,
+								onChange: (e) => setEditing({
+									...editing,
+									companyId: e.target.value
+								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							"data-uid": "src/components/settings/UsersList.tsx:90:15",
+							"data-prohibitions": "[]",
+							className: "grid gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+								"data-uid": "src/components/settings/UsersList.tsx:91:17",
+								"data-prohibitions": "[]",
+								children: "WhatsApp"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								"data-uid": "src/components/settings/UsersList.tsx:92:17",
+								"data-prohibitions": "[editContent]",
+								value: editing.whatsapp,
+								onChange: (e) => setEditing({
+									...editing,
+									whatsapp: e.target.value
+								})
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							"data-uid": "src/components/settings/UsersList.tsx:97:15",
+							"data-prohibitions": "[]",
+							onClick: handleSave,
+							className: "w-full mt-4",
+							children: "Salvar Alterações"
+						})
+					]
+				})]
+			})
+		})]
+	});
+}
+//#endregion
+//#region src/components/settings/SystemTables.tsx
+var TABS = [
+	{
+		id: "observationTypes",
+		name: "Tipos de Observação"
+	},
+	{
+		id: "conditions",
+		name: "Detalhamento: Condições"
+	},
+	{
+		id: "behaviors",
+		name: "Detalhamento: Comportamentos"
+	},
+	{
+		id: "areas",
+		name: "Áreas / Setores"
+	},
+	{
+		id: "risks",
+		name: "Risco Estimado"
+	},
+	{
+		id: "shifts",
+		name: "Turnos"
+	}
+];
+function SystemTables() {
+	const { settings, updateSettings } = useMainStore();
+	const [active, setActive] = (0, import_react.useState)("areas");
+	const [newItem, setNewItem] = (0, import_react.useState)("");
+	const handleAdd = () => {
+		if (!newItem.trim()) return;
+		const list = settings[active];
+		updateSettings({
+			...settings,
+			[active]: [...list, newItem.trim()]
+		});
+		setNewItem("");
+	};
+	const handleRemove = (idx) => {
+		const list = [...settings[active]];
+		list.splice(idx, 1);
+		updateSettings({
+			...settings,
+			[active]: list
+		});
+	};
+	const updateObsType = (idx, field, val) => {
+		const list = [...settings.observationTypes];
+		list[idx] = {
+			...list[idx],
+			[field]: val
+		};
+		updateSettings({
+			...settings,
+			observationTypes: list
+		});
+	};
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		"data-uid": "src/components/settings/SystemTables.tsx:42:5",
+		"data-prohibitions": "[editContent]",
+		className: "grid md:grid-cols-[250px_1fr] gap-6 items-start",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+			"data-uid": "src/components/settings/SystemTables.tsx:43:7",
+			"data-prohibitions": "[editContent]",
+			className: "flex flex-col space-y-1",
+			children: TABS.map((t) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+				"data-uid": "src/components/settings/SystemTables.tsx:45:11",
+				"data-prohibitions": "[editContent]",
+				variant: active === t.id ? "default" : "ghost",
+				className: "justify-start font-normal",
+				onClick: () => setActive(t.id),
+				children: t.name
+			}, t.id))
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			"data-uid": "src/components/settings/SystemTables.tsx:55:7",
+			"data-prohibitions": "[editContent]",
+			className: "bg-white p-6 rounded-lg border shadow-sm",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+				"data-uid": "src/components/settings/SystemTables.tsx:56:9",
+				"data-prohibitions": "[editContent]",
+				className: "text-lg font-medium mb-6",
+				children: TABS.find((t) => t.id === active)?.name
+			}), active === "observationTypes" ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				"data-uid": "src/components/settings/SystemTables.tsx:59:11",
+				"data-prohibitions": "[editContent]",
+				className: "space-y-6",
+				children: settings.observationTypes.map((ot, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					"data-uid": "src/components/settings/SystemTables.tsx:61:15",
+					"data-prohibitions": "[editContent]",
+					className: "p-4 border rounded-md space-y-4 bg-slate-50/50",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							"data-uid": "src/components/settings/SystemTables.tsx:62:17",
+							"data-prohibitions": "[editContent]",
+							className: "font-medium text-sm text-slate-600 mb-2 border-b pb-2",
+							children: ["Valor Base (Imutável): ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								"data-uid": "src/components/settings/SystemTables.tsx:63:42",
+								"data-prohibitions": "[editContent]",
+								className: "font-mono",
+								children: ot.value
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							"data-uid": "src/components/settings/SystemTables.tsx:65:17",
+							"data-prohibitions": "[]",
+							className: "grid gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+								"data-uid": "src/components/settings/SystemTables.tsx:66:19",
+								"data-prohibitions": "[]",
+								children: "Rótulo de Exibição"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								"data-uid": "src/components/settings/SystemTables.tsx:67:19",
+								"data-prohibitions": "[editContent]",
+								value: ot.label,
+								onChange: (e) => updateObsType(i, "label", e.target.value)
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							"data-uid": "src/components/settings/SystemTables.tsx:72:17",
+							"data-prohibitions": "[]",
+							className: "grid gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+								"data-uid": "src/components/settings/SystemTables.tsx:73:19",
+								"data-prohibitions": "[]",
+								children: "Descrição"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+								"data-uid": "src/components/settings/SystemTables.tsx:74:19",
+								"data-prohibitions": "[editContent]",
+								value: ot.desc,
+								onChange: (e) => updateObsType(i, "desc", e.target.value)
+							})]
+						})
+					]
+				}, i))
+			}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				"data-uid": "src/components/settings/SystemTables.tsx:83:11",
+				"data-prohibitions": "[editContent]",
+				className: "space-y-4",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					"data-uid": "src/components/settings/SystemTables.tsx:84:13",
+					"data-prohibitions": "[]",
+					className: "flex gap-2 mb-6",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+						"data-uid": "src/components/settings/SystemTables.tsx:85:15",
+						"data-prohibitions": "[editContent]",
+						placeholder: "Adicionar novo item...",
+						value: newItem,
+						onChange: (e) => setNewItem(e.target.value),
+						onKeyDown: (e) => e.key === "Enter" && handleAdd()
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						"data-uid": "src/components/settings/SystemTables.tsx:91:15",
+						"data-prohibitions": "[]",
+						onClick: handleAdd,
+						className: "shrink-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, {
+							"data-uid": "src/components/settings/SystemTables.tsx:92:17",
+							"data-prohibitions": "[editContent]",
+							className: "w-4 h-4 mr-2"
+						}), " Adicionar"]
+					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					"data-uid": "src/components/settings/SystemTables.tsx:95:13",
+					"data-prohibitions": "[editContent]",
+					className: "space-y-2",
+					children: [settings[active].map((item, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						"data-uid": "src/components/settings/SystemTables.tsx:97:17",
+						"data-prohibitions": "[editContent]",
+						className: "flex items-center justify-between p-3 border rounded-md hover:bg-slate-50 transition-colors",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							"data-uid": "src/components/settings/SystemTables.tsx:101:19",
+							"data-prohibitions": "[editContent]",
+							className: "text-sm font-medium",
+							children: item
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+							"data-uid": "src/components/settings/SystemTables.tsx:102:19",
+							"data-prohibitions": "[]",
+							variant: "ghost",
+							size: "icon",
+							onClick: () => handleRemove(i),
+							className: "h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, {
+								"data-uid": "src/components/settings/SystemTables.tsx:108:21",
+								"data-prohibitions": "[editContent]",
+								className: "w-4 h-4"
+							})
+						})]
+					}, i)), settings[active].length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						"data-uid": "src/components/settings/SystemTables.tsx:113:17",
+						"data-prohibitions": "[]",
+						className: "text-center py-6 text-slate-500 text-sm",
+						children: "Nenhum item cadastrado."
+					})]
+				})]
+			})]
+		})]
+	});
+}
+//#endregion
+//#region src/pages/Settings.tsx
+function Settings() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+		"data-uid": "src/pages/Settings.tsx:7:5",
+		"data-prohibitions": "[]",
+		className: "w-full max-w-6xl mx-auto space-y-6",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			"data-uid": "src/pages/Settings.tsx:8:7",
+			"data-prohibitions": "[]",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
+				"data-uid": "src/pages/Settings.tsx:9:9",
+				"data-prohibitions": "[]",
+				className: "text-2xl font-bold text-slate-900 tracking-tight",
+				children: "Configurações do Sistema"
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				"data-uid": "src/pages/Settings.tsx:12:9",
+				"data-prohibitions": "[]",
+				className: "text-sm text-slate-500",
+				children: "Gerencie perfis de usuários e as tabelas de referência do sistema."
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Tabs, {
+			"data-uid": "src/pages/Settings.tsx:17:7",
+			"data-prohibitions": "[]",
+			defaultValue: "users",
+			className: "w-full",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TabsList, {
+					"data-uid": "src/pages/Settings.tsx:18:9",
+					"data-prohibitions": "[]",
+					className: "grid w-full max-w-md grid-cols-2",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						"data-uid": "src/pages/Settings.tsx:19:11",
+						"data-prohibitions": "[]",
+						value: "users",
+						children: "Perfis de Usuários"
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsTrigger, {
+						"data-uid": "src/pages/Settings.tsx:20:11",
+						"data-prohibitions": "[]",
+						value: "tables",
+						children: "Tabelas do Sistema"
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					"data-uid": "src/pages/Settings.tsx:23:9",
+					"data-prohibitions": "[]",
+					value: "users",
+					className: "mt-6 focus-visible:outline-none",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(UsersList, {
+						"data-uid": "src/pages/Settings.tsx:24:11",
+						"data-prohibitions": "[editContent]"
+					})
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TabsContent, {
+					"data-uid": "src/pages/Settings.tsx:27:9",
+					"data-prohibitions": "[]",
+					value: "tables",
+					className: "mt-6 focus-visible:outline-none",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SystemTables, {
+						"data-uid": "src/pages/Settings.tsx:28:11",
+						"data-prohibitions": "[editContent]"
+					})
+				})
+			]
+		})]
+	});
+}
+//#endregion
 //#region src/pages/NotFound.tsx
 var NotFound = () => {
 	const location = useLocation();
@@ -55723,6 +56627,8 @@ var NotFound = () => {
 //#region src/App.tsx
 var App = () => {
 	const [observations, setObservations] = (0, import_react.useState)(generateMockObservations());
+	const [users, setUsers] = (0, import_react.useState)(INITIAL_USERS);
+	const [settings, setSettings] = (0, import_react.useState)(INITIAL_SETTINGS);
 	const addObservation = (0, import_react.useCallback)((obs) => {
 		const newObs = {
 			...obs,
@@ -55738,78 +56644,100 @@ var App = () => {
 			...updates
 		} : obs));
 	}, []);
+	const updateUser = (0, import_react.useCallback)((id, updates) => {
+		setUsers((prev) => prev.map((u) => u.id === id ? {
+			...u,
+			...updates
+		} : u));
+	}, []);
+	const updateSettings = (0, import_react.useCallback)((newSettings) => {
+		setSettings(newSettings);
+	}, []);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreContext.Provider, {
-		"data-uid": "src/App.tsx:37:5",
+		"data-uid": "src/App.tsx:49:5",
 		"data-prohibitions": "[]",
 		value: {
 			observations,
 			addObservation,
-			updateObservation
+			updateObservation,
+			users,
+			updateUser,
+			settings,
+			updateSettings
 		},
 		children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrowserRouter, {
-			"data-uid": "src/App.tsx:38:7",
+			"data-uid": "src/App.tsx:60:7",
 			"data-prohibitions": "[]",
 			future: {
 				v7_startTransition: false,
 				v7_relativeSplatPath: false
 			},
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(TooltipProvider, {
-				"data-uid": "src/App.tsx:39:9",
+				"data-uid": "src/App.tsx:61:9",
 				"data-prohibitions": "[]",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toaster$2, {
-						"data-uid": "src/App.tsx:40:11",
+						"data-uid": "src/App.tsx:62:11",
 						"data-prohibitions": "[editContent]"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Toaster, {
-						"data-uid": "src/App.tsx:41:11",
+						"data-uid": "src/App.tsx:63:11",
 						"data-prohibitions": "[editContent]"
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Routes, {
-						"data-uid": "src/App.tsx:42:11",
+						"data-uid": "src/App.tsx:64:11",
 						"data-prohibitions": "[]",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Route, {
-							"data-uid": "src/App.tsx:43:13",
+							"data-uid": "src/App.tsx:65:13",
 							"data-prohibitions": "[]",
 							element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Layout, {
-								"data-uid": "src/App.tsx:43:29",
+								"data-uid": "src/App.tsx:65:29",
 								"data-prohibitions": "[editContent]"
 							}),
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-									"data-uid": "src/App.tsx:44:15",
+									"data-uid": "src/App.tsx:66:15",
 									"data-prohibitions": "[editContent]",
 									path: "/",
 									element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Index, {
-										"data-uid": "src/App.tsx:44:40",
+										"data-uid": "src/App.tsx:66:40",
 										"data-prohibitions": "[editContent]"
 									})
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-									"data-uid": "src/App.tsx:45:15",
+									"data-uid": "src/App.tsx:67:15",
 									"data-prohibitions": "[editContent]",
 									path: "/nova-observacao",
 									element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NovaObservacao, {
-										"data-uid": "src/App.tsx:45:55",
+										"data-uid": "src/App.tsx:67:55",
 										"data-prohibitions": "[editContent]"
 									})
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-									"data-uid": "src/App.tsx:46:15",
+									"data-uid": "src/App.tsx:68:15",
 									"data-prohibitions": "[editContent]",
 									path: "/gestao",
 									element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Gestao, {
-										"data-uid": "src/App.tsx:46:46",
+										"data-uid": "src/App.tsx:68:46",
+										"data-prohibitions": "[editContent]"
+									})
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
+									"data-uid": "src/App.tsx:69:15",
+									"data-prohibitions": "[editContent]",
+									path: "/settings",
+									element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings, {
+										"data-uid": "src/App.tsx:69:48",
 										"data-prohibitions": "[editContent]"
 									})
 								})
 							]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Route, {
-							"data-uid": "src/App.tsx:48:13",
+							"data-uid": "src/App.tsx:71:13",
 							"data-prohibitions": "[editContent]",
 							path: "*",
 							element: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(NotFound, {
-								"data-uid": "src/App.tsx:48:38",
+								"data-uid": "src/App.tsx:71:38",
 								"data-prohibitions": "[editContent]"
 							})
 						})]
@@ -55827,4 +56755,4 @@ var App = () => {
 }));
 //#endregion
 
-//# sourceMappingURL=index-DY8p2YXh.js.map
+//# sourceMappingURL=index-BF7BnLbH.js.map

@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Edit2, Eye } from 'lucide-react'
+import { Edit2 } from 'lucide-react'
 import { Observation } from '@/types'
 import { TYPE_COLORS, RISK_COLORS } from '@/lib/constants'
 
@@ -52,13 +52,13 @@ export function DataTable({ data, onEdit }: Props) {
                   <div className="flex flex-col gap-1 items-start">
                     <Badge
                       variant="outline"
-                      className={`text-[10px] px-1.5 py-0 ${TYPE_COLORS[obs.type]}`}
+                      className={`text-[10px] px-1.5 py-0 ${TYPE_COLORS[obs.type] || 'text-slate-600 bg-slate-100'}`}
                     >
                       {obs.type}
                     </Badge>
                     <Badge
                       variant="outline"
-                      className={`text-[10px] px-1.5 py-0 ${RISK_COLORS[obs.riskLevel]}`}
+                      className={`text-[10px] px-1.5 py-0 ${RISK_COLORS[obs.riskLevel] || 'text-slate-600 bg-slate-100'}`}
                     >
                       {obs.riskLevel}
                     </Badge>

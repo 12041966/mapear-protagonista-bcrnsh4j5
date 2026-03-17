@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { AREAS, SHIFTS } from '@/lib/constants'
+import { useMainStore } from '@/stores/main'
 
 interface Props {
   data: any
@@ -15,6 +15,8 @@ interface Props {
 }
 
 export function Step4Contexto({ data, updateData }: Props) {
+  const { settings } = useMainStore()
+
   return (
     <div className="space-y-6 animate-slide-in-right">
       <div className="space-y-2">
@@ -30,7 +32,7 @@ export function Step4Contexto({ data, updateData }: Props) {
               <SelectValue placeholder="Selecione a área" />
             </SelectTrigger>
             <SelectContent>
-              {AREAS.map((a) => (
+              {settings.areas.map((a) => (
                 <SelectItem key={a} value={a}>
                   {a}
                 </SelectItem>
@@ -41,12 +43,12 @@ export function Step4Contexto({ data, updateData }: Props) {
 
         <div className="grid gap-2">
           <Label>Turno</Label>
-          <div className="flex gap-3">
-            {SHIFTS.map((shift) => (
+          <div className="flex gap-3 flex-wrap">
+            {settings.shifts.map((shift) => (
               <div
                 key={shift}
                 onClick={() => updateData({ shift })}
-                className={`flex-1 text-center py-2 border rounded-md cursor-pointer transition-colors ${
+                className={`px-4 py-2 border rounded-md cursor-pointer transition-colors ${
                   data.shift === shift
                     ? 'bg-primary text-primary-foreground border-primary font-medium'
                     : 'hover:bg-slate-50'
