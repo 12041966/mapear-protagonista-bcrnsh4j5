@@ -11,6 +11,7 @@ import { Observation, UserProfile, AppSettings } from '@/types'
 import Layout from '@/components/Layout'
 import Index from '@/pages/Index'
 import NovaObservacao from '@/pages/NovaObservacao'
+import MinhasObservacoes from '@/pages/MinhasObservacoes'
 import Gestao from '@/pages/Gestao'
 import Settings from '@/pages/Settings'
 import NotFound from '@/pages/NotFound'
@@ -19,6 +20,7 @@ const App = () => {
   const [observations, setObservations] = useState<Observation[]>(generateMockObservations())
   const [users, setUsers] = useState<UserProfile[]>(INITIAL_USERS)
   const [settings, setSettings] = useState<AppSettings>(INITIAL_SETTINGS)
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(INITIAL_USERS[0])
 
   const addObservation = useCallback(
     (obs: Omit<Observation, 'id' | 'date' | 'status'>) => {
@@ -37,8 +39,16 @@ const App = () => {
     setObservations((prev) => prev.map((obs) => (obs.id === id ? { ...obs, ...updates } : obs)))
   }, [])
 
+  const addUser = useCallback((user: UserProfile) => {
+    setUsers((prev) => [...prev, user])
+  }, [])
+
   const updateUser = useCallback((id: string, updates: Partial<UserProfile>) => {
     setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, ...updates } : u)))
+  }, [])
+
+  const removeUser = useCallback((id: string) => {
+    setUsers((prev) => prev.filter((u) => u.id !== id))
   }, [])
 
   const updateSettings = useCallback((newSettings: AppSettings) => {
@@ -52,9 +62,13 @@ const App = () => {
         addObservation,
         updateObservation,
         users,
+        addUser,
         updateUser,
+        removeUser,
         settings,
         updateSettings,
+        currentUser,
+        setCurrentUser,
       }}
     >
       <BrowserRouter future={{ v7_startTransition: false, v7_relativeSplatPath: false }}>
@@ -65,6 +79,7 @@ const App = () => {
             <Route element={<Layout />}>
               <Route path="/" element={<Index />} />
               <Route path="/nova-observacao" element={<NovaObservacao />} />
+              <Route path="/minhas-observacoes" element={<MinhasObservacoes />} />
               <Route path="/gestao" element={<Gestao />} />
               <Route path="/settings" element={<Settings />} />
             </Route>

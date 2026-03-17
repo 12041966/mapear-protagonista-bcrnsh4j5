@@ -2,12 +2,15 @@ export type ObsStatus = 'Pendente' | 'Em Análise' | 'Concluído'
 
 export type ResolutionType = 'Feedback fornecido' | 'Ação tomada' | 'Ação necessária'
 
+export type Role = 'Segurança' | 'Supervisão' | 'Observador'
+
 export interface UserProfile {
   id: string
   name: string
   whatsapp: string
   cpf: string
   companyId: string
+  role: Role
 }
 
 export interface ObservationTypeConfig {
@@ -24,12 +27,13 @@ export interface AppSettings {
   shifts: string[]
   risks: string[]
   observationTypes: ObservationTypeConfig[]
+  monthlyHeadcount: Record<string, number>
 }
 
 export interface Observation {
   id: string
   date: string
-  observer: Omit<UserProfile, 'id'>
+  observer: Omit<UserProfile, 'id' | 'role'>
   type: string
   detail: string
   area: string
@@ -50,7 +54,11 @@ export interface StoreContextType {
   addObservation: (obs: Omit<Observation, 'id' | 'date' | 'status'>) => void
   updateObservation: (id: string, updates: Partial<Observation>) => void
   users: UserProfile[]
+  addUser: (user: UserProfile) => void
   updateUser: (id: string, user: Partial<UserProfile>) => void
+  removeUser: (id: string) => void
   settings: AppSettings
   updateSettings: (settings: AppSettings) => void
+  currentUser: UserProfile | null
+  setCurrentUser: (user: UserProfile) => void
 }

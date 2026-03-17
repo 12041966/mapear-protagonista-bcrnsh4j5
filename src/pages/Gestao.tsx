@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { Navigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Download, Search, Filter } from 'lucide-react'
@@ -9,10 +10,14 @@ import { Observation } from '@/types'
 import { useToast } from '@/hooks/use-toast'
 
 export default function Gestao() {
-  const { observations } = useMainStore()
+  const { observations, currentUser } = useMainStore()
   const [search, setSearch] = useState('')
   const [editingObs, setEditingObs] = useState<Observation | null>(null)
   const { toast } = useToast()
+
+  if (currentUser?.role === 'Observador') {
+    return <Navigate to="/" replace />
+  }
 
   const filteredData = useMemo(() => {
     return observations.filter(
@@ -28,7 +33,6 @@ export default function Gestao() {
       title: 'Download Iniciado',
       description: 'A planilha CSV está sendo gerada.',
     })
-    // Mock export logic
     setTimeout(() => {
       console.log('Exported', filteredData.length, 'records')
     }, 1000)

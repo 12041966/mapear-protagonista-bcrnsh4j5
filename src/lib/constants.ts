@@ -17,12 +17,12 @@ export const RISK_COLORS: Record<string, string> = {
 }
 
 export const CHART_COLORS: Record<string, string> = {
-  'Condição de risco': '#f59e0b', // amber-500
-  'Condição segura': '#10b981', // emerald-500
-  'Comportamento de risco': '#ef4444', // red-500
-  'Comportamento seguro': '#3b82f6', // blue-500
-  Acidente: '#991b1b', // red-800
-  'Quase acidente': '#b45309', // amber-700
+  'Condição de risco': '#f59e0b',
+  'Condição segura': '#10b981',
+  'Comportamento de risco': '#ef4444',
+  'Comportamento seguro': '#3b82f6',
+  Acidente: '#991b1b',
+  'Quase acidente': '#b45309',
 }
 
 export const INITIAL_SETTINGS: AppSettings = {
@@ -85,6 +85,10 @@ export const INITIAL_SETTINGS: AppSettings = {
       color: 'text-blue-500',
     },
   ],
+  monthlyHeadcount: {
+    '2026-02': 110,
+    '2026-03': 120,
+  },
 }
 
 export const INITIAL_USERS: UserProfile[] = [
@@ -94,6 +98,7 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11999999999',
     cpf: '123.456.789-00',
     companyId: 'EMP-01',
+    role: 'Segurança',
   },
   {
     id: 'USR-02',
@@ -101,6 +106,7 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11888888888',
     cpf: '098.765.432-11',
     companyId: 'EMP-02',
+    role: 'Supervisão',
   },
   {
     id: 'USR-03',
@@ -108,6 +114,7 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11777777777',
     cpf: '111.222.333-44',
     companyId: 'EMP-03',
+    role: 'Observador',
   },
   {
     id: 'USR-04',
@@ -115,6 +122,7 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11666666666',
     cpf: '222.333.444-55',
     companyId: 'EMP-01',
+    role: 'Observador',
   },
   {
     id: 'USR-05',
@@ -122,6 +130,7 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11555555555',
     cpf: '333.444.555-66',
     companyId: 'EMP-02',
+    role: 'Observador',
   },
   {
     id: 'USR-06',
@@ -129,5 +138,6 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11444444444',
     cpf: '444.555.666-77',
     companyId: 'EMP-03',
+    role: 'Supervisão',
   },
 ]

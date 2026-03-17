@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -28,9 +28,23 @@ const INITIAL_DATA = {
 export default function NovaObservacao() {
   const [step, setStep] = useState(1)
   const [data, setData] = useState<any>(INITIAL_DATA)
-  const { addObservation } = useMainStore()
+  const { addObservation, currentUser } = useMainStore()
   const { toast } = useToast()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (currentUser) {
+      setData((prev: any) => ({
+        ...prev,
+        observer: {
+          name: currentUser.name || prev.observer.name,
+          whatsapp: currentUser.whatsapp || prev.observer.whatsapp,
+          cpf: currentUser.cpf || prev.observer.cpf,
+          companyId: currentUser.companyId || prev.observer.companyId,
+        },
+      }))
+    }
+  }, [currentUser])
 
   const TOTAL_STEPS = 5
   const progress = (step / TOTAL_STEPS) * 100
@@ -64,7 +78,11 @@ export default function NovaObservacao() {
       })
     }
 
-    navigate('/')
+    if (currentUser?.role === 'Observador') {
+      navigate('/minhas-observacoes')
+    } else {
+      navigate('/')
+    }
   }
 
   const isStepValid = () => {

@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { Navigate } from 'react-router-dom'
 import { MetricsCards } from '@/components/dashboard/MetricsCards'
 import { DashboardCharts } from '@/components/dashboard/Charts'
 import { RecentActivity } from '@/components/dashboard/RecentActivity'
@@ -12,8 +13,12 @@ import {
 import { useMainStore } from '@/stores/main'
 
 const Index = () => {
-  const { observations } = useMainStore()
+  const { observations, currentUser } = useMainStore()
   const [period, setPeriod] = useState<string>('30d')
+
+  if (currentUser?.role === 'Observador') {
+    return <Navigate to="/nova-observacao" replace />
+  }
 
   const filteredData = useMemo(() => {
     const now = new Date()
