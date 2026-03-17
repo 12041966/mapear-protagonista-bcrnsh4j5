@@ -1,13 +1,101 @@
-/* Layout Component - A component that wraps the main content of the app
-   - Use this file to add a header, footer, or other elements that should be present on every page
-   - This component is used in the App.tsx file to wrap the main content of the app */
+import { Outlet, Link, useLocation } from 'react-router-dom'
+import { LayoutDashboard, PlusCircle, ListTodo, Settings, Bell } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 
-import { Outlet } from 'react-router-dom'
+const NAV_ITEMS = [
+  { name: 'Dashboard', path: '/', icon: LayoutDashboard },
+  { name: 'Nova Observação', path: '/nova-observacao', icon: PlusCircle },
+  { name: 'Gestão de Relatos', path: '/gestao', icon: ListTodo },
+]
 
 export default function Layout() {
+  const location = useLocation()
+
   return (
-    <main className="flex flex-col min-h-screen">
-      <Outlet />
-    </main>
+    <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900">
+      {/* Sidebar Desktop */}
+      <aside className="hidden md:flex flex-col w-64 border-r bg-white shadow-sm z-10">
+        <div className="p-6 flex items-center space-x-3 border-b">
+          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center">
+            <Settings className="w-5 h-5 text-white" />
+          </div>
+          <span className="font-bold text-lg text-primary">MAPEAR</span>
+        </div>
+        <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon
+            const isActive = location.pathname === item.path
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  'flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors',
+                  isActive
+                    ? 'bg-primary text-primary-foreground'
+                    : 'hover:bg-slate-100 text-slate-600',
+                )}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="font-medium">{item.name}</span>
+              </Link>
+            )
+          })}
+        </nav>
+      </aside>
+
+      <div className="flex flex-1 flex-col overflow-hidden relative">
+        {/* Header */}
+        <header className="h-16 flex items-center justify-between px-4 md:px-8 border-b bg-white z-10">
+          <div className="flex items-center md:hidden space-x-2">
+            <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
+              <Settings className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-bold text-primary">MAPEAR</span>
+          </div>
+          <div className="hidden md:flex">
+            <h1 className="text-xl font-semibold text-slate-800">
+              {NAV_ITEMS.find((i) => i.path === location.pathname)?.name || 'Dashboard'}
+            </h1>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Button variant="ghost" size="icon" className="relative text-slate-500">
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+            </Button>
+            <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border">
+              <img src="https://img.usecurling.com/ppl/thumbnail?gender=female&seed=1" alt="User" />
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8 animate-fade-in-up">
+          <Outlet />
+        </main>
+      </div>
+
+      {/* Bottom Nav Mobile */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 border-t bg-white flex justify-around items-center h-16 px-2 z-50 pb-safe shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
+        {NAV_ITEMS.map((item) => {
+          const Icon = item.icon
+          const isActive = location.pathname === item.path
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={cn(
+                'flex flex-col items-center justify-center w-full h-full space-y-1',
+                isActive ? 'text-primary' : 'text-slate-400 hover:text-slate-600',
+              )}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{item.name}</span>
+            </Link>
+          )
+        })}
+      </nav>
+    </div>
   )
 }
