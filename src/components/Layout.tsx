@@ -4,21 +4,11 @@ import {
   PlusCircle,
   ListTodo,
   Settings as SettingsIcon,
-  Bell,
-  QrCode,
   LogOut,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useMainStore } from '@/stores/main'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,7 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useAuth } from '@/hooks/use-auth'
 
 const NAV_ITEMS = [
@@ -70,7 +59,6 @@ export default function Layout() {
 
   const displayName = currentUser?.name || user?.email?.split('@')[0] || 'Usuário'
   const displayEmail = user?.email || ''
-  const initials = displayName.substring(0, 2).toUpperCase()
 
   return (
     <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900">
@@ -118,49 +106,13 @@ export default function Layout() {
             </h1>
           </div>
           <div className="flex items-center space-x-2 md:space-x-4">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-slate-500 hover:text-slate-700">
-                  <QrCode className="w-5 h-5" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle className="text-center">Acesso Rápido Mobile</DialogTitle>
-                  <DialogDescription className="text-center">
-                    Escaneie o QR Code com a câmera do celular para relatar uma observação.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex items-center justify-center py-6">
-                  <img
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://cultura-de-seguranca-saas-2751a.goskip.app"
-                    alt="QR Code"
-                    className="w-48 h-48 rounded-lg shadow-sm border border-slate-200 p-2"
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
-
-            <Button variant="ghost" size="icon" className="relative text-slate-500">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
-            </Button>
-
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
-                  className="relative h-8 w-8 rounded-full p-0 overflow-hidden border cursor-pointer hover:ring-2 ring-primary transition-all"
+                  className="font-semibold text-slate-700 hover:text-primary transition-colors cursor-pointer text-sm sm:text-base px-2 sm:px-4"
                 >
-                  <Avatar className="h-full w-full">
-                    <AvatarImage
-                      src={`https://img.usecurling.com/ppl/thumbnail?gender=female&seed=${currentUser?.id || 1}`}
-                      alt={displayName}
-                    />
-                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
-                      {initials}
-                    </AvatarFallback>
-                  </Avatar>
+                  {displayName}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-64">

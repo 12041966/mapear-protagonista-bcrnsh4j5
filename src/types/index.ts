@@ -10,6 +10,7 @@ export interface UserProfile {
   whatsapp: string
   cpf: string
   companyId: string
+  registrationNumber?: string | null
   role: Role
 }
 
@@ -33,7 +34,7 @@ export interface AppSettings {
 export interface Observation {
   id: string
   date: string
-  observer: Omit<UserProfile, 'id' | 'role'>
+  observer: Omit<UserProfile, 'id' | 'role' | 'registrationNumber'>
   type: string
   detail: string
   area: string

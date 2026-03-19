@@ -15,12 +15,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Edit2 } from 'lucide-react'
+import { EditUserDialog } from './EditUserDialog'
 
 export function UsersList() {
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [editingUser, setEditingUser] = useState<any | null>(null)
   const { toast } = useToast()
 
   useEffect(() => {
@@ -43,7 +46,6 @@ export function UsersList() {
   }
 
   const handleRoleChange = async (userId: string, newRole: string) => {
-    // Atualização otimista na interface
     setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u)))
 
     const { error } = await supabase.from('profiles').update({ role: newRole }).eq('id', userId)
@@ -54,7 +56,6 @@ export function UsersList() {
         title: 'Erro ao atualizar perfil',
         description: error.message,
       })
-      // Reverte se falhar
       fetchUsers()
     } else {
       toast({
@@ -64,11 +65,29 @@ export function UsersList() {
     }
   }
 
+  const handleSaveUser = async (userId: string, updates: any) => {
+    const { error } = await supabase.from('profiles').update(updates).eq('id', userId)
+
+    if (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao salvar usuário',
+        description: error.message,
+      })
+    } else {
+      toast({
+        title: 'Usuário atualizado',
+        description: 'Os dados do usuário foram salvos com sucesso.',
+      })
+      setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, ...updates } : u)))
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <p className="text-sm text-slate-500">
-          Gerencie acessos e perfis dos usuários da plataforma.
+          Gerencie acessos e informações dos usuários da plataforma.
         </p>
       </div>
 
@@ -81,12 +100,13 @@ export function UsersList() {
               <TableHead>CPF</TableHead>
               <TableHead>Matrícula</TableHead>
               <TableHead>Perfil de Acesso</TableHead>
+              <TableHead className="w-[80px]">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8">
+                <TableCell colSpan={6} className="text-center py-8">
                   <div className="flex items-center justify-center text-slate-500">
                     <Loader2 className="w-5 h-5 animate-spin mr-2" />
                     Carregando usuários...
@@ -95,7 +115,7 @@ export function UsersList() {
               </TableRow>
             ) : users.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-slate-500">
+                <TableCell colSpan={6} className="text-center py-8 text-slate-500">
                   Nenhum usuário encontrado.
                 </TableCell>
               </TableRow>
@@ -105,7 +125,7 @@ export function UsersList() {
                   <TableCell className="font-medium">{u.name || '-'}</TableCell>
                   <TableCell>{u.email}</TableCell>
                   <TableCell>{u.cpf || '-'}</TableCell>
-                  <TableCell>{u.company_id || '-'}</TableCell>
+                  <TableCell>{u.registration_number || u.company_id || '-'}</TableCell>
                   <TableCell>
                     <Select
                       value={u.role || 'Observador'}
@@ -121,12 +141,30 @@ export function UsersList() {
                       </SelectContent>
                     </Select>
                   </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setEditingUser(u)}
+                      className="text-slate-500 hover:text-primary hover:bg-primary/10"
+                      title="Editar usuário"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))
             )}
           </TableBody>
         </Table>
       </div>
+
+      <EditUserDialog
+        isOpen={!!editingUser}
+        onClose={() => setEditingUser(null)}
+        onSave={handleSaveUser}
+        user={editingUser}
+      />
     </div>
   )
 }

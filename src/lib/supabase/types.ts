@@ -20,6 +20,7 @@ export type Database = {
           name: string
           role: string
           whatsapp: string | null
+          registration_number: string | null
         }
         Insert: {
           active?: boolean
@@ -31,6 +32,7 @@ export type Database = {
           name: string
           role?: string
           whatsapp?: string | null
+          registration_number?: string | null
         }
         Update: {
           active?: boolean
@@ -42,6 +44,7 @@ export type Database = {
           name?: string
           role?: string
           whatsapp?: string | null
+          registration_number?: string | null
         }
         Relationships: []
       }
@@ -202,6 +205,7 @@ export const Constants = {
 //   whatsapp: text (nullable)
 //   cpf: text (nullable)
 //   company_id: text (nullable)
+//   registration_number: text (nullable)
 
 // --- CONSTRAINTS ---
 // Table: profiles
