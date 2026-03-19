@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom'
 import { MetricsCards } from '@/components/dashboard/MetricsCards'
 import { DashboardCharts } from '@/components/dashboard/Charts'
 import { RecentActivity } from '@/components/dashboard/RecentActivity'
+import { Activity } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -36,6 +37,8 @@ const Index = () => {
     return <Navigate to="/nova-observacao" replace />
   }
 
+  const hasData = filteredData.length > 0
+
   return (
     <div className="w-full max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -52,13 +55,29 @@ const Index = () => {
           <SelectContent>
             <SelectItem value="30d">Últimos 30 dias</SelectItem>
             <SelectItem value="year">Este ano</SelectItem>
+            <SelectItem value="all">Todo período</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      <MetricsCards data={filteredData} />
-      <DashboardCharts data={filteredData} />
-      <RecentActivity data={filteredData} />
+      {!hasData ? (
+        <div className="flex flex-col items-center justify-center p-12 mt-6 bg-white border rounded-xl border-dashed border-slate-300">
+          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+            <Activity className="w-8 h-8 text-slate-400" />
+          </div>
+          <h3 className="text-lg font-semibold text-slate-800">Nenhum dado encontrado</h3>
+          <p className="text-slate-500 max-w-md text-center mt-2">
+            Sua empresa ainda não possui observações de segurança registradas para o período
+            selecionado.
+          </p>
+        </div>
+      ) : (
+        <>
+          <MetricsCards data={filteredData} />
+          <DashboardCharts data={filteredData} />
+          <RecentActivity data={filteredData} />
+        </>
+      )}
     </div>
   )
 }

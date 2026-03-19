@@ -29,15 +29,19 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
   const { user, loading: authLoading, signOut } = useAuth()
-  const [observations, setObservations] = useState<Observation[]>(generateMockObservations())
+  const [observations, setObservations] = useState<Observation[]>([])
   const [users, setUsers] = useState<UserProfile[]>(INITIAL_USERS)
   const [settings, setSettings] = useState<AppSettings>(INITIAL_SETTINGS)
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null)
+
   const [profileLoading, setProfileLoading] = useState(false)
+  const [observationsLoading, setObservationsLoading] = useState(false)
 
   useEffect(() => {
     if (user) {
       setProfileLoading(true)
+      setObservationsLoading(true)
+
       supabase
         .from('profiles')
         .select('*')
@@ -47,7 +51,10 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           if (data && !error) {
             const profile = data as any
             if (profile.active === false) {
-              signOut().then(() => setProfileLoading(false))
+              signOut().then(() => {
+                setProfileLoading(false)
+                setObservationsLoading(false)
+              })
               return
             }
             setCurrentUser({
@@ -59,14 +66,52 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
               registrationNumber: profile.registration_number || null,
               role: (profile.role as Role) || 'Observador',
             })
+
+            if (profile.empresa_id) {
+              supabase
+                .from('observacoes')
+                .select('*, profiles(name, whatsapp, cpf, empresa_id)')
+                .eq('empresa_id', profile.empresa_id)
+                .order('date', { ascending: false })
+                .then(({ data: obsData, error: obsErr }) => {
+                  if (obsData && !obsErr) {
+                    const mapped = obsData.map((row: any) => ({
+                      id: row.codigo || row.id,
+                      date: row.date,
+                      observer: {
+                        name: row.profiles?.name || 'Desconhecido',
+                        whatsapp: row.profiles?.whatsapp || '',
+                        cpf: row.profiles?.cpf || '',
+                        companyId: row.profiles?.empresa_id || '',
+                      },
+                      type: row.type,
+                      detail: row.detail || '',
+                      area: row.area || '',
+                      shift: row.shift || '',
+                      riskLevel: row.risk_level || '',
+                      description: row.description || '',
+                      resolutionType: row.resolution_type || '',
+                      status: row.status || 'Pendente',
+                      assignedTo: row.assigned_to,
+                    }))
+                    setObservations(mapped)
+                  }
+                  setObservationsLoading(false)
+                })
+            } else {
+              setObservationsLoading(false)
+            }
           } else {
             setCurrentUser(null)
+            setObservationsLoading(false)
           }
           setProfileLoading(false)
         })
     } else {
       setCurrentUser(null)
+      setObservations([])
       setProfileLoading(false)
+      setObservationsLoading(false)
     }
   }, [user, signOut])
 
@@ -97,11 +142,11 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
   )
   const updateSettings = useCallback((newSettings: AppSettings) => setSettings(newSettings), [])
 
-  if (authLoading || profileLoading) {
+  if (authLoading || profileLoading || observationsLoading) {
     return (
       <div className="h-screen w-screen flex flex-col items-center justify-center bg-slate-50 text-slate-500 space-y-4">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        <p className="text-sm font-medium">Carregando...</p>
+        <p className="text-sm font-medium">Carregando dados da empresa...</p>
       </div>
     )
   }

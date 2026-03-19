@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
@@ -18,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useAuth } from '@/hooks/use-auth'
+import { supabase } from '@/lib/supabase/client'
 
 const NAV_ITEMS = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['Administrador', 'Supervisor'] },
@@ -47,6 +49,20 @@ export default function Layout() {
   const { currentUser } = useMainStore()
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
+  const [companyName, setCompanyName] = useState<string>('')
+
+  useEffect(() => {
+    if (currentUser?.companyId) {
+      supabase
+        .from('empresas')
+        .select('nome')
+        .eq('id', currentUser.companyId)
+        .single()
+        .then(({ data }) => {
+          if (data?.nome) setCompanyName(data.nome)
+        })
+    }
+  }, [currentUser?.companyId])
 
   const visibleNavItems = NAV_ITEMS.filter(
     (item) => currentUser && item.roles.includes(currentUser.role),
@@ -63,11 +79,23 @@ export default function Layout() {
   return (
     <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900">
       <aside className="hidden md:flex flex-col w-64 border-r bg-white shadow-sm z-10">
-        <div className="p-6 flex items-center space-x-3 border-b">
-          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center">
-            <SettingsIcon className="w-5 h-5 text-white" />
+        <div className="p-6 flex flex-col border-b bg-slate-50/50">
+          <div className="flex items-center space-x-3 mb-2">
+            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-sm">
+              <SettingsIcon className="w-5 h-5 text-white" />
+            </div>
+            <span className="font-bold text-lg text-primary tracking-tight">MAPEAR</span>
           </div>
-          <span className="font-bold text-lg text-primary">MAPEAR</span>
+          {companyName ? (
+            <div
+              className="text-xs font-semibold text-slate-600 truncate border-t border-slate-200/60 pt-2 mt-1"
+              title={companyName}
+            >
+              {companyName}
+            </div>
+          ) : (
+            <div className="h-4 w-32 bg-slate-200 animate-pulse rounded mt-3"></div>
+          )}
         </div>
         <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
           {visibleNavItems.map((item) => {
@@ -80,7 +108,7 @@ export default function Layout() {
                 className={cn(
                   'flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors',
                   isActive
-                    ? 'bg-primary text-primary-foreground'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
                     : 'hover:bg-slate-100 text-slate-600',
                 )}
               >
@@ -94,15 +122,25 @@ export default function Layout() {
 
       <div className="flex flex-1 flex-col overflow-hidden relative">
         <header className="h-16 flex items-center justify-between px-4 md:px-8 border-b bg-white z-10">
-          <div className="flex items-center md:hidden space-x-2">
-            <div className="w-6 h-6 rounded bg-primary flex items-center justify-center">
+          <div className="flex items-center md:hidden space-x-3">
+            <div className="w-8 h-8 rounded bg-primary flex items-center justify-center shadow-sm">
               <SettingsIcon className="w-4 h-4 text-white" />
             </div>
-            <span className="font-bold text-primary">MAPEAR</span>
+            <div className="flex flex-col">
+              <span className="font-bold text-primary leading-none text-sm">MAPEAR</span>
+              {companyName && (
+                <span
+                  className="text-[10px] font-medium text-slate-500 truncate max-w-[120px] mt-0.5"
+                  title={companyName}
+                >
+                  {companyName}
+                </span>
+              )}
+            </div>
           </div>
           <div className="hidden md:flex">
             <h1 className="text-xl font-semibold text-slate-800">
-              {visibleNavItems.find((i) => i.path === location.pathname)?.name || 'MAPEAR'}
+              {visibleNavItems.find((i) => i.path === location.pathname)?.name || 'Dashboard'}
             </h1>
           </div>
           <div className="flex items-center space-x-2 md:space-x-4">
@@ -125,6 +163,11 @@ export default function Layout() {
                     >
                       {displayEmail}
                     </p>
+                    {companyName && (
+                      <p className="text-xs font-medium text-slate-500 mt-1 pb-1 border-b truncate">
+                        {companyName}
+                      </p>
+                    )}
                     {currentUser?.role && (
                       <p className="text-xs mt-1 font-semibold text-primary">{currentUser.role}</p>
                     )}

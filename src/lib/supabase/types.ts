@@ -9,13 +9,43 @@ export type Database = {
   }
   public: {
     Tables: {
+      empresas: {
+        Row: {
+          ativa: boolean
+          cnpj: string | null
+          data_criacao: string
+          email_contato: string | null
+          id: string
+          nome: string
+          telefone: string | null
+        }
+        Insert: {
+          ativa?: boolean
+          cnpj?: string | null
+          data_criacao?: string
+          email_contato?: string | null
+          id?: string
+          nome: string
+          telefone?: string | null
+        }
+        Update: {
+          ativa?: boolean
+          cnpj?: string | null
+          data_criacao?: string
+          email_contato?: string | null
+          id?: string
+          nome?: string
+          telefone?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           active: boolean
-          company_id: string | null
           cpf: string | null
           created_at: string
           email: string
+          empresa_id: string | null
           id: string
           name: string
           registration_number: string | null
@@ -24,10 +54,10 @@ export type Database = {
         }
         Insert: {
           active?: boolean
-          company_id?: string | null
           cpf?: string | null
           created_at?: string
           email: string
+          empresa_id?: string | null
           id: string
           name: string
           registration_number?: string | null
@@ -36,17 +66,25 @@ export type Database = {
         }
         Update: {
           active?: boolean
-          company_id?: string | null
           cpf?: string | null
           created_at?: string
           email?: string
+          empresa_id?: string | null
           id?: string
           name?: string
           registration_number?: string | null
           role?: string
           whatsapp?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'profiles_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          },
+        ]
       }
     }
     Views: {
@@ -195,6 +233,14 @@ export const Constants = {
 // --- COLUMN TYPES (actual PostgreSQL types) ---
 // Use this to know the real database type when writing migrations.
 // "string" in TypeScript types above may be uuid, text, varchar, timestamptz, etc.
+// Table: empresas
+//   id: uuid (not null, default: gen_random_uuid())
+//   nome: text (not null)
+//   cnpj: text (nullable)
+//   email_contato: text (nullable)
+//   telefone: text (nullable)
+//   data_criacao: timestamp with time zone (not null, default: now())
+//   ativa: boolean (not null, default: true)
 // Table: profiles
 //   id: uuid (not null)
 //   email: text (not null)
@@ -204,16 +250,25 @@ export const Constants = {
 //   role: text (not null, default: 'Observador'::text)
 //   whatsapp: text (nullable)
 //   cpf: text (nullable)
-//   company_id: text (nullable)
 //   registration_number: text (nullable)
+//   empresa_id: uuid (nullable)
 
 // --- CONSTRAINTS ---
+// Table: empresas
+//   PRIMARY KEY empresas_pkey: PRIMARY KEY (id)
 // Table: profiles
 //   UNIQUE profiles_email_key: UNIQUE (email)
+//   FOREIGN KEY profiles_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id)
 //   FOREIGN KEY profiles_id_fkey: FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE
 //   PRIMARY KEY profiles_pkey: PRIMARY KEY (id)
 
 // --- ROW LEVEL SECURITY POLICIES ---
+// Table: empresas
+//   Policy "Admins can manage all companies" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_admin()
+//     WITH CHECK: is_admin()
+//   Policy "Users can view their own company" (SELECT, PERMISSIVE) roles={authenticated}
+//     USING: (id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
 // Table: profiles
 //   Policy "Admin can update all profiles" (UPDATE, PERMISSIVE) roles={authenticated}
 //     USING: is_admin()
