@@ -98,7 +98,7 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11999999999',
     cpf: '123.456.789-00',
     companyId: 'EMP-01',
-    role: 'Segurança',
+    role: 'Administrador',
   },
   {
     id: 'USR-02',
@@ -106,7 +106,7 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11888888888',
     cpf: '098.765.432-11',
     companyId: 'EMP-02',
-    role: 'Supervisão',
+    role: 'Supervisor',
   },
   {
     id: 'USR-03',
@@ -138,6 +138,6 @@ export const INITIAL_USERS: UserProfile[] = [
     whatsapp: '11444444444',
     cpf: '444.555.666-77',
     companyId: 'EMP-03',
-    role: 'Supervisão',
+    role: 'Supervisor',
   },
 ]

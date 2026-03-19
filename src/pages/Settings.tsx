@@ -8,7 +8,7 @@ import { useMainStore } from '@/stores/main'
 export default function Settings() {
   const { currentUser } = useMainStore()
 
-  if (currentUser?.role !== 'Segurança') {
+  if (currentUser?.role !== 'Administrador') {
     return <Navigate to="/" replace />
   }
 

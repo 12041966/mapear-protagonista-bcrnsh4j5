@@ -12,24 +12,36 @@ export type Database = {
       profiles: {
         Row: {
           active: boolean
+          company_id: string | null
+          cpf: string | null
           created_at: string
           email: string
           id: string
           name: string
+          role: string
+          whatsapp: string | null
         }
         Insert: {
           active?: boolean
+          company_id?: string | null
+          cpf?: string | null
           created_at?: string
           email: string
           id: string
           name: string
+          role?: string
+          whatsapp?: string | null
         }
         Update: {
           active?: boolean
+          company_id?: string | null
+          cpf?: string | null
           created_at?: string
           email?: string
           id?: string
           name?: string
+          role?: string
+          whatsapp?: string | null
         }
         Relationships: []
       }
@@ -186,6 +198,10 @@ export const Constants = {
 //   name: text (not null)
 //   active: boolean (not null, default: true)
 //   created_at: timestamp with time zone (not null, default: now())
+//   role: text (not null, default: 'Observador'::text)
+//   whatsapp: text (nullable)
+//   cpf: text (nullable)
+//   company_id: text (nullable)
 
 // --- CONSTRAINTS ---
 // Table: profiles
@@ -206,12 +222,13 @@ export const Constants = {
 //    SECURITY DEFINER
 //   AS $function$
 //   BEGIN
-//     INSERT INTO public.profiles (id, email, name, active)
+//     INSERT INTO public.profiles (id, email, name, active, role)
 //     VALUES (
 //       NEW.id,
 //       NEW.email,
 //       COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
-//       true
+//       true,
+//       COALESCE(NEW.raw_user_meta_data->>'role', 'Observador')
 //     );
 //     RETURN NEW;
 //   END;

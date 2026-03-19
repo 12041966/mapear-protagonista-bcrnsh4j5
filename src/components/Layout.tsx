@@ -30,12 +30,12 @@ import {
 import { useAuth } from '@/hooks/use-auth'
 
 const NAV_ITEMS = [
-  { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['Segurança', 'Supervisão'] },
+  { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['Administrador', 'Supervisor'] },
   {
     name: 'Nova Observação',
     path: '/nova-observacao',
     icon: PlusCircle,
-    roles: ['Segurança', 'Supervisão', 'Observador'],
+    roles: ['Administrador', 'Supervisor', 'Observador'],
   },
   {
     name: 'Minhas Observações',
@@ -47,9 +47,9 @@ const NAV_ITEMS = [
     name: 'Gestão de Relatos',
     path: '/gestao',
     icon: ListTodo,
-    roles: ['Segurança', 'Supervisão'],
+    roles: ['Administrador', 'Supervisor'],
   },
-  { name: 'Configurações', path: '/settings', icon: SettingsIcon, roles: ['Segurança'] },
+  { name: 'Configurações', path: '/settings', icon: SettingsIcon, roles: ['Administrador'] },
 ]
 
 export default function Layout() {

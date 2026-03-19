@@ -2,7 +2,7 @@ export type ObsStatus = 'Pendente' | 'Em Análise' | 'Concluído'
 
 export type ResolutionType = 'Feedback fornecido' | 'Ação tomada' | 'Ação necessária'
 
-export type Role = 'Segurança' | 'Supervisão' | 'Observador'
+export type Role = 'Administrador' | 'Supervisor' | 'Observador'
 
 export interface UserProfile {
   id: string
