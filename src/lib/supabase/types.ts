@@ -50,6 +50,7 @@ export type Database = {
           detail: string | null
           empresa_id: string
           id: string
+          manager_comments: string | null
           resolution_type: string | null
           risk_level: string | null
           shift: string | null
@@ -67,6 +68,7 @@ export type Database = {
           detail?: string | null
           empresa_id: string
           id?: string
+          manager_comments?: string | null
           resolution_type?: string | null
           risk_level?: string | null
           shift?: string | null
@@ -84,6 +86,7 @@ export type Database = {
           detail?: string | null
           empresa_id?: string
           id?: string
+          manager_comments?: string | null
           resolution_type?: string | null
           risk_level?: string | null
           shift?: string | null
@@ -328,6 +331,7 @@ export const Constants = {
 //   status: text (not null, default: 'Pendente'::text)
 //   assigned_to: text (nullable)
 //   created_at: timestamp with time zone (not null, default: now())
+//   manager_comments: text (nullable)
 // Table: profiles
 //   id: uuid (not null)
 //   email: text (not null)

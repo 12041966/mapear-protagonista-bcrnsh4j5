@@ -3,7 +3,8 @@ import { useMainStore } from '@/stores/main'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Trash2, Plus } from 'lucide-react'
+import { Trash2, Plus, Loader2 } from 'lucide-react'
+import { supabase } from '@/lib/supabase/client'
 
 const TABS = [
   { id: 'observationTypes', name: 'Tipos de Observação' },
@@ -15,27 +16,55 @@ const TABS = [
 ]
 
 export function SystemTables() {
-  const { settings, updateSettings } = useMainStore()
+  const { settings, updateSettings, currentUser } = useMainStore()
   const [active, setActive] = useState('areas')
   const [newItem, setNewItem] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
 
-  const handleAdd = () => {
+  const saveCategory = async (category: string, list: any[]) => {
+    if (!currentUser?.companyId) return
+    setIsSaving(true)
+
+    // Remove old configurations for the category
+    await supabase
+      .from('configuracoes_sistema')
+      .delete()
+      .eq('empresa_id', currentUser.companyId)
+      .eq('categoria', category)
+
+    // Insert new full list
+    if (list.length > 0) {
+      const inserts = list.map((item) => ({
+        empresa_id: currentUser.companyId,
+        categoria: category,
+        chave: typeof item === 'string' ? item : item.value,
+        valor: typeof item === 'string' ? item : JSON.stringify(item),
+      }))
+      await supabase.from('configuracoes_sistema').insert(inserts)
+    }
+
+    // Sync Store
+    updateSettings({ ...settings, [category]: list })
+    setIsSaving(false)
+  }
+
+  const handleAdd = async () => {
     if (!newItem.trim()) return
-    const list = settings[active as keyof typeof settings] as string[]
-    updateSettings({ ...settings, [active]: [...list, newItem.trim()] })
+    const list = [...(settings[active as keyof typeof settings] as string[]), newItem.trim()]
+    await saveCategory(active, list)
     setNewItem('')
   }
 
-  const handleRemove = (idx: number) => {
+  const handleRemove = async (idx: number) => {
     const list = [...(settings[active as keyof typeof settings] as any[])]
     list.splice(idx, 1)
-    updateSettings({ ...settings, [active]: list })
+    await saveCategory(active, list)
   }
 
-  const updateObsType = (idx: number, field: string, val: string) => {
+  const updateObsType = async (idx: number, field: string, val: string) => {
     const list = [...settings.observationTypes]
     list[idx] = { ...list[idx], [field]: val }
-    updateSettings({ ...settings, observationTypes: list })
+    await saveCategory('observationTypes', list)
   }
 
   return (
@@ -47,12 +76,19 @@ export function SystemTables() {
             variant={active === t.id ? 'default' : 'ghost'}
             className="justify-start font-normal"
             onClick={() => setActive(t.id)}
+            disabled={isSaving}
           >
             {t.name}
           </Button>
         ))}
       </div>
-      <div className="bg-white p-6 rounded-lg border shadow-sm">
+      <div className="bg-white p-6 rounded-lg border shadow-sm relative">
+        {isSaving && (
+          <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] flex items-center justify-center z-10 rounded-lg">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        )}
+
         <h3 className="text-lg font-medium mb-6">{TABS.find((t) => t.id === active)?.name}</h3>
 
         {active === 'observationTypes' ? (
@@ -87,8 +123,9 @@ export function SystemTables() {
                 value={newItem}
                 onChange={(e) => setNewItem(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
+                disabled={isSaving}
               />
-              <Button onClick={handleAdd} className="shrink-0">
+              <Button onClick={handleAdd} className="shrink-0" disabled={isSaving}>
                 <Plus className="w-4 h-4 mr-2" /> Adicionar
               </Button>
             </div>
@@ -104,6 +141,7 @@ export function SystemTables() {
                     size="icon"
                     onClick={() => handleRemove(i)}
                     className="h-8 w-8 text-slate-400 hover:text-red-600 hover:bg-red-50"
+                    disabled={isSaving}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>

@@ -76,38 +76,86 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           })
 
           if (profile.empresa_id) {
-            supabase
-              .from('observacoes')
-              .select('*, profiles(name, whatsapp, cpf, empresa_id)')
-              .eq('empresa_id', profile.empresa_id)
-              .order('date', { ascending: false })
-              .then(({ data: obsData, error: obsErr }) => {
-                if (obsData && !obsErr) {
-                  setObservations(
-                    obsData.map((row: any) => ({
-                      id: row.codigo || row.id,
-                      date: row.date,
-                      observer: {
-                        name: row.profiles?.name || 'Desconhecido',
-                        whatsapp: row.profiles?.whatsapp || '',
-                        cpf: row.profiles?.cpf || '',
-                        companyId: row.profiles?.empresa_id || '',
-                      },
-                      type: row.type,
-                      detail: row.detail || '',
-                      area: row.area || '',
-                      shift: row.shift || '',
-                      riskLevel: row.risk_level || '',
-                      description: row.description || '',
-                      resolutionType: row.resolution_type || '',
-                      status: row.status || 'Pendente',
-                      assignedTo: row.assigned_to,
-                      managerComments: row.manager_comments,
-                    })),
-                  )
-                }
-                setObservationsLoading(false)
-              })
+            Promise.all([
+              supabase
+                .from('observacoes')
+                .select('*, profiles(name, whatsapp, cpf, empresa_id)')
+                .eq('empresa_id', profile.empresa_id)
+                .order('date', { ascending: false }),
+              supabase
+                .from('configuracoes_sistema')
+                .select('*')
+                .eq('empresa_id', profile.empresa_id)
+                .order('created_at', { ascending: true }),
+              supabase
+                .from('efetivo_mensal')
+                .select('*')
+                .eq('empresa_id', profile.empresa_id)
+                .order('ano', { ascending: false })
+                .order('mes', { ascending: false }),
+            ]).then(([obsRes, confRes, efRes]) => {
+              if (obsRes.data && !obsRes.error) {
+                setObservations(
+                  obsRes.data.map((row: any) => ({
+                    id: row.codigo || row.id,
+                    date: row.date,
+                    observer: {
+                      name: row.profiles?.name || 'Desconhecido',
+                      whatsapp: row.profiles?.whatsapp || '',
+                      cpf: row.profiles?.cpf || '',
+                      companyId: row.profiles?.empresa_id || '',
+                    },
+                    type: row.type,
+                    detail: row.detail || '',
+                    area: row.area || '',
+                    shift: row.shift || '',
+                    riskLevel: row.risk_level || '',
+                    description: row.description || '',
+                    resolutionType: row.resolution_type || '',
+                    status: row.status || 'Pendente',
+                    assignedTo: row.assigned_to,
+                    managerComments: row.manager_comments,
+                  })),
+                )
+              }
+
+              const newSettings = { ...INITIAL_SETTINGS }
+              if (confRes.data && confRes.data.length > 0) {
+                const byCat = (cat: string) =>
+                  confRes.data.filter((c) => c.categoria === cat).map((c) => c.valor)
+
+                const areas = byCat('areas')
+                if (areas.length > 0) newSettings.areas = areas
+
+                const shifts = byCat('shifts')
+                if (shifts.length > 0) newSettings.shifts = shifts
+
+                const risks = byCat('risks')
+                if (risks.length > 0) newSettings.risks = risks
+
+                const conditions = byCat('conditions')
+                if (conditions.length > 0) newSettings.conditions = conditions
+
+                const behaviors = byCat('behaviors')
+                if (behaviors.length > 0) newSettings.behaviors = behaviors
+
+                const obsTypesStr = byCat('observationTypes')
+                if (obsTypesStr.length > 0)
+                  newSettings.observationTypes = obsTypesStr.map((s) => JSON.parse(s))
+              }
+
+              if (efRes.data) {
+                const hc: Record<string, number> = {}
+                efRes.data.forEach((e) => {
+                  const mStr = String(e.mes).padStart(2, '0')
+                  hc[`${e.ano}-${mStr}`] = e.quantidade
+                })
+                newSettings.monthlyHeadcount = hc
+              }
+
+              setSettings(newSettings)
+              setObservationsLoading(false)
+            })
           } else {
             setObservationsLoading(false)
           }

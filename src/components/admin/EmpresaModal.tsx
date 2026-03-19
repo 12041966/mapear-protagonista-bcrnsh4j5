@@ -10,9 +10,12 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Checkbox } from '@/components/ui/checkbox'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { supabase } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
 import { Tables } from '@/lib/supabase/types'
+import { Loader2 } from 'lucide-react'
 
 type Empresa = Tables<'empresas'>
 
@@ -28,7 +31,29 @@ const INITIAL_STATE = { nome: '', cnpj: '', email_contato: '', telefone: '' }
 export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) {
   const [formData, setFormData] = useState(INITIAL_STATE)
   const [loading, setLoading] = useState(false)
+  const [admins, setAdmins] = useState<any[]>([])
+  const [selectedAdmins, setSelectedAdmins] = useState<string[]>([])
   const { toast } = useToast()
+
+  useEffect(() => {
+    const fetchAdmins = async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('id, name, email, empresa_id')
+        .eq('role', 'Administrador')
+        .order('name')
+
+      if (data) {
+        setAdmins(data)
+        if (empresa) {
+          setSelectedAdmins(data.filter((a) => a.empresa_id === empresa.id).map((a) => a.id))
+        } else {
+          setSelectedAdmins([])
+        }
+      }
+    }
+    if (open) fetchAdmins()
+  }, [open, empresa])
 
   useEffect(() => {
     if (empresa && open) {
@@ -56,6 +81,7 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
 
     setLoading(true)
     let error
+    let targetEmpresaId = empresa?.id
 
     if (empresa) {
       const { error: updateError } = await supabase
@@ -64,10 +90,33 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
         .eq('id', empresa.id)
       error = updateError
     } else {
-      const { error: insertError } = await supabase
+      const { data, error: insertError } = await supabase
         .from('empresas')
         .insert([{ ...formData, ativa: true }])
+        .select()
       error = insertError
+      if (data && data.length > 0) {
+        targetEmpresaId = data[0].id
+      }
+    }
+
+    if (!error && targetEmpresaId) {
+      if (empresa) {
+        const originallySelected = admins
+          .filter((a) => a.empresa_id === empresa.id)
+          .map((a) => a.id)
+        const toRemove = originallySelected.filter((id) => !selectedAdmins.includes(id))
+        if (toRemove.length > 0) {
+          await supabase.from('profiles').update({ empresa_id: null }).in('id', toRemove)
+        }
+      }
+
+      if (selectedAdmins.length > 0) {
+        await supabase
+          .from('profiles')
+          .update({ empresa_id: targetEmpresaId })
+          .in('id', selectedAdmins)
+      }
     }
 
     setLoading(false)
@@ -90,17 +139,17 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>{empresa ? 'Editar Empresa' : 'Nova Empresa'}</DialogTitle>
             <DialogDescription>
               {empresa
-                ? 'Atualize os dados da empresa abaixo.'
-                : 'Preencha os dados para cadastrar uma nova empresa no sistema.'}
+                ? 'Atualize os dados e vincule administradores da empresa.'
+                : 'Preencha os dados e vincule administradores no sistema.'}
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
+          <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto pr-2">
             <div className="grid gap-2">
               <Label htmlFor="nome">Nome da Empresa *</Label>
               <Input
@@ -111,14 +160,25 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
                 required
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="cnpj">CNPJ</Label>
-              <Input
-                id="cnpj"
-                value={formData.cnpj}
-                onChange={(e) => setFormData((prev) => ({ ...prev, cnpj: e.target.value }))}
-                placeholder="00.000.000/0000-00"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="cnpj">CNPJ</Label>
+                <Input
+                  id="cnpj"
+                  value={formData.cnpj}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, cnpj: e.target.value }))}
+                  placeholder="00.000.000/0000-00"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="telefone">Telefone</Label>
+                <Input
+                  id="telefone"
+                  value={formData.telefone}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, telefone: e.target.value }))}
+                  placeholder="(00) 0000-0000"
+                />
+              </div>
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email de Contato</Label>
@@ -132,14 +192,40 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
                 placeholder="contato@empresa.com"
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="telefone">Telefone</Label>
-              <Input
-                id="telefone"
-                value={formData.telefone}
-                onChange={(e) => setFormData((prev) => ({ ...prev, telefone: e.target.value }))}
-                placeholder="(00) 0000-0000"
-              />
+
+            <div className="grid gap-2 pt-2 border-t mt-2">
+              <Label>Administradores Associados</Label>
+              <ScrollArea className="h-40 w-full border rounded-md p-3">
+                {admins.length === 0 ? (
+                  <p className="text-sm text-slate-500 text-center py-4">
+                    Nenhum perfil "Administrador" encontrado.
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {admins.map((admin) => (
+                      <div key={admin.id} className="flex flex-row items-start space-x-3">
+                        <Checkbox
+                          id={`admin-${admin.id}`}
+                          checked={selectedAdmins.includes(admin.id)}
+                          onCheckedChange={(checked) => {
+                            if (checked) setSelectedAdmins((prev) => [...prev, admin.id])
+                            else setSelectedAdmins((prev) => prev.filter((id) => id !== admin.id))
+                          }}
+                        />
+                        <div className="grid gap-1.5 leading-none">
+                          <label
+                            htmlFor={`admin-${admin.id}`}
+                            className="text-sm font-medium leading-none cursor-pointer"
+                          >
+                            {admin.name}
+                          </label>
+                          <p className="text-xs text-slate-500">{admin.email}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ScrollArea>
             </div>
           </div>
           <DialogFooter>
@@ -152,6 +238,7 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
               Cancelar
             </Button>
             <Button type="submit" disabled={loading}>
+              {loading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
               {loading ? 'Salvando...' : 'Salvar'}
             </Button>
           </DialogFooter>

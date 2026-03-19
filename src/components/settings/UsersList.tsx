@@ -19,20 +19,30 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2, Edit2 } from 'lucide-react'
 import { EditUserDialog } from './EditUserDialog'
+import { useMainStore } from '@/stores/main'
 
 export function UsersList() {
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [editingUser, setEditingUser] = useState<any | null>(null)
   const { toast } = useToast()
+  const { currentUser } = useMainStore()
 
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    if (currentUser?.companyId) {
+      fetchUsers()
+    }
+  }, [currentUser])
 
   const fetchUsers = async () => {
+    if (!currentUser?.companyId) return
     setLoading(true)
-    const { data, error } = await supabase.from('profiles').select('*').order('name')
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('empresa_id', currentUser.companyId)
+      .order('name')
+
     if (data) {
       setUsers(data)
     } else if (error) {
@@ -87,7 +97,7 @@ export function UsersList() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <p className="text-sm text-slate-500">
-          Gerencie acessos e informações dos usuários da plataforma.
+          Gerencie acessos e informações dos usuários da sua empresa.
         </p>
       </div>
 
@@ -116,7 +126,7 @@ export function UsersList() {
             ) : users.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} className="text-center py-8 text-slate-500">
-                  Nenhum usuário encontrado.
+                  Nenhum usuário encontrado na sua empresa.
                 </TableCell>
               </TableRow>
             ) : (
