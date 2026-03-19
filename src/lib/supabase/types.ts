@@ -236,6 +236,7 @@ export type Database = {
       get_user_empresa_id: { Args: never; Returns: string }
       is_admin: { Args: never; Returns: boolean }
       is_company_admin: { Args: { check_empresa_id: string }; Returns: boolean }
+      is_super_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
@@ -451,10 +452,16 @@ export const Constants = {
 
 // --- ROW LEVEL SECURITY POLICIES ---
 // Table: configuracoes_sistema
+//   Policy "Super admins can do all on configuracoes_sistema" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
 //   Policy "Users can manage system configs for their company" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
 //     WITH CHECK: ((empresa_id = get_user_empresa_id()) OR is_admin())
 // Table: efetivo_mensal
+//   Policy "Super admins can do all on efetivo_mensal" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
 //   Policy "Users can manage headcount for their company" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
 //     WITH CHECK: ((empresa_id = get_user_empresa_id()) OR is_admin())
@@ -462,9 +469,15 @@ export const Constants = {
 //   Policy "Admins can manage all companies" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: is_admin()
 //     WITH CHECK: is_admin()
+//   Policy "Super admins can do all on empresas" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
 //   Policy "Users can view their own company" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: (id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
 // Table: observacoes
+//   Policy "Super admins can do all on observacoes" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
 //   Policy "Users can access their company's observations" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: (empresa_id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
 //     WITH CHECK: (empresa_id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
@@ -472,6 +485,9 @@ export const Constants = {
 //   Policy "Company admins can update profiles in their company" (UPDATE, PERMISSIVE) roles={authenticated}
 //     USING: (is_company_admin(empresa_id) OR is_admin())
 //     WITH CHECK: (is_company_admin(empresa_id) OR is_admin())
+//   Policy "Super admins can do all on profiles" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
 //   Policy "Users can view profiles in their company" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: ((empresa_id = get_user_empresa_id()) OR (id = auth.uid()) OR is_admin())
 
@@ -515,7 +531,7 @@ export const Constants = {
 //       SELECT EXISTS (
 //         SELECT 1
 //         FROM public.profiles
-//         WHERE id = auth.uid() AND role = 'Administrador'
+//         WHERE id = auth.uid() AND email = 'ferbatsan@hotmail.com'
 //       );
 //     $function$
 //
@@ -531,6 +547,19 @@ export const Constants = {
 //       WHERE id = auth.uid() AND role = 'Administrador' AND empresa_id = check_empresa_id
 //     );
 //   $function$
+//
+// FUNCTION is_super_admin()
+//   CREATE OR REPLACE FUNCTION public.is_super_admin()
+//    RETURNS boolean
+//    LANGUAGE sql
+//    SECURITY DEFINER
+//   AS $function$
+//       SELECT EXISTS (
+//         SELECT 1
+//         FROM public.profiles
+//         WHERE id = auth.uid() AND email = 'ferbatsan@hotmail.com'
+//       );
+//     $function$
 //
 
 // --- INDEXES ---

@@ -6,7 +6,6 @@ import {
   ListTodo,
   Settings as SettingsIcon,
   LogOut,
-  Users,
   Globe,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -49,12 +48,6 @@ const NAV_ITEMS = [
     path: '/gestao',
     icon: ListTodo,
     roles: ['Administrador', 'Supervisor'],
-  },
-  {
-    name: 'Usuários',
-    path: '/usuarios',
-    icon: Users,
-    roles: ['Administrador'],
   },
   {
     name: 'Config. Globais',

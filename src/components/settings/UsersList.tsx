@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabase/client'
 import {
   Table,
@@ -16,8 +16,20 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
+import { Badge } from '@/components/ui/badge'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog'
 import { useToast } from '@/hooks/use-toast'
-import { Loader2, Edit2 } from 'lucide-react'
+import { Loader2, Edit2, Plus } from 'lucide-react'
 import { EditUserDialog } from './EditUserDialog'
 import { useMainStore } from '@/stores/main'
 
@@ -25,27 +37,29 @@ export function UsersList() {
   const [users, setUsers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [editingUser, setEditingUser] = useState<any | null>(null)
+
+  const [isInviteOpen, setIsInviteOpen] = useState(false)
+  const [inviteName, setInviteName] = useState('')
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteRole, setInviteRole] = useState('Observador')
+  const [inviting, setInviting] = useState(false)
+
   const { toast } = useToast()
   const { currentUser, isSuperAdmin, activeCompanyId } = useMainStore()
 
   const targetCompanyId =
     isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
 
-  useEffect(() => {
-    if (targetCompanyId) {
-      fetchUsers()
-    }
-    // eslint-disable-next-react-hooks-exhaustive-deps
-  }, [targetCompanyId])
-
-  const fetchUsers = async () => {
-    if (!targetCompanyId) return
+  const fetchUsers = useCallback(async () => {
+    if (!targetCompanyId && !isSuperAdmin) return
     setLoading(true)
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('empresa_id', targetCompanyId)
-      .order('name')
+
+    let query = supabase.from('profiles').select('*, empresas(nome)').order('name')
+    if (targetCompanyId) {
+      query = query.eq('empresa_id', targetCompanyId)
+    }
+
+    const { data, error } = await query
 
     if (data) {
       setUsers(data)
@@ -57,12 +71,25 @@ export function UsersList() {
       })
     }
     setLoading(false)
-  }
+  }, [targetCompanyId, isSuperAdmin, toast])
+
+  useEffect(() => {
+    if (currentUser?.role === 'Administrador' || isSuperAdmin) {
+      fetchUsers()
+    }
+  }, [currentUser, isSuperAdmin, fetchUsers])
 
   const handleRoleChange = async (userId: string, newRole: string) => {
+    const oldUser = users.find((u) => u.id === userId)
+    if (!oldUser) return
+    const oldRole = oldUser.role
+
     setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u)))
 
-    const { error } = await supabase.from('profiles').update({ role: newRole }).eq('id', userId)
+    let query = supabase.from('profiles').update({ role: newRole }).eq('id', userId)
+    if (!isSuperAdmin) query = query.eq('empresa_id', currentUser?.companyId)
+
+    const { error } = await query
 
     if (error) {
       toast({
@@ -70,11 +97,31 @@ export function UsersList() {
         title: 'Erro ao atualizar perfil',
         description: error.message,
       })
-      fetchUsers()
+      setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, role: oldRole } : u)))
     } else {
       toast({
         title: 'Perfil atualizado',
         description: 'O nível de acesso foi alterado com sucesso.',
+      })
+    }
+  }
+
+  const handleToggleStatus = async (user: any) => {
+    const newStatus = !user.active
+    setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, active: newStatus } : u)))
+
+    let query = supabase.from('profiles').update({ active: newStatus }).eq('id', user.id)
+    if (!isSuperAdmin) query = query.eq('empresa_id', currentUser?.companyId)
+
+    const { error } = await query
+
+    if (error) {
+      toast({ variant: 'destructive', title: 'Erro', description: 'Falha ao alterar status.' })
+      setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, active: user.active } : u)))
+    } else {
+      toast({
+        title: 'Sucesso',
+        description: `Acesso do usuário ${newStatus ? 'ativado' : 'desativado'}.`,
       })
     }
   }
@@ -97,12 +144,58 @@ export function UsersList() {
     }
   }
 
+  const handleInvite = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!inviteEmail || !inviteName) return
+
+    setInviting(true)
+    const { data, error } = await supabase.functions.invoke('invite-user', {
+      body: {
+        email: inviteEmail,
+        name: inviteName,
+        role: inviteRole,
+        empresa_id: targetCompanyId,
+      },
+    })
+
+    setInviting(false)
+
+    if (error || data?.error) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao convidar',
+        description: data?.error || error?.message || 'Falha ao enviar convite.',
+      })
+    } else {
+      toast({
+        title: 'Convite enviado',
+        description: `Um email com instruções foi enviado para ${inviteEmail}.`,
+      })
+      setIsInviteOpen(false)
+      setInviteName('')
+      setInviteEmail('')
+      setInviteRole('Observador')
+      fetchUsers()
+    }
+  }
+
+  const canInvite = isSuperAdmin ? activeCompanyId !== 'all' : true
+
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <p className="text-sm text-slate-500">
-          Gerencie acessos e informações dos usuários da empresa.
+          Gerencie acessos, informações e convites dos usuários da empresa.
         </p>
+        <Button
+          onClick={() => setIsInviteOpen(true)}
+          disabled={!canInvite}
+          title={!canInvite ? 'Selecione uma empresa para convidar usuários' : ''}
+          className="flex items-center gap-2 shadow-sm"
+        >
+          <Plus className="w-4 h-4" />
+          Convidar Usuário
+        </Button>
       </div>
 
       <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
@@ -111,16 +204,19 @@ export function UsersList() {
             <TableRow>
               <TableHead>Nome</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>CPF</TableHead>
-              <TableHead>Matrícula</TableHead>
-              <TableHead>Perfil de Acesso</TableHead>
+              {isSuperAdmin && activeCompanyId === 'all' && <TableHead>Empresa</TableHead>}
+              <TableHead>Perfil</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead className="w-[80px]">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8">
+                <TableCell
+                  colSpan={isSuperAdmin && activeCompanyId === 'all' ? 6 : 5}
+                  className="text-center py-8"
+                >
                   <div className="flex items-center justify-center text-slate-500">
                     <Loader2 className="w-5 h-5 animate-spin mr-2" />
                     Carregando usuários...
@@ -129,17 +225,23 @@ export function UsersList() {
               </TableRow>
             ) : users.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-slate-500">
+                <TableCell
+                  colSpan={isSuperAdmin && activeCompanyId === 'all' ? 6 : 5}
+                  className="text-center py-8 text-slate-500"
+                >
                   Nenhum usuário encontrado na sua empresa.
                 </TableCell>
               </TableRow>
             ) : (
               users.map((u) => (
                 <TableRow key={u.id} className="hover:bg-slate-50/50">
-                  <TableCell className="font-medium">{u.name || '-'}</TableCell>
-                  <TableCell>{u.email}</TableCell>
-                  <TableCell>{u.cpf || '-'}</TableCell>
-                  <TableCell>{u.registration_number || u.company_id || '-'}</TableCell>
+                  <TableCell className="font-medium text-slate-900">{u.name || '-'}</TableCell>
+                  <TableCell className="text-slate-600">{u.email}</TableCell>
+                  {isSuperAdmin && activeCompanyId === 'all' && (
+                    <TableCell className="text-slate-600 text-xs">
+                      {u.empresas?.nome || '-'}
+                    </TableCell>
+                  )}
                   <TableCell>
                     <Select
                       value={u.role || 'Observador'}
@@ -154,6 +256,19 @@ export function UsersList() {
                         <SelectItem value="Observador">Observador</SelectItem>
                       </SelectContent>
                     </Select>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Switch checked={u.active} onCheckedChange={() => handleToggleStatus(u)} />
+                      <Badge
+                        variant={u.active ? 'default' : 'secondary'}
+                        className={
+                          u.active ? 'bg-emerald-500 hover:bg-emerald-600' : 'text-slate-500'
+                        }
+                      >
+                        {u.active ? 'Ativo' : 'Inativo'}
+                      </Badge>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Button
@@ -179,6 +294,73 @@ export function UsersList() {
         onSave={handleSaveUser}
         user={editingUser}
       />
+
+      <Dialog open={isInviteOpen} onOpenChange={setIsInviteOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Convidar Novo Usuário</DialogTitle>
+            <DialogDescription>
+              Preencha os dados abaixo para adicionar um novo membro à plataforma.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleInvite} className="space-y-4 py-2">
+            <div className="space-y-2">
+              <Label htmlFor="inviteName">Nome Completo</Label>
+              <Input
+                id="inviteName"
+                placeholder="Ex: João da Silva"
+                value={inviteName}
+                onChange={(e) => setInviteName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="inviteEmail">Endereço de Email</Label>
+              <Input
+                id="inviteEmail"
+                type="email"
+                placeholder="nome@empresa.com.br"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="inviteRole">Perfil de Acesso</Label>
+              <Select value={inviteRole} onValueChange={setInviteRole}>
+                <SelectTrigger id="inviteRole" className="bg-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Administrador">Administrador</SelectItem>
+                  <SelectItem value="Supervisor">Supervisor</SelectItem>
+                  <SelectItem value="Observador">Observador</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <DialogFooter className="pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsInviteOpen(false)}
+                disabled={inviting}
+              >
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={inviting || !inviteEmail || !inviteName}>
+                {inviting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Enviando...
+                  </>
+                ) : (
+                  'Enviar Convite'
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

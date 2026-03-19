@@ -19,7 +19,6 @@ import Settings from '@/pages/Settings'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
 import GlobalSettings from '@/pages/admin/GlobalSettings'
-import Usuarios from '@/pages/Usuarios'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth()
@@ -325,7 +324,7 @@ const App = () => {
                 <Route path="/nova-observacao" element={<NovaObservacao />} />
                 <Route path="/minhas-observacoes" element={<MinhasObservacoes />} />
                 <Route path="/gestao" element={<Gestao />} />
-                <Route path="/usuarios" element={<Usuarios />} />
+                <Route path="/usuarios" element={<Navigate to="/settings" replace />} />
                 <Route path="/configuracoes-globais" element={<GlobalSettings />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
