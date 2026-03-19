@@ -160,7 +160,9 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_user_empresa_id: { Args: never; Returns: string }
       is_admin: { Args: never; Returns: boolean }
+      is_company_admin: { Args: { check_empresa_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
@@ -364,33 +366,42 @@ export const Constants = {
 //     USING: (empresa_id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
 //     WITH CHECK: (empresa_id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
 // Table: profiles
-//   Policy "Admin can update all profiles" (UPDATE, PERMISSIVE) roles={authenticated}
-//     USING: is_admin()
-//     WITH CHECK: is_admin()
-//   Policy "Admin can view all profiles" (SELECT, PERMISSIVE) roles={authenticated}
-//     USING: is_admin()
-//   Policy "Users can view own profile" (SELECT, PERMISSIVE) roles={authenticated}
-//     USING: (auth.uid() = id)
+//   Policy "Company admins can update profiles in their company" (UPDATE, PERMISSIVE) roles={authenticated}
+//     USING: (is_company_admin(empresa_id) OR is_admin())
+//     WITH CHECK: (is_company_admin(empresa_id) OR is_admin())
+//   Policy "Users can view profiles in their company" (SELECT, PERMISSIVE) roles={authenticated}
+//     USING: ((empresa_id = get_user_empresa_id()) OR (id = auth.uid()) OR is_admin())
 
 // --- DATABASE FUNCTIONS ---
+// FUNCTION get_user_empresa_id()
+//   CREATE OR REPLACE FUNCTION public.get_user_empresa_id()
+//    RETURNS uuid
+//    LANGUAGE sql
+//    SECURITY DEFINER
+//    SET search_path TO 'public'
+//   AS $function$
+//     SELECT empresa_id FROM profiles WHERE id = auth.uid();
+//   $function$
+//
 // FUNCTION handle_new_user()
 //   CREATE OR REPLACE FUNCTION public.handle_new_user()
 //    RETURNS trigger
 //    LANGUAGE plpgsql
 //    SECURITY DEFINER
 //   AS $function$
-//     BEGIN
-//       INSERT INTO public.profiles (id, email, name, active, role)
-//       VALUES (
-//         NEW.id,
-//         NEW.email,
-//         COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
-//         true,
-//         COALESCE(NEW.raw_user_meta_data->>'role', 'Observador')
-//       );
-//       RETURN NEW;
-//     END;
-//     $function$
+//   BEGIN
+//     INSERT INTO public.profiles (id, email, name, active, role, empresa_id)
+//     VALUES (
+//       NEW.id,
+//       NEW.email,
+//       COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
+//       true,
+//       COALESCE(NEW.raw_user_meta_data->>'role', 'Observador'),
+//       NULLIF(NEW.raw_user_meta_data->>'empresa_id', '')::uuid
+//     );
+//     RETURN NEW;
+//   END;
+//   $function$
 //
 // FUNCTION is_admin()
 //   CREATE OR REPLACE FUNCTION public.is_admin()
@@ -404,6 +415,19 @@ export const Constants = {
 //         WHERE id = auth.uid() AND role = 'Administrador'
 //       );
 //     $function$
+//
+// FUNCTION is_company_admin(uuid)
+//   CREATE OR REPLACE FUNCTION public.is_company_admin(check_empresa_id uuid)
+//    RETURNS boolean
+//    LANGUAGE sql
+//    SECURITY DEFINER
+//    SET search_path TO 'public'
+//   AS $function$
+//     SELECT EXISTS (
+//       SELECT 1 FROM profiles
+//       WHERE id = auth.uid() AND role = 'Administrador' AND empresa_id = check_empresa_id
+//     );
+//   $function$
 //
 
 // --- INDEXES ---

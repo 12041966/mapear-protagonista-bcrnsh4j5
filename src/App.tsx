@@ -4,7 +4,6 @@ import { Toaster } from '@/components/ui/toaster'
 import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { StoreContext } from '@/stores/main'
-import { generateMockObservations } from '@/stores/main'
 import { INITIAL_SETTINGS, INITIAL_USERS } from '@/lib/constants'
 import { Observation, UserProfile, AppSettings, Role } from '@/types'
 import { AuthProvider, useAuth } from '@/hooks/use-auth'
@@ -20,6 +19,7 @@ import Settings from '@/pages/Settings'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
 import Empresas from '@/pages/admin/Empresas'
+import Usuarios from '@/pages/Usuarios'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth()
@@ -194,6 +194,7 @@ const App = () => {
                 <Route path="/nova-observacao" element={<NovaObservacao />} />
                 <Route path="/minhas-observacoes" element={<MinhasObservacoes />} />
                 <Route path="/gestao" element={<Gestao />} />
+                <Route path="/usuarios" element={<Usuarios />} />
                 <Route path="/admin/empresas" element={<Empresas />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>

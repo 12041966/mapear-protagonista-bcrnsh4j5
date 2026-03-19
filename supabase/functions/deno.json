@@ -1,5 +1,6 @@
 {
   "_versions": {
-    "request-password-reset": 1
+    "request-password-reset": 1,
+    "invite-user": 1
   }
 }
