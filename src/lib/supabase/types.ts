@@ -39,6 +39,75 @@ export type Database = {
         }
         Relationships: []
       }
+      observacoes: {
+        Row: {
+          area: string | null
+          assigned_to: string | null
+          codigo: string
+          created_at: string
+          date: string
+          description: string | null
+          detail: string | null
+          empresa_id: string
+          id: string
+          resolution_type: string | null
+          risk_level: string | null
+          shift: string | null
+          status: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          area?: string | null
+          assigned_to?: string | null
+          codigo: string
+          created_at?: string
+          date: string
+          description?: string | null
+          detail?: string | null
+          empresa_id: string
+          id?: string
+          resolution_type?: string | null
+          risk_level?: string | null
+          shift?: string | null
+          status?: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          area?: string | null
+          assigned_to?: string | null
+          codigo?: string
+          created_at?: string
+          date?: string
+          description?: string | null
+          detail?: string | null
+          empresa_id?: string
+          id?: string
+          resolution_type?: string | null
+          risk_level?: string | null
+          shift?: string | null
+          status?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'observacoes_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'observacoes_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       profiles: {
         Row: {
           active: boolean
@@ -241,6 +310,22 @@ export const Constants = {
 //   telefone: text (nullable)
 //   data_criacao: timestamp with time zone (not null, default: now())
 //   ativa: boolean (not null, default: true)
+// Table: observacoes
+//   id: uuid (not null, default: gen_random_uuid())
+//   codigo: text (not null)
+//   empresa_id: uuid (not null)
+//   user_id: uuid (not null)
+//   date: timestamp with time zone (not null)
+//   type: text (not null)
+//   detail: text (nullable)
+//   area: text (nullable)
+//   shift: text (nullable)
+//   risk_level: text (nullable)
+//   description: text (nullable)
+//   resolution_type: text (nullable)
+//   status: text (not null, default: 'Pendente'::text)
+//   assigned_to: text (nullable)
+//   created_at: timestamp with time zone (not null, default: now())
 // Table: profiles
 //   id: uuid (not null)
 //   email: text (not null)
@@ -256,6 +341,11 @@ export const Constants = {
 // --- CONSTRAINTS ---
 // Table: empresas
 //   PRIMARY KEY empresas_pkey: PRIMARY KEY (id)
+// Table: observacoes
+//   UNIQUE observacoes_codigo_key: UNIQUE (codigo)
+//   FOREIGN KEY observacoes_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+//   PRIMARY KEY observacoes_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY observacoes_user_id_fkey: FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE
 // Table: profiles
 //   UNIQUE profiles_email_key: UNIQUE (email)
 //   FOREIGN KEY profiles_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id)
@@ -269,6 +359,10 @@ export const Constants = {
 //     WITH CHECK: is_admin()
 //   Policy "Users can view their own company" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: (id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
+// Table: observacoes
+//   Policy "Users can access their company's observations" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: (empresa_id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
+//     WITH CHECK: (empresa_id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
 // Table: profiles
 //   Policy "Admin can update all profiles" (UPDATE, PERMISSIVE) roles={authenticated}
 //     USING: is_admin()
@@ -313,5 +407,7 @@ export const Constants = {
 //
 
 // --- INDEXES ---
+// Table: observacoes
+//   CREATE UNIQUE INDEX observacoes_codigo_key ON public.observacoes USING btree (codigo)
 // Table: profiles
 //   CREATE UNIQUE INDEX profiles_email_key ON public.profiles USING btree (email)

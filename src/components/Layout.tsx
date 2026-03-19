@@ -6,6 +6,7 @@ import {
   ListTodo,
   Settings as SettingsIcon,
   LogOut,
+  Building2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -40,6 +41,12 @@ const NAV_ITEMS = [
     path: '/gestao',
     icon: ListTodo,
     roles: ['Administrador', 'Supervisor'],
+  },
+  {
+    name: 'Empresas',
+    path: '/admin/empresas',
+    icon: Building2,
+    roles: ['Administrador'],
   },
   { name: 'Configurações', path: '/settings', icon: SettingsIcon, roles: ['Administrador'] },
 ]

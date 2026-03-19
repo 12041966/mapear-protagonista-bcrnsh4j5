@@ -19,6 +19,7 @@ import Gestao from '@/pages/Gestao'
 import Settings from '@/pages/Settings'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
+import Empresas from '@/pages/admin/Empresas'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth()
@@ -193,6 +194,7 @@ const App = () => {
                 <Route path="/nova-observacao" element={<NovaObservacao />} />
                 <Route path="/minhas-observacoes" element={<MinhasObservacoes />} />
                 <Route path="/gestao" element={<Gestao />} />
+                <Route path="/admin/empresas" element={<Empresas />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
               <Route path="*" element={<NotFound />} />
