@@ -55,7 +55,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
               name: profile.name || '',
               whatsapp: profile.whatsapp || '',
               cpf: profile.cpf || '',
-              companyId: profile.company_id || '',
+              companyId: profile.empresa_id || profile.company_id || '',
               registrationNumber: profile.registration_number || null,
               role: (profile.role as Role) || 'Observador',
             })

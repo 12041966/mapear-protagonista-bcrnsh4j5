@@ -18,9 +18,9 @@ export type Database = {
           email: string
           id: string
           name: string
+          registration_number: string | null
           role: string
           whatsapp: string | null
-          registration_number: string | null
         }
         Insert: {
           active?: boolean
@@ -30,9 +30,9 @@ export type Database = {
           email: string
           id: string
           name: string
+          registration_number?: string | null
           role?: string
           whatsapp?: string | null
-          registration_number?: string | null
         }
         Update: {
           active?: boolean
@@ -42,9 +42,9 @@ export type Database = {
           email?: string
           id?: string
           name?: string
+          registration_number?: string | null
           role?: string
           whatsapp?: string | null
-          registration_number?: string | null
         }
         Relationships: []
       }
