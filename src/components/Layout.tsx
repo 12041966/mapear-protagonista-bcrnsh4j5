@@ -1,4 +1,4 @@
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   PlusCircle,
@@ -6,6 +6,7 @@ import {
   Settings as SettingsIcon,
   Bell,
   QrCode,
+  LogOut,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -19,12 +20,14 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { useAuth } from '@/hooks/use-auth'
 
 const NAV_ITEMS = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['Segurança', 'Supervisão'] },
@@ -51,11 +54,18 @@ const NAV_ITEMS = [
 
 export default function Layout() {
   const location = useLocation()
-  const { currentUser, setCurrentUser, users } = useMainStore()
+  const { currentUser } = useMainStore()
+  const { signOut } = useAuth()
+  const navigate = useNavigate()
 
   const visibleNavItems = NAV_ITEMS.filter(
     (item) => currentUser && item.roles.includes(currentUser.role),
   )
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/login')
+  }
 
   return (
     <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900">
@@ -126,29 +136,36 @@ export default function Layout() {
               </DialogContent>
             </Dialog>
 
-            <Select
-              value={currentUser?.id}
-              onValueChange={(id) => setCurrentUser(users.find((u) => u.id === id)!)}
-            >
-              <SelectTrigger className="w-[200px] h-9 bg-slate-50 border-slate-200 hidden md:flex">
-                <SelectValue placeholder="Trocar Usuário" />
-              </SelectTrigger>
-              <SelectContent>
-                {users.map((u) => (
-                  <SelectItem key={u.id} value={u.id}>
-                    {u.name} ({u.role})
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
             <Button variant="ghost" size="icon" className="relative text-slate-500">
               <Bell className="w-5 h-5" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
             </Button>
-            <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border">
-              <img src="https://img.usecurling.com/ppl/thumbnail?gender=female&seed=1" alt="User" />
-            </div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border cursor-pointer hover:ring-2 ring-primary transition-all">
+                  <img
+                    src={`https://img.usecurling.com/ppl/thumbnail?gender=female&seed=${currentUser?.id || 1}`}
+                    alt="User"
+                  />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{currentUser?.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {currentUser?.role}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut} className="text-red-600 cursor-pointer">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sair</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
