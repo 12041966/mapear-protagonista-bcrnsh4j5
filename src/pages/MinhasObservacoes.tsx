@@ -8,9 +8,24 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { AlertTriangle } from 'lucide-react'
 
 export default function MinhasObservacoes() {
   const { observations, currentUser } = useMainStore()
+
+  if (!currentUser?.companyId) {
+    return (
+      <div className="w-full max-w-5xl mx-auto py-12">
+        <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">
+          <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-slate-800 mb-2">Empresa não vinculada</h2>
+          <p className="text-slate-600">
+            Você precisa estar vinculado a uma empresa para visualizar e gerenciar observações.
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   const myObs = observations.filter((o) => o.observer.cpf === currentUser?.cpf)
 
@@ -35,7 +50,7 @@ export default function MinhasObservacoes() {
             {myObs.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} className="text-center py-12 text-slate-500">
-                  Nenhum relato encontrado no seu CPF.
+                  Nenhum relato encontrado associado ao seu perfil.
                 </TableCell>
               </TableRow>
             ) : (

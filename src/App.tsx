@@ -39,44 +39,52 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
   const [observationsLoading, setObservationsLoading] = useState(false)
 
   useEffect(() => {
-    if (user) {
-      setProfileLoading(true)
-      setObservationsLoading(true)
+    if (!user) {
+      setCurrentUser(null)
+      setObservations([])
+      setProfileLoading(false)
+      setObservationsLoading(false)
+      return
+    }
 
-      supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single()
-        .then(({ data, error }) => {
-          if (data && !error) {
-            const profile = data as any
-            if (profile.active === false) {
-              signOut().then(() => {
-                setProfileLoading(false)
-                setObservationsLoading(false)
-              })
-              return
-            }
-            setCurrentUser({
-              id: profile.id,
-              name: profile.name || '',
-              whatsapp: profile.whatsapp || '',
-              cpf: profile.cpf || '',
-              companyId: profile.empresa_id || profile.company_id || '',
-              registrationNumber: profile.registration_number || null,
-              role: (profile.role as Role) || 'Observador',
+    setProfileLoading(true)
+    setObservationsLoading(true)
+
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+      .then(({ data, error }) => {
+        if (data && !error) {
+          const profile = data as any
+          if (profile.active === false) {
+            signOut().then(() => {
+              setProfileLoading(false)
+              setObservationsLoading(false)
             })
+            return
+          }
+          setCurrentUser({
+            id: profile.id,
+            name: profile.name || '',
+            whatsapp: profile.whatsapp || '',
+            cpf: profile.cpf || '',
+            companyId: profile.empresa_id || profile.company_id || '',
+            registrationNumber: profile.registration_number || null,
+            role: (profile.role as Role) || 'Observador',
+          })
 
-            if (profile.empresa_id) {
-              supabase
-                .from('observacoes')
-                .select('*, profiles(name, whatsapp, cpf, empresa_id)')
-                .eq('empresa_id', profile.empresa_id)
-                .order('date', { ascending: false })
-                .then(({ data: obsData, error: obsErr }) => {
-                  if (obsData && !obsErr) {
-                    const mapped = obsData.map((row: any) => ({
+          if (profile.empresa_id) {
+            supabase
+              .from('observacoes')
+              .select('*, profiles(name, whatsapp, cpf, empresa_id)')
+              .eq('empresa_id', profile.empresa_id)
+              .order('date', { ascending: false })
+              .then(({ data: obsData, error: obsErr }) => {
+                if (obsData && !obsErr) {
+                  setObservations(
+                    obsData.map((row: any) => ({
                       id: row.codigo || row.id,
                       date: row.date,
                       observer: {
@@ -94,43 +102,89 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
                       resolutionType: row.resolution_type || '',
                       status: row.status || 'Pendente',
                       assignedTo: row.assigned_to,
-                    }))
-                    setObservations(mapped)
-                  }
-                  setObservationsLoading(false)
-                })
-            } else {
-              setObservationsLoading(false)
-            }
+                      managerComments: row.manager_comments,
+                    })),
+                  )
+                }
+                setObservationsLoading(false)
+              })
           } else {
-            setCurrentUser(null)
             setObservationsLoading(false)
           }
-          setProfileLoading(false)
-        })
-    } else {
-      setCurrentUser(null)
-      setObservations([])
-      setProfileLoading(false)
-      setObservationsLoading(false)
-    }
+        } else {
+          setCurrentUser(null)
+          setObservationsLoading(false)
+        }
+        setProfileLoading(false)
+      })
   }, [user, signOut])
 
   const addObservation = useCallback(
-    (obs: Omit<Observation, 'id' | 'date' | 'status'>) => {
-      const newObs: Observation = {
-        ...obs,
-        id: `OBS-${new Date().getFullYear()}-${String(observations.length + 1).padStart(3, '0')}`,
-        date: new Date().toISOString(),
-        status: 'Pendente',
+    async (obs: Omit<Observation, 'id' | 'date' | 'status'>) => {
+      if (!currentUser?.companyId || !user?.id) return
+
+      const newCode = `OBS-${new Date().getFullYear()}-${String(observations.length + 1).padStart(3, '0')}`
+      const date = new Date().toISOString()
+
+      const { data, error } = await supabase
+        .from('observacoes')
+        .insert({
+          codigo: newCode,
+          empresa_id: currentUser.companyId,
+          user_id: user.id,
+          date,
+          type: obs.type,
+          detail: obs.detail,
+          area: obs.area,
+          shift: obs.shift,
+          risk_level: obs.riskLevel || null,
+          description: obs.description,
+          resolution_type: obs.resolutionType,
+          status: 'Pendente',
+        })
+        .select('*, profiles(name, whatsapp, cpf, empresa_id)')
+        .single()
+
+      if (data && !error) {
+        setObservations((prev) => [
+          {
+            id: data.codigo,
+            date: data.date,
+            observer: {
+              name: data.profiles?.name || currentUser.name,
+              whatsapp: data.profiles?.whatsapp || currentUser.whatsapp,
+              cpf: data.profiles?.cpf || currentUser.cpf,
+              companyId: data.profiles?.empresa_id || currentUser.companyId,
+            },
+            type: data.type,
+            detail: data.detail || '',
+            area: data.area || '',
+            shift: data.shift || '',
+            riskLevel: data.risk_level || '',
+            description: data.description || '',
+            resolutionType: data.resolution_type || '',
+            status: data.status as any,
+            assignedTo: data.assigned_to,
+            managerComments: data.manager_comments,
+          },
+          ...prev,
+        ])
       }
-      setObservations((prev) => [newObs, ...prev])
     },
-    [observations.length],
+    [observations.length, currentUser, user],
   )
 
-  const updateObservation = useCallback((id: string, updates: Partial<Observation>) => {
-    setObservations((prev) => prev.map((obs) => (obs.id === id ? { ...obs, ...updates } : obs)))
+  const updateObservation = useCallback(async (id: string, updates: Partial<Observation>) => {
+    const dbUpdates: any = {}
+    if (updates.status) dbUpdates.status = updates.status
+    if (updates.assignedTo !== undefined) dbUpdates.assigned_to = updates.assignedTo
+    if ((updates as any).managerComments !== undefined)
+      dbUpdates.manager_comments = (updates as any).managerComments
+
+    const { error } = await supabase.from('observacoes').update(dbUpdates).eq('codigo', id)
+    if (!error) {
+      setObservations((prev) => prev.map((obs) => (obs.id === id ? { ...obs, ...updates } : obs)))
+    }
   }, [])
 
   const addUser = useCallback((u: UserProfile) => setUsers((prev) => [...prev, u]), [])

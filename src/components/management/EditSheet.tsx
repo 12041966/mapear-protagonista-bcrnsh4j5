@@ -22,6 +22,7 @@ import { Badge } from '@/components/ui/badge'
 import { Observation, ObsStatus } from '@/types'
 import { useMainStore } from '@/stores/main'
 import { useToast } from '@/hooks/use-toast'
+import { Loader2 } from 'lucide-react'
 
 interface Props {
   obs: Observation | null
@@ -33,6 +34,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
   const [status, setStatus] = useState<ObsStatus>('Pendente')
   const [assignedTo, setAssignedTo] = useState('')
   const [comments, setComments] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
   const { updateObservation } = useMainStore()
   const { toast } = useToast()
 
@@ -40,18 +42,20 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
     if (obs) {
       setStatus(obs.status)
       setAssignedTo(obs.assignedTo || '')
-      setComments(obs.managerComments || '')
+      setComments((obs as any).managerComments || '')
     }
   }, [obs])
 
   if (!obs) return null
 
-  const handleSave = () => {
-    updateObservation(obs.id, {
+  const handleSave = async () => {
+    setIsSaving(true)
+    await updateObservation(obs.id, {
       status,
       assignedTo,
       managerComments: comments,
-    })
+    } as any)
+    setIsSaving(false)
 
     if (status === 'Concluído' && obs.status !== 'Concluído') {
       toast({
@@ -132,8 +136,14 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
         </div>
 
         <SheetFooter className="mt-8">
-          <Button onClick={handleSave} className="w-full">
-            Salvar Alterações
+          <Button onClick={handleSave} disabled={isSaving} className="w-full">
+            {isSaving ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Salvando...
+              </>
+            ) : (
+              'Salvar Alterações'
+            )}
           </Button>
         </SheetFooter>
       </SheetContent>

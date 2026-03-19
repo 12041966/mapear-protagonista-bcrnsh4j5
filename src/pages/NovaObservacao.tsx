@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 import { useMainStore } from '@/stores/main'
+import { AlertTriangle, Loader2 } from 'lucide-react'
 
 import { Step1Identificador } from '@/components/form/Step1Identificador'
 import { Step2Tipo } from '@/components/form/Step2Tipo'
@@ -28,6 +29,7 @@ const INITIAL_DATA = {
 export default function NovaObservacao() {
   const [step, setStep] = useState(1)
   const [data, setData] = useState<any>(INITIAL_DATA)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { addObservation, currentUser } = useMainStore()
   const { toast } = useToast()
   const navigate = useNavigate()
@@ -46,6 +48,21 @@ export default function NovaObservacao() {
     }
   }, [currentUser])
 
+  if (!currentUser?.companyId) {
+    return (
+      <div className="w-full max-w-2xl mx-auto py-12">
+        <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">
+          <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-slate-800 mb-2">Acesso Restrito</h2>
+          <p className="text-slate-600 max-w-md mx-auto">
+            Sua conta ainda não está vinculada a uma empresa. Entre em contato com o administrador
+            do sistema para realizar o vínculo e liberar o registro de observações.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   const TOTAL_STEPS = 5
   const progress = (step / TOTAL_STEPS) * 100
 
@@ -59,11 +76,13 @@ export default function NovaObservacao() {
     if (step > 1) setStep((s) => s - 1)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setIsSubmitting(true)
     const isCritical =
       data.type === 'Acidente' || data.type === 'Quase acidente' || data.riskLevel === 'Muito Grave'
 
-    addObservation(data)
+    await addObservation(data)
+    setIsSubmitting(false)
 
     if (isCritical) {
       toast({
@@ -126,7 +145,7 @@ export default function NovaObservacao() {
         </CardContent>
 
         <CardFooter className="flex justify-between border-t bg-slate-50 p-4 rounded-b-lg">
-          <Button variant="outline" onClick={handleBack} disabled={step === 1}>
+          <Button variant="outline" onClick={handleBack} disabled={step === 1 || isSubmitting}>
             Voltar
           </Button>
           {step < TOTAL_STEPS ? (
@@ -136,10 +155,16 @@ export default function NovaObservacao() {
           ) : (
             <Button
               onClick={handleSubmit}
-              disabled={!isStepValid()}
+              disabled={!isStepValid() || isSubmitting}
               className="w-32 bg-amber-500 hover:bg-amber-600 text-white"
             >
-              Registrar
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Registrando
+                </>
+              ) : (
+                'Registrar'
+              )}
             </Button>
           )}
         </CardFooter>
