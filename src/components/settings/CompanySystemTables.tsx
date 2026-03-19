@@ -123,7 +123,9 @@ export function CompanySystemTables({ targetCompanyId }: { targetCompanyId?: str
               try {
                 pDef = JSON.parse(opt.valor_padrao)
                 pCus = data.localMap[opt.id] ? JSON.parse(data.localMap[opt.id]) : pDef
-              } catch (e) {}
+              } catch (e) {
+                // ignore parse error
+              }
             }
             const customVal = data.localMap[opt.id] ?? ''
             return (
