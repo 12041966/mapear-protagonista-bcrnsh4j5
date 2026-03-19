@@ -86,6 +86,7 @@ export type Database = {
         Row: {
           ativa: boolean
           cnpj: string | null
+          codigo_empresa: string
           data_criacao: string
           email_contato: string | null
           id: string
@@ -95,6 +96,7 @@ export type Database = {
         Insert: {
           ativa?: boolean
           cnpj?: string | null
+          codigo_empresa?: string | null
           data_criacao?: string
           email_contato?: string | null
           id?: string
@@ -104,6 +106,7 @@ export type Database = {
         Update: {
           ativa?: boolean
           cnpj?: string | null
+          codigo_empresa?: string | null
           data_criacao?: string
           email_contato?: string | null
           id?: string
@@ -540,6 +543,7 @@ export const Constants = {
 //   telefone: text (nullable)
 //   data_criacao: timestamp with time zone (not null, default: now())
 //   ativa: boolean (not null, default: true)
+//   codigo_empresa: text (not null)
 // Table: observacoes
 //   id: uuid (not null, default: gen_random_uuid())
 //   codigo: text (not null)
@@ -606,6 +610,7 @@ export const Constants = {
 //   PRIMARY KEY efetivo_mensal_pkey: PRIMARY KEY (id)
 // Table: empresas
 //   PRIMARY KEY empresas_pkey: PRIMARY KEY (id)
+//   UNIQUE empresas_codigo_empresa_key: UNIQUE (codigo_empresa)
 // Table: observacoes
 //   UNIQUE observacoes_codigo_key: UNIQUE (codigo)
 //   FOREIGN KEY observacoes_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
@@ -713,14 +718,15 @@ export const Constants = {
 //    SECURITY DEFINER
 //   AS $function$
 //   BEGIN
-//     INSERT INTO public.profiles (id, email, name, active, role, empresa_id)
+//     INSERT INTO public.profiles (id, email, name, active, role, empresa_id, whatsapp)
 //     VALUES (
 //       NEW.id,
 //       NEW.email,
 //       COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
 //       true,
 //       COALESCE(NEW.raw_user_meta_data->>'role', 'Observador'),
-//       NULLIF(NEW.raw_user_meta_data->>'empresa_id', '')::uuid
+//       NULLIF(NEW.raw_user_meta_data->>'empresa_id', '')::uuid,
+//       NEW.raw_user_meta_data->>'whatsapp'
 //     );
 //     RETURN NEW;
 //   END;
@@ -777,3 +783,5 @@ export const Constants = {
 //   CREATE UNIQUE INDEX tabelas_sistema_definicoes_chave_key ON public.tabelas_sistema_definicoes USING btree (chave)
 // Table: tabelas_sistema_empresa_opcoes
 //   CREATE UNIQUE INDEX tabelas_sistema_empresa_opcoes_empresa_id_opcao_id_key ON public.tabelas_sistema_empresa_opcoes USING btree (empresa_id, opcao_id)
+// Table: empresas
+//   CREATE UNIQUE INDEX empresas_codigo_empresa_key ON public.empresas USING btree (codigo_empresa)

@@ -35,6 +35,7 @@ export function EmpresasTable({ data, isLoading, onEdit, onToggleStatus }: Props
     <Table>
       <TableHeader className="bg-slate-50">
         <TableRow>
+          <TableHead>Código</TableHead>
           <TableHead>Nome</TableHead>
           <TableHead>CNPJ</TableHead>
           <TableHead>Email de Contato</TableHead>
@@ -45,13 +46,16 @@ export function EmpresasTable({ data, isLoading, onEdit, onToggleStatus }: Props
       <TableBody>
         {data.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={5} className="text-center py-8 text-slate-500">
+            <TableCell colSpan={6} className="text-center py-8 text-slate-500">
               Nenhuma empresa cadastrada no sistema.
             </TableCell>
           </TableRow>
         ) : (
           data.map((empresa) => (
             <TableRow key={empresa.id} className="hover:bg-slate-50/50">
+              <TableCell className="font-mono text-xs text-slate-500 whitespace-nowrap">
+                {empresa.codigo_empresa}
+              </TableCell>
               <TableCell className="font-medium text-slate-900">{empresa.nome}</TableCell>
               <TableCell className="text-slate-600">{empresa.cnpj || '-'}</TableCell>
               <TableCell className="text-slate-600">{empresa.email_contato || '-'}</TableCell>

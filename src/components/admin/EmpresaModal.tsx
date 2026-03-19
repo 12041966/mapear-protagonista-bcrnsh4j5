@@ -150,6 +150,14 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto pr-2">
+            {empresa?.codigo_empresa && (
+              <div className="grid gap-2">
+                <Label>Código da Empresa</Label>
+                <div className="flex h-10 w-full items-center rounded-md border border-input bg-slate-100/50 px-3 py-2 text-sm text-slate-500 font-mono">
+                  {empresa.codigo_empresa}
+                </div>
+              </div>
+            )}
             <div className="grid gap-2">
               <Label htmlFor="nome">Nome da Empresa *</Label>
               <Input
