@@ -11,25 +11,41 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Trash2, Plus, Loader2 } from 'lucide-react'
+import { Trash2, Plus, Loader2, AlertTriangle } from 'lucide-react'
 import { supabase } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
 
 export function HeadcountSettings() {
-  const { settings, updateSettings, currentUser } = useMainStore()
+  const { settings, updateSettings, currentUser, isSuperAdmin, activeCompanyId } = useMainStore()
   const { toast } = useToast()
   const [month, setMonth] = useState('')
   const [count, setCount] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
+  if (isSuperAdmin && activeCompanyId === 'all') {
+    return (
+      <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">
+        <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
+        <h2 className="text-xl font-bold text-slate-800 mb-2">Selecione uma Empresa</h2>
+        <p className="text-slate-600 max-w-md mx-auto">
+          Para gerenciar o efetivo mensal, selecione uma empresa específica no seletor do topo da
+          página.
+        </p>
+      </div>
+    )
+  }
+
+  const targetCompanyId =
+    isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
+
   const handleAdd = async () => {
-    if (!month || !count || !currentUser?.companyId) return
+    if (!month || !count || !targetCompanyId) return
     setIsSaving(true)
     const [ano, mesStr] = month.split('-')
     const quantidade = parseInt(count, 10)
 
     const { error } = await supabase.from('efetivo_mensal').insert({
-      empresa_id: currentUser.companyId,
+      empresa_id: targetCompanyId,
       mes: mesStr,
       ano: parseInt(ano, 10),
       quantidade,
@@ -58,13 +74,13 @@ export function HeadcountSettings() {
   }
 
   const handleRemove = async (m: string) => {
-    if (!currentUser?.companyId) return
+    if (!targetCompanyId) return
     setIsSaving(true)
     const [ano, mesStr] = m.split('-')
     const { error } = await supabase
       .from('efetivo_mensal')
       .delete()
-      .eq('empresa_id', currentUser.companyId)
+      .eq('empresa_id', targetCompanyId)
       .eq('mes', mesStr)
       .eq('ano', parseInt(ano, 10))
 

@@ -4,28 +4,12 @@ import { UsersList } from '@/components/settings/UsersList'
 import { SystemTables } from '@/components/settings/SystemTables'
 import { HeadcountSettings } from '@/components/settings/HeadcountSettings'
 import { useMainStore } from '@/stores/main'
-import { AlertTriangle } from 'lucide-react'
 
 export default function Settings() {
-  const { currentUser, isSuperAdmin, activeCompanyId } = useMainStore()
+  const { currentUser, isSuperAdmin } = useMainStore()
 
   if (currentUser?.role !== 'Administrador' && !isSuperAdmin) {
     return <Navigate to="/" replace />
-  }
-
-  if (isSuperAdmin && activeCompanyId === 'all') {
-    return (
-      <div className="w-full max-w-6xl mx-auto py-12">
-        <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">
-          <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-slate-800 mb-2">Selecione uma Empresa</h2>
-          <p className="text-slate-600 max-w-md mx-auto">
-            Para gerenciar tabelas e configurações, selecione uma empresa específica no seletor do
-            topo da página.
-          </p>
-        </div>
-      </div>
-    )
   }
 
   return (

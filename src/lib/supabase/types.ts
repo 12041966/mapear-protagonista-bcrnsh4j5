@@ -269,6 +269,104 @@ export type Database = {
           },
         ]
       }
+      tabelas_sistema_definicoes: {
+        Row: {
+          chave: string
+          data_criacao: string
+          descricao: string | null
+          id: string
+          nome_tabela: string
+        }
+        Insert: {
+          chave: string
+          data_criacao?: string
+          descricao?: string | null
+          id?: string
+          nome_tabela: string
+        }
+        Update: {
+          chave?: string
+          data_criacao?: string
+          descricao?: string | null
+          id?: string
+          nome_tabela?: string
+        }
+        Relationships: []
+      }
+      tabelas_sistema_empresa_opcoes: {
+        Row: {
+          data_atualizacao: string
+          data_criacao: string
+          empresa_id: string
+          id: string
+          opcao_id: string
+          valor_customizado: string
+        }
+        Insert: {
+          data_atualizacao?: string
+          data_criacao?: string
+          empresa_id: string
+          id?: string
+          opcao_id: string
+          valor_customizado: string
+        }
+        Update: {
+          data_atualizacao?: string
+          data_criacao?: string
+          empresa_id?: string
+          id?: string
+          opcao_id?: string
+          valor_customizado?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'tabelas_sistema_empresa_opcoes_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'tabelas_sistema_empresa_opcoes_opcao_id_fkey'
+            columns: ['opcao_id']
+            isOneToOne: false
+            referencedRelation: 'tabelas_sistema_opcoes'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      tabelas_sistema_opcoes: {
+        Row: {
+          data_criacao: string
+          id: string
+          nome_opcao: string
+          tabela_id: string
+          valor_padrao: string
+        }
+        Insert: {
+          data_criacao?: string
+          id?: string
+          nome_opcao: string
+          tabela_id: string
+          valor_padrao: string
+        }
+        Update: {
+          data_criacao?: string
+          id?: string
+          nome_opcao?: string
+          tabela_id?: string
+          valor_padrao?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'tabelas_sistema_opcoes_tabela_id_fkey'
+            columns: ['tabela_id']
+            isOneToOne: false
+            referencedRelation: 'tabelas_sistema_definicoes'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -478,6 +576,25 @@ export const Constants = {
 //   dados_json: jsonb (not null, default: '{}'::jsonb)
 //   data_criacao: timestamp with time zone (not null, default: now())
 //   data_atualizacao: timestamp with time zone (not null, default: now())
+// Table: tabelas_sistema_definicoes
+//   id: uuid (not null, default: gen_random_uuid())
+//   nome_tabela: text (not null)
+//   descricao: text (nullable)
+//   chave: text (not null)
+//   data_criacao: timestamp with time zone (not null, default: now())
+// Table: tabelas_sistema_empresa_opcoes
+//   id: uuid (not null, default: gen_random_uuid())
+//   empresa_id: uuid (not null)
+//   opcao_id: uuid (not null)
+//   valor_customizado: text (not null)
+//   data_criacao: timestamp with time zone (not null, default: now())
+//   data_atualizacao: timestamp with time zone (not null, default: now())
+// Table: tabelas_sistema_opcoes
+//   id: uuid (not null, default: gen_random_uuid())
+//   tabela_id: uuid (not null)
+//   nome_opcao: text (not null)
+//   valor_padrao: text (not null)
+//   data_criacao: timestamp with time zone (not null, default: now())
 
 // --- CONSTRAINTS ---
 // Table: configuracoes_sistema
@@ -502,6 +619,17 @@ export const Constants = {
 // Table: tabelas_sistema
 //   FOREIGN KEY tabelas_sistema_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
 //   PRIMARY KEY tabelas_sistema_pkey: PRIMARY KEY (id)
+// Table: tabelas_sistema_definicoes
+//   UNIQUE tabelas_sistema_definicoes_chave_key: UNIQUE (chave)
+//   PRIMARY KEY tabelas_sistema_definicoes_pkey: PRIMARY KEY (id)
+// Table: tabelas_sistema_empresa_opcoes
+//   FOREIGN KEY tabelas_sistema_empresa_opcoes_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+//   UNIQUE tabelas_sistema_empresa_opcoes_empresa_id_opcao_id_key: UNIQUE (empresa_id, opcao_id)
+//   FOREIGN KEY tabelas_sistema_empresa_opcoes_opcao_id_fkey: FOREIGN KEY (opcao_id) REFERENCES tabelas_sistema_opcoes(id) ON DELETE CASCADE
+//   PRIMARY KEY tabelas_sistema_empresa_opcoes_pkey: PRIMARY KEY (id)
+// Table: tabelas_sistema_opcoes
+//   PRIMARY KEY tabelas_sistema_opcoes_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY tabelas_sistema_opcoes_tabela_id_fkey: FOREIGN KEY (tabela_id) REFERENCES tabelas_sistema_definicoes(id) ON DELETE CASCADE
 
 // --- ROW LEVEL SECURITY POLICIES ---
 // Table: configuracoes_sistema
@@ -550,6 +678,22 @@ export const Constants = {
 //   Policy "Users can manage tabelas_sistema for their company" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
 //     WITH CHECK: ((empresa_id = get_user_empresa_id()) OR is_admin())
+// Table: tabelas_sistema_definicoes
+//   Policy "Authenticated users can select definicoes" (SELECT, PERMISSIVE) roles={authenticated}
+//     USING: true
+//   Policy "Super admins can all on definicoes" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
+// Table: tabelas_sistema_empresa_opcoes
+//   Policy "Users manage custom options for their company" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
+//     WITH CHECK: ((empresa_id = get_user_empresa_id()) OR is_admin())
+// Table: tabelas_sistema_opcoes
+//   Policy "Authenticated users can select opcoes" (SELECT, PERMISSIVE) roles={authenticated}
+//     USING: true
+//   Policy "Super admins can all on opcoes" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
 
 // --- DATABASE FUNCTIONS ---
 // FUNCTION get_user_empresa_id()
@@ -629,3 +773,7 @@ export const Constants = {
 //   CREATE UNIQUE INDEX observacoes_codigo_key ON public.observacoes USING btree (codigo)
 // Table: profiles
 //   CREATE UNIQUE INDEX profiles_email_key ON public.profiles USING btree (email)
+// Table: tabelas_sistema_definicoes
+//   CREATE UNIQUE INDEX tabelas_sistema_definicoes_chave_key ON public.tabelas_sistema_definicoes USING btree (chave)
+// Table: tabelas_sistema_empresa_opcoes
+//   CREATE UNIQUE INDEX tabelas_sistema_empresa_opcoes_empresa_id_opcao_id_key ON public.tabelas_sistema_empresa_opcoes USING btree (empresa_id, opcao_id)
