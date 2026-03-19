@@ -375,6 +375,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_empresa_id_by_code: { Args: { p_codigo: string }; Returns: string }
       get_user_empresa_id: { Args: never; Returns: string }
       is_admin: { Args: never; Returns: boolean }
       is_company_admin: { Args: { check_empresa_id: string }; Returns: boolean }
@@ -726,6 +727,16 @@ export const Constants = {
 //       END IF;
 //       RETURN NEW;
 //   END;
+//   $function$
+//
+// FUNCTION get_empresa_id_by_code(text)
+//   CREATE OR REPLACE FUNCTION public.get_empresa_id_by_code(p_codigo text)
+//    RETURNS uuid
+//    LANGUAGE sql
+//    SECURITY DEFINER
+//    SET search_path TO 'public'
+//   AS $function$
+//     SELECT id FROM public.empresas WHERE codigo_empresa = p_codigo LIMIT 1;
 //   $function$
 //
 // FUNCTION get_user_empresa_id()

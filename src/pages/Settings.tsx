@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { UsersList } from '@/components/settings/UsersList'
 import { SystemTables } from '@/components/settings/SystemTables'
 import { HeadcountSettings } from '@/components/settings/HeadcountSettings'
+import { CompanyData } from '@/components/settings/CompanyData'
 import { useMainStore } from '@/stores/main'
 
 export default function Settings() {
@@ -23,12 +24,17 @@ export default function Settings() {
         </p>
       </div>
 
-      <Tabs defaultValue="users" className="w-full">
-        <TabsList className="grid w-full max-w-2xl grid-cols-3">
+      <Tabs defaultValue="company" className="w-full">
+        <TabsList className="grid w-full max-w-3xl grid-cols-4">
+          <TabsTrigger value="company">Dados da Empresa</TabsTrigger>
           <TabsTrigger value="users">Gestão de Perfis</TabsTrigger>
           <TabsTrigger value="headcount">Efetivo Mensal</TabsTrigger>
           <TabsTrigger value="tables">Tabelas do Sistema</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="company" className="mt-6 focus-visible:outline-none">
+          <CompanyData />
+        </TabsContent>
 
         <TabsContent value="users" className="mt-6 focus-visible:outline-none">
           <UsersList />

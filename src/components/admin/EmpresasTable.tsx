@@ -9,7 +9,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
-import { Edit2, Loader2 } from 'lucide-react'
+import { Edit2, Loader2, QrCode } from 'lucide-react'
 import { Tables } from '@/lib/supabase/types'
 
 type Empresa = Tables<'empresas'>
@@ -19,9 +19,10 @@ interface Props {
   isLoading: boolean
   onEdit: (empresa: Empresa) => void
   onToggleStatus: (empresa: Empresa) => void
+  onQrCode: (empresa: Empresa) => void
 }
 
-export function EmpresasTable({ data, isLoading, onEdit, onToggleStatus }: Props) {
+export function EmpresasTable({ data, isLoading, onEdit, onToggleStatus, onQrCode }: Props) {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12 text-slate-500">
@@ -68,7 +69,7 @@ export function EmpresasTable({ data, isLoading, onEdit, onToggleStatus }: Props
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
-                <div className="flex items-center justify-end gap-3">
+                <div className="flex items-center justify-end gap-2">
                   <div
                     className="flex items-center gap-2"
                     title={empresa.ativa ? 'Desativar empresa' : 'Ativar empresa'}
@@ -81,8 +82,19 @@ export function EmpresasTable({ data, isLoading, onEdit, onToggleStatus }: Props
                   <Button
                     variant="ghost"
                     size="sm"
+                    onClick={() => onQrCode(empresa)}
+                    className="h-8 px-2 text-slate-500 hover:text-primary"
+                    title="Gerar QR Code"
+                  >
+                    <QrCode className="w-4 h-4" />
+                    <span className="sr-only">QR Code</span>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => onEdit(empresa)}
                     className="h-8 px-2 text-primary"
+                    title="Editar empresa"
                   >
                     <Edit2 className="w-4 h-4 mr-1" />
                     <span className="hidden sm:inline">Editar</span>

@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { EmpresasTable } from '@/components/admin/EmpresasTable'
 import { EmpresaModal } from '@/components/admin/EmpresaModal'
+import { EmpresaQrModal } from '@/components/admin/EmpresaQrModal'
 import { CompanyAdmins } from '@/components/admin/CompanyAdmins'
 import { Tables } from '@/lib/supabase/types'
 
@@ -20,6 +21,7 @@ export default function GlobalSettings() {
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingEmpresa, setEditingEmpresa] = useState<Empresa | null>(null)
+  const [qrEmpresa, setQrEmpresa] = useState<Empresa | null>(null)
   const { toast } = useToast()
 
   const fetchEmpresas = useCallback(async () => {
@@ -104,6 +106,7 @@ export default function GlobalSettings() {
                 setIsModalOpen(true)
               }}
               onToggleStatus={handleToggleStatus}
+              onQrCode={(e) => setQrEmpresa(e)}
             />
           </div>
         </TabsContent>
@@ -118,6 +121,12 @@ export default function GlobalSettings() {
         onOpenChange={setIsModalOpen}
         empresa={editingEmpresa}
         onSuccess={fetchEmpresas}
+      />
+
+      <EmpresaQrModal
+        open={!!qrEmpresa}
+        onOpenChange={(open) => !open && setQrEmpresa(null)}
+        empresa={qrEmpresa}
       />
     </div>
   )
