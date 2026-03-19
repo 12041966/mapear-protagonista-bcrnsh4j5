@@ -43,13 +43,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [])
 
   const signUp = async (email: string, password: string, options?: any) => {
-    const { data, error } = await supabase.auth.signUp({ email, password, options })
-    return { data, error }
+    try {
+      const { data, error } = await supabase.auth.signUp({ email, password, options })
+      return { data, error }
+    } catch (err: any) {
+      return { data: null, error: err }
+    }
   }
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    return { error }
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+
+      // Intercept and return the error object to explicitly prevent unhandled exceptions
+      if (error) {
+        return { error }
+      }
+
+      return { error: null }
+    } catch (err: any) {
+      // Fallback for network or generic runtime errors
+      return { error: err }
+    }
   }
 
   const signOut = async () => {

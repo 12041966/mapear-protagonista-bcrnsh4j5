@@ -67,18 +67,38 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+
     const { error } = await signIn(email, password)
+
     if (error) {
+      const errorCode = (error as any)?.code || ''
+      const errorMessage = error?.message || ''
+
+      let description = 'Ocorreu um erro ao tentar entrar. Verifique seus dados.'
+
+      // Explicit error mapping for email_not_confirmed
+      if (
+        errorCode === 'email_not_confirmed' ||
+        errorMessage.toLowerCase().includes('not confirmed')
+      ) {
+        description =
+          'Seu e-mail ainda não foi confirmado. Por favor, verifique sua caixa de entrada e confirme seu e-mail para realizar o login.'
+      } else if (
+        errorMessage.includes('Invalid login') ||
+        errorMessage.includes('Invalid credentials')
+      ) {
+        description = 'Credenciais inválidas.'
+      }
+
       toast({
         variant: 'destructive',
         title: 'Erro ao entrar',
-        description: error.message.includes('Invalid login')
-          ? 'Credenciais inválidas.'
-          : 'Ocorreu um erro ao tentar entrar. Verifique seus dados.',
+        description,
       })
     } else {
       navigate('/')
     }
+
     setLoading(false)
   }
 
