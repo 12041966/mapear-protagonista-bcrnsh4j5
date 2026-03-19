@@ -27,6 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useAuth } from '@/hooks/use-auth'
 
 const NAV_ITEMS = [
@@ -55,7 +56,7 @@ const NAV_ITEMS = [
 export default function Layout() {
   const location = useLocation()
   const { currentUser } = useMainStore()
-  const { signOut } = useAuth()
+  const { user, signOut } = useAuth()
   const navigate = useNavigate()
 
   const visibleNavItems = NAV_ITEMS.filter(
@@ -66,6 +67,10 @@ export default function Layout() {
     await signOut()
     navigate('/login')
   }
+
+  const displayName = currentUser?.name || user?.email?.split('@')[0] || 'Usuário'
+  const displayEmail = user?.email || ''
+  const initials = displayName.substring(0, 2).toUpperCase()
 
   return (
     <div className="flex h-screen w-full bg-slate-50 overflow-hidden text-slate-900">
@@ -143,26 +148,43 @@ export default function Layout() {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border cursor-pointer hover:ring-2 ring-primary transition-all">
-                  <img
-                    src={`https://img.usecurling.com/ppl/thumbnail?gender=female&seed=${currentUser?.id || 1}`}
-                    alt="User"
-                  />
-                </div>
+                <Button
+                  variant="ghost"
+                  className="relative h-8 w-8 rounded-full p-0 overflow-hidden border cursor-pointer hover:ring-2 ring-primary transition-all"
+                >
+                  <Avatar className="h-full w-full">
+                    <AvatarImage
+                      src={`https://img.usecurling.com/ppl/thumbnail?gender=female&seed=${currentUser?.id || 1}`}
+                      alt={displayName}
+                    />
+                    <AvatarFallback className="bg-primary/10 text-primary text-xs font-medium">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-64">
                 <DropdownMenuLabel>
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{currentUser?.name}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {currentUser?.role}
+                  <div className="flex flex-col space-y-1.5">
+                    <p className="text-sm font-medium leading-none">{displayName}</p>
+                    <p
+                      className="text-xs leading-none text-muted-foreground truncate"
+                      title={displayEmail}
+                    >
+                      {displayEmail}
                     </p>
+                    {currentUser?.role && (
+                      <p className="text-xs mt-1 font-semibold text-primary">{currentUser.role}</p>
+                    )}
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut} className="text-red-600 cursor-pointer">
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="text-red-600 cursor-pointer py-2 focus:text-red-700 focus:bg-red-50"
+                >
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sair</span>
+                  <span className="font-medium">Sair da conta</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

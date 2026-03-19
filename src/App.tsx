@@ -9,6 +9,7 @@ import { INITIAL_SETTINGS, INITIAL_USERS } from '@/lib/constants'
 import { Observation, UserProfile, AppSettings, Role } from '@/types'
 import { AuthProvider, useAuth } from '@/hooks/use-auth'
 import { supabase } from '@/lib/supabase/client'
+import { Loader2 } from 'lucide-react'
 
 import Layout from '@/components/Layout'
 import Index from '@/pages/Index'
@@ -46,7 +47,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           if (data && !error) {
             const profile = data as any
             if (profile.active === false) {
-              signOut()
+              signOut().then(() => setProfileLoading(false))
               return
             }
             setCurrentUser({
@@ -97,8 +98,9 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
 
   if (authLoading || profileLoading) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center text-slate-500">
-        Carregando perfil...
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-slate-50 text-slate-500 space-y-4">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <p className="text-sm font-medium">Carregando...</p>
       </div>
     )
   }

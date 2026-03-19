@@ -50,7 +50,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
@@ -211,6 +211,11 @@ export const Constants = {
 
 // --- ROW LEVEL SECURITY POLICIES ---
 // Table: profiles
+//   Policy "Admin can update all profiles" (UPDATE, PERMISSIVE) roles={authenticated}
+//     USING: is_admin()
+//     WITH CHECK: is_admin()
+//   Policy "Admin can view all profiles" (SELECT, PERMISSIVE) roles={authenticated}
+//     USING: is_admin()
 //   Policy "Users can view own profile" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: (auth.uid() = id)
 
@@ -221,18 +226,31 @@ export const Constants = {
 //    LANGUAGE plpgsql
 //    SECURITY DEFINER
 //   AS $function$
-//   BEGIN
-//     INSERT INTO public.profiles (id, email, name, active, role)
-//     VALUES (
-//       NEW.id,
-//       NEW.email,
-//       COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
-//       true,
-//       COALESCE(NEW.raw_user_meta_data->>'role', 'Observador')
-//     );
-//     RETURN NEW;
-//   END;
-//   $function$
+//     BEGIN
+//       INSERT INTO public.profiles (id, email, name, active, role)
+//       VALUES (
+//         NEW.id,
+//         NEW.email,
+//         COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
+//         true,
+//         COALESCE(NEW.raw_user_meta_data->>'role', 'Observador')
+//       );
+//       RETURN NEW;
+//     END;
+//     $function$
+//
+// FUNCTION is_admin()
+//   CREATE OR REPLACE FUNCTION public.is_admin()
+//    RETURNS boolean
+//    LANGUAGE sql
+//    SECURITY DEFINER
+//   AS $function$
+//       SELECT EXISTS (
+//         SELECT 1
+//         FROM public.profiles
+//         WHERE id = auth.uid() AND role = 'Administrador'
+//       );
+//     $function$
 //
 
 // --- INDEXES ---
