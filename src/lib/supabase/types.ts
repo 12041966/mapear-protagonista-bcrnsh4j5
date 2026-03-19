@@ -48,26 +48,29 @@ export type Database = {
         Row: {
           ano: number
           created_at: string
+          data_atualizacao: string | null
           empresa_id: string
           id: string
           mes: string
-          quantidade: number
+          quantidade_funcionarios: number
         }
         Insert: {
           ano: number
           created_at?: string
+          data_atualizacao?: string | null
           empresa_id: string
           id?: string
           mes: string
-          quantidade: number
+          quantidade_funcionarios: number
         }
         Update: {
           ano?: number
           created_at?: string
+          data_atualizacao?: string | null
           empresa_id?: string
           id?: string
           mes?: string
-          quantidade?: number
+          quantidade_funcionarios?: number
         }
         Relationships: [
           {
@@ -221,6 +224,44 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: 'profiles_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      tabelas_sistema: {
+        Row: {
+          dados_json: Json
+          data_atualizacao: string
+          data_criacao: string
+          descricao: string | null
+          empresa_id: string
+          id: string
+          nome_tabela: string
+        }
+        Insert: {
+          dados_json?: Json
+          data_atualizacao?: string
+          data_criacao?: string
+          descricao?: string | null
+          empresa_id: string
+          id?: string
+          nome_tabela: string
+        }
+        Update: {
+          dados_json?: Json
+          data_atualizacao?: string
+          data_criacao?: string
+          descricao?: string | null
+          empresa_id?: string
+          id?: string
+          nome_tabela?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'tabelas_sistema_empresa_id_fkey'
             columns: ['empresa_id']
             isOneToOne: false
             referencedRelation: 'empresas'
@@ -390,8 +431,9 @@ export const Constants = {
 //   empresa_id: uuid (not null)
 //   mes: text (not null)
 //   ano: integer (not null)
-//   quantidade: integer (not null)
+//   quantidade_funcionarios: integer (not null)
 //   created_at: timestamp with time zone (not null, default: now())
+//   data_atualizacao: timestamp with time zone (nullable, default: now())
 // Table: empresas
 //   id: uuid (not null, default: gen_random_uuid())
 //   nome: text (not null)
@@ -428,6 +470,14 @@ export const Constants = {
 //   cpf: text (nullable)
 //   registration_number: text (nullable)
 //   empresa_id: uuid (nullable)
+// Table: tabelas_sistema
+//   id: uuid (not null, default: gen_random_uuid())
+//   empresa_id: uuid (not null)
+//   nome_tabela: text (not null)
+//   descricao: text (nullable)
+//   dados_json: jsonb (not null, default: '{}'::jsonb)
+//   data_criacao: timestamp with time zone (not null, default: now())
+//   data_atualizacao: timestamp with time zone (not null, default: now())
 
 // --- CONSTRAINTS ---
 // Table: configuracoes_sistema
@@ -449,6 +499,9 @@ export const Constants = {
 //   FOREIGN KEY profiles_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id)
 //   FOREIGN KEY profiles_id_fkey: FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE
 //   PRIMARY KEY profiles_pkey: PRIMARY KEY (id)
+// Table: tabelas_sistema
+//   FOREIGN KEY tabelas_sistema_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+//   PRIMARY KEY tabelas_sistema_pkey: PRIMARY KEY (id)
 
 // --- ROW LEVEL SECURITY POLICIES ---
 // Table: configuracoes_sistema
@@ -490,6 +543,13 @@ export const Constants = {
 //     WITH CHECK: is_super_admin()
 //   Policy "Users can view profiles in their company" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: ((empresa_id = get_user_empresa_id()) OR (id = auth.uid()) OR is_admin())
+// Table: tabelas_sistema
+//   Policy "Super admins can do all on tabelas_sistema" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
+//   Policy "Users can manage tabelas_sistema for their company" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
+//     WITH CHECK: ((empresa_id = get_user_empresa_id()) OR is_admin())
 
 // --- DATABASE FUNCTIONS ---
 // FUNCTION get_user_empresa_id()

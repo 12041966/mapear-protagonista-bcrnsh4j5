@@ -114,10 +114,19 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       .from('observacoes')
       .select('*, profiles(name, whatsapp, cpf, empresa_id)')
       .order('date', { ascending: false })
-    let confQuery = supabase
-      .from('configuracoes_sistema')
+
+    let defQuery = supabase
+      .from('tabelas_sistema_definicoes')
       .select('*')
-      .order('created_at', { ascending: true })
+      .order('data_criacao', { ascending: true })
+
+    let optQuery = supabase
+      .from('tabelas_sistema_opcoes')
+      .select('*')
+      .order('data_criacao', { ascending: true })
+
+    let empOptQuery = supabase.from('tabelas_sistema_empresa_opcoes').select('*')
+
     let efQuery = supabase
       .from('efetivo_mensal')
       .select('*')
@@ -126,67 +135,94 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
 
     if (activeCompanyId !== 'all') {
       obsQuery = obsQuery.eq('empresa_id', activeCompanyId)
-      confQuery = confQuery.eq('empresa_id', activeCompanyId)
+      empOptQuery = empOptQuery.eq('empresa_id', activeCompanyId)
       efQuery = efQuery.eq('empresa_id', activeCompanyId)
     }
 
-    Promise.all([obsQuery, confQuery, efQuery]).then(([obsRes, confRes, efRes]) => {
-      if (obsRes.data && !obsRes.error) {
-        setObservations(
-          obsRes.data.map((row: any) => ({
-            id: row.codigo || row.id,
-            date: row.date,
-            observer: {
-              name: row.profiles?.name || 'Desconhecido',
-              whatsapp: row.profiles?.whatsapp || '',
-              cpf: row.profiles?.cpf || '',
-              companyId: row.profiles?.empresa_id || '',
-            },
-            type: row.type,
-            detail: row.detail || '',
-            area: row.area || '',
-            shift: row.shift || '',
-            riskLevel: row.risk_level || '',
-            description: row.description || '',
-            resolutionType: row.resolution_type || '',
-            status: row.status || 'Pendente',
-            assignedTo: row.assigned_to,
-            managerComments: row.manager_comments,
-          })),
-        )
-      }
+    Promise.all([obsQuery, defQuery, optQuery, empOptQuery, efQuery]).then(
+      ([obsRes, defRes, optRes, empOptRes, efRes]) => {
+        if (obsRes.data && !obsRes.error) {
+          setObservations(
+            obsRes.data.map((row: any) => ({
+              id: row.codigo || row.id,
+              date: row.date,
+              observer: {
+                name: row.profiles?.name || 'Desconhecido',
+                whatsapp: row.profiles?.whatsapp || '',
+                cpf: row.profiles?.cpf || '',
+                companyId: row.profiles?.empresa_id || '',
+              },
+              type: row.type,
+              detail: row.detail || '',
+              area: row.area || '',
+              shift: row.shift || '',
+              riskLevel: row.risk_level || '',
+              description: row.description || '',
+              resolutionType: row.resolution_type || '',
+              status: row.status || 'Pendente',
+              assignedTo: row.assigned_to,
+              managerComments: row.manager_comments,
+            })),
+          )
+        }
 
-      const newSettings = { ...INITIAL_SETTINGS }
-      if (confRes.data && confRes.data.length > 0) {
-        const byCat = (cat: string) =>
-          confRes.data.filter((c: any) => c.categoria === cat).map((c: any) => c.valor)
-        const areas = byCat('areas')
-        if (areas.length > 0) newSettings.areas = areas
-        const shifts = byCat('shifts')
-        if (shifts.length > 0) newSettings.shifts = shifts
-        const risks = byCat('risks')
-        if (risks.length > 0) newSettings.risks = risks
-        const conditions = byCat('conditions')
-        if (conditions.length > 0) newSettings.conditions = conditions
-        const behaviors = byCat('behaviors')
-        if (behaviors.length > 0) newSettings.behaviors = behaviors
-        const obsTypesStr = byCat('observationTypes')
-        if (obsTypesStr.length > 0)
-          newSettings.observationTypes = obsTypesStr.map((s: string) => JSON.parse(s))
-      }
+        const newSettings = { ...INITIAL_SETTINGS }
 
-      if (efRes.data) {
-        const hc: Record<string, number> = {}
-        efRes.data.forEach((e: any) => {
-          const mStr = String(e.mes).padStart(2, '0')
-          hc[`${e.ano}-${mStr}`] = e.quantidade
-        })
-        newSettings.monthlyHeadcount = hc
-      }
+        if (defRes.data && optRes.data) {
+          const customValues = new Map()
+          if (empOptRes.data) {
+            empOptRes.data.forEach((co: any) => {
+              customValues.set(co.opcao_id, co.valor_customizado)
+            })
+          }
 
-      setSettings(newSettings)
-      setObservationsLoading(false)
-    })
+          const buildList = (chave: string) => {
+            const def = defRes.data.find((d: any) => d.chave === chave)
+            if (!def) return []
+            const opts = optRes.data.filter((o: any) => o.tabela_id === def.id)
+            return opts.map((o: any) => customValues.get(o.id) || o.valor_padrao)
+          }
+
+          const areas = buildList('areas')
+          if (areas.length > 0) newSettings.areas = areas
+
+          const shifts = buildList('shifts')
+          if (shifts.length > 0) newSettings.shifts = shifts
+
+          const risks = buildList('risks')
+          if (risks.length > 0) newSettings.risks = risks
+
+          const conditions = buildList('conditions')
+          if (conditions.length > 0) newSettings.conditions = conditions
+
+          const behaviors = buildList('behaviors')
+          if (behaviors.length > 0) newSettings.behaviors = behaviors
+
+          const obsTypesStr = buildList('observationTypes')
+          if (obsTypesStr.length > 0) {
+            newSettings.observationTypes = obsTypesStr.map((s: string) => {
+              try {
+                return JSON.parse(s)
+              } catch (e) {
+                return s
+              }
+            })
+          }
+        }
+
+        if (efRes.data) {
+          const hc: Record<string, number> = {}
+          efRes.data.forEach((e: any) => {
+            const mStr = String(e.mes).padStart(2, '0')
+            hc[`${e.ano}-${mStr}`] = e.quantidade
+          })
+          newSettings.monthlyHeadcount = hc
+        }
+
+        setSettings(newSettings)
+        setObservationsLoading(false)
+      },
+    )
   }, [activeCompanyId, currentUser, isSuperAdmin])
 
   const addObservation = useCallback(
