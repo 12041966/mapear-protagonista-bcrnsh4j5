@@ -96,7 +96,7 @@ export type Database = {
         Insert: {
           ativa?: boolean
           cnpj?: string | null
-          codigo_empresa?: string | null
+          codigo_empresa: string
           data_criacao?: string
           email_contato?: string | null
           id?: string
@@ -106,7 +106,7 @@ export type Database = {
         Update: {
           ativa?: boolean
           cnpj?: string | null
-          codigo_empresa?: string | null
+          codigo_empresa?: string
           data_criacao?: string
           email_contato?: string | null
           id?: string
@@ -609,8 +609,8 @@ export const Constants = {
 //   UNIQUE efetivo_mensal_empresa_id_mes_ano_key: UNIQUE (empresa_id, mes, ano)
 //   PRIMARY KEY efetivo_mensal_pkey: PRIMARY KEY (id)
 // Table: empresas
-//   PRIMARY KEY empresas_pkey: PRIMARY KEY (id)
 //   UNIQUE empresas_codigo_empresa_key: UNIQUE (codigo_empresa)
+//   PRIMARY KEY empresas_pkey: PRIMARY KEY (id)
 // Table: observacoes
 //   UNIQUE observacoes_codigo_key: UNIQUE (codigo)
 //   FOREIGN KEY observacoes_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
@@ -701,6 +701,33 @@ export const Constants = {
 //     WITH CHECK: is_super_admin()
 
 // --- DATABASE FUNCTIONS ---
+// FUNCTION generate_codigo_empresa()
+//   CREATE OR REPLACE FUNCTION public.generate_codigo_empresa()
+//    RETURNS trigger
+//    LANGUAGE plpgsql
+//   AS $function$
+//   DECLARE
+//       new_code TEXT;
+//       code_exists BOOLEAN;
+//       creation_year TEXT;
+//   BEGIN
+//       IF NULLIF(TRIM(NEW.codigo_empresa), '') IS NULL THEN
+//           creation_year := TO_CHAR(COALESCE(NEW.data_criacao, NOW()), 'YYYY');
+//           LOOP
+//               new_code := 'EMP-' || creation_year || '-' || LPAD(FLOOR(RANDOM() * 10000)::TEXT, 4, '0');
+//
+//               SELECT EXISTS(SELECT 1 FROM public.empresas WHERE codigo_empresa = new_code) INTO code_exists;
+//
+//               IF NOT code_exists THEN
+//                   NEW.codigo_empresa := new_code;
+//                   EXIT;
+//               END IF;
+//           END LOOP;
+//       END IF;
+//       RETURN NEW;
+//   END;
+//   $function$
+//
 // FUNCTION get_user_empresa_id()
 //   CREATE OR REPLACE FUNCTION public.get_user_empresa_id()
 //    RETURNS uuid
@@ -772,9 +799,15 @@ export const Constants = {
 //     $function$
 //
 
+// --- TRIGGERS ---
+// Table: empresas
+//   ensure_codigo_empresa: CREATE TRIGGER ensure_codigo_empresa BEFORE INSERT ON public.empresas FOR EACH ROW EXECUTE FUNCTION generate_codigo_empresa()
+
 // --- INDEXES ---
 // Table: efetivo_mensal
 //   CREATE UNIQUE INDEX efetivo_mensal_empresa_id_mes_ano_key ON public.efetivo_mensal USING btree (empresa_id, mes, ano)
+// Table: empresas
+//   CREATE UNIQUE INDEX empresas_codigo_empresa_key ON public.empresas USING btree (codigo_empresa)
 // Table: observacoes
 //   CREATE UNIQUE INDEX observacoes_codigo_key ON public.observacoes USING btree (codigo)
 // Table: profiles
@@ -783,5 +816,3 @@ export const Constants = {
 //   CREATE UNIQUE INDEX tabelas_sistema_definicoes_chave_key ON public.tabelas_sistema_definicoes USING btree (chave)
 // Table: tabelas_sistema_empresa_opcoes
 //   CREATE UNIQUE INDEX tabelas_sistema_empresa_opcoes_empresa_id_opcao_id_key ON public.tabelas_sistema_empresa_opcoes USING btree (empresa_id, opcao_id)
-// Table: empresas
-//   CREATE UNIQUE INDEX empresas_codigo_empresa_key ON public.empresas USING btree (codigo_empresa)

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/use-auth'
 import { useToast } from '@/hooks/use-toast'
+import { supabase } from '@/lib/supabase/client'
 import {
   Dialog,
   DialogContent,
@@ -93,11 +94,29 @@ export default function Login() {
     }
 
     setLoading(true)
+
+    const { data: empresaId, error: rpcError } = await (supabase.rpc as any)(
+      'get_empresa_id_by_code',
+      {
+        p_codigo: regCompanyCode,
+      },
+    )
+
+    if (rpcError || !empresaId) {
+      setLoading(false)
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao cadastrar',
+        description: 'Código de empresa inválido',
+      })
+      return
+    }
+
     const { error } = await signUp(regEmail, regPassword, {
       data: {
         name: regName,
         whatsapp: regWhatsapp,
-        empresa_id: regCompanyCode,
+        empresa_id: empresaId,
       },
     })
 
@@ -105,9 +124,7 @@ export default function Login() {
       toast({
         variant: 'destructive',
         title: 'Erro ao cadastrar',
-        description: error.message.includes('uuid')
-          ? 'Código da empresa inválido. Verifique o identificador.'
-          : error.message,
+        description: error.message,
       })
     } else {
       toast({
@@ -118,6 +135,7 @@ export default function Login() {
       setRegPassword('')
       setRegConfirmPassword('')
       setIsRegistering(false)
+      navigate('/login')
     }
     setLoading(false)
   }
@@ -248,7 +266,10 @@ export default function Login() {
               <div className="text-center mt-4">
                 <button
                   type="button"
-                  onClick={() => setIsRegistering(false)}
+                  onClick={() => {
+                    setIsRegistering(false)
+                    navigate('/login')
+                  }}
                   className="text-sm text-primary hover:underline"
                 >
                   Já tem uma conta? Entre
