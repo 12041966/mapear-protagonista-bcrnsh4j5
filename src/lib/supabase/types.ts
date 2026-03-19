@@ -9,6 +9,76 @@ export type Database = {
   }
   public: {
     Tables: {
+      configuracoes_sistema: {
+        Row: {
+          categoria: string
+          chave: string
+          created_at: string
+          empresa_id: string
+          id: string
+          valor: string
+        }
+        Insert: {
+          categoria: string
+          chave: string
+          created_at?: string
+          empresa_id: string
+          id?: string
+          valor: string
+        }
+        Update: {
+          categoria?: string
+          chave?: string
+          created_at?: string
+          empresa_id?: string
+          id?: string
+          valor?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'configuracoes_sistema_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      efetivo_mensal: {
+        Row: {
+          ano: number
+          created_at: string
+          empresa_id: string
+          id: string
+          mes: string
+          quantidade: number
+        }
+        Insert: {
+          ano: number
+          created_at?: string
+          empresa_id: string
+          id?: string
+          mes: string
+          quantidade: number
+        }
+        Update: {
+          ano?: number
+          created_at?: string
+          empresa_id?: string
+          id?: string
+          mes?: string
+          quantidade?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'efetivo_mensal_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       empresas: {
         Row: {
           ativa: boolean
@@ -307,6 +377,20 @@ export const Constants = {
 // --- COLUMN TYPES (actual PostgreSQL types) ---
 // Use this to know the real database type when writing migrations.
 // "string" in TypeScript types above may be uuid, text, varchar, timestamptz, etc.
+// Table: configuracoes_sistema
+//   id: uuid (not null, default: gen_random_uuid())
+//   empresa_id: uuid (not null)
+//   chave: text (not null)
+//   valor: text (not null)
+//   categoria: text (not null)
+//   created_at: timestamp with time zone (not null, default: now())
+// Table: efetivo_mensal
+//   id: uuid (not null, default: gen_random_uuid())
+//   empresa_id: uuid (not null)
+//   mes: text (not null)
+//   ano: integer (not null)
+//   quantidade: integer (not null)
+//   created_at: timestamp with time zone (not null, default: now())
 // Table: empresas
 //   id: uuid (not null, default: gen_random_uuid())
 //   nome: text (not null)
@@ -345,6 +429,13 @@ export const Constants = {
 //   empresa_id: uuid (nullable)
 
 // --- CONSTRAINTS ---
+// Table: configuracoes_sistema
+//   FOREIGN KEY configuracoes_sistema_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+//   PRIMARY KEY configuracoes_sistema_pkey: PRIMARY KEY (id)
+// Table: efetivo_mensal
+//   FOREIGN KEY efetivo_mensal_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+//   UNIQUE efetivo_mensal_empresa_id_mes_ano_key: UNIQUE (empresa_id, mes, ano)
+//   PRIMARY KEY efetivo_mensal_pkey: PRIMARY KEY (id)
 // Table: empresas
 //   PRIMARY KEY empresas_pkey: PRIMARY KEY (id)
 // Table: observacoes
@@ -359,6 +450,14 @@ export const Constants = {
 //   PRIMARY KEY profiles_pkey: PRIMARY KEY (id)
 
 // --- ROW LEVEL SECURITY POLICIES ---
+// Table: configuracoes_sistema
+//   Policy "Users can manage system configs for their company" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
+//     WITH CHECK: ((empresa_id = get_user_empresa_id()) OR is_admin())
+// Table: efetivo_mensal
+//   Policy "Users can manage headcount for their company" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
+//     WITH CHECK: ((empresa_id = get_user_empresa_id()) OR is_admin())
 // Table: empresas
 //   Policy "Admins can manage all companies" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: is_admin()
@@ -435,6 +534,8 @@ export const Constants = {
 //
 
 // --- INDEXES ---
+// Table: efetivo_mensal
+//   CREATE UNIQUE INDEX efetivo_mensal_empresa_id_mes_ano_key ON public.efetivo_mensal USING btree (empresa_id, mes, ano)
 // Table: observacoes
 //   CREATE UNIQUE INDEX observacoes_codigo_key ON public.observacoes USING btree (codigo)
 // Table: profiles

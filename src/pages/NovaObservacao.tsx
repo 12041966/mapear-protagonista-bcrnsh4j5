@@ -30,7 +30,7 @@ export default function NovaObservacao() {
   const [step, setStep] = useState(1)
   const [data, setData] = useState<any>(INITIAL_DATA)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { addObservation, currentUser } = useMainStore()
+  const { addObservation, currentUser, isSuperAdmin, activeCompanyId } = useMainStore()
   const { toast } = useToast()
   const navigate = useNavigate()
 
@@ -42,21 +42,23 @@ export default function NovaObservacao() {
           name: currentUser.name || prev.observer.name,
           whatsapp: currentUser.whatsapp || prev.observer.whatsapp,
           cpf: currentUser.cpf || prev.observer.cpf,
-          companyId: currentUser.companyId || prev.observer.companyId,
+          companyId:
+            isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser.companyId,
         },
       }))
     }
-  }, [currentUser])
+  }, [currentUser, isSuperAdmin, activeCompanyId])
 
-  if (!currentUser?.companyId) {
+  if ((!currentUser?.companyId && !isSuperAdmin) || (isSuperAdmin && activeCompanyId === 'all')) {
     return (
       <div className="w-full max-w-2xl mx-auto py-12">
         <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">
           <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-slate-800 mb-2">Acesso Restrito</h2>
           <p className="text-slate-600 max-w-md mx-auto">
-            Sua conta ainda não está vinculada a uma empresa. Entre em contato com o administrador
-            do sistema para realizar o vínculo e liberar o registro de observações.
+            {isSuperAdmin
+              ? 'Selecione uma empresa específica no topo para registrar uma observação.'
+              : 'Sua conta ainda não está vinculada a uma empresa. Entre em contato com o administrador do sistema.'}
           </p>
         </div>
       </div>
@@ -120,8 +122,7 @@ export default function NovaObservacao() {
           <strong className="block mb-1 text-blue-950">Instruções de Uso:</strong>
           Utilize este formulário para registrar observações de Segurança, Saúde e Meio Ambiente com
           objetivo de corrigir ou melhorar condições de risco, alertar sobre comportamentos de risco
-          ou reforçar comportamentos seguros. Situações relacionadas a Acidentes e Quase acidentes
-          devem ser comunicadas diretamente à Supervisão ou Segurança do Trabalho.
+          ou reforçar comportamentos seguros.
         </p>
       </div>
 

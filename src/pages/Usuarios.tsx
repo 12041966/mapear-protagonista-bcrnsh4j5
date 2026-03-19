@@ -34,7 +34,7 @@ import {
 } from '@/components/ui/dialog'
 
 export default function Usuarios() {
-  const { currentUser } = useMainStore()
+  const { currentUser, isSuperAdmin, activeCompanyId } = useMainStore()
   const { toast } = useToast()
 
   const [users, setUsers] = useState<any[]>([])
@@ -46,15 +46,20 @@ export default function Usuarios() {
   const [inviteRole, setInviteRole] = useState('Observador')
   const [inviting, setInviting] = useState(false)
 
+  const targetCompanyId =
+    isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
+
   const fetchUsers = useCallback(async () => {
-    if (!currentUser?.companyId) return
+    if (!targetCompanyId && !isSuperAdmin) return
 
     setLoading(true)
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('empresa_id', currentUser.companyId)
-      .order('name')
+    let query = supabase.from('profiles').select('*, empresas(nome)').order('name')
+
+    if (targetCompanyId) {
+      query = query.eq('empresa_id', targetCompanyId)
+    }
+
+    const { data, error } = await query
 
     if (error) {
       toast({
@@ -66,32 +71,29 @@ export default function Usuarios() {
       setUsers(data || [])
     }
     setLoading(false)
-  }, [currentUser?.companyId, toast])
+  }, [targetCompanyId, isSuperAdmin, toast])
 
   useEffect(() => {
-    if (currentUser?.role === 'Administrador') {
+    if (currentUser?.role === 'Administrador' || isSuperAdmin) {
       fetchUsers()
     }
-  }, [currentUser, fetchUsers])
+  }, [currentUser, isSuperAdmin, fetchUsers])
 
-  if (currentUser?.role !== 'Administrador') {
+  if (currentUser?.role !== 'Administrador' && !isSuperAdmin) {
     return <Navigate to="/" replace />
   }
 
   const handleToggleStatus = async (user: any) => {
     const newStatus = !user.active
-    // Optimistic update
     setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, active: newStatus } : u)))
 
-    const { error } = await supabase
-      .from('profiles')
-      .update({ active: newStatus })
-      .eq('id', user.id)
-      .eq('empresa_id', currentUser.companyId) // ensure contextual scope
+    let query = supabase.from('profiles').update({ active: newStatus }).eq('id', user.id)
+    if (!isSuperAdmin) query = query.eq('empresa_id', currentUser?.companyId)
+
+    const { error } = await query
 
     if (error) {
       toast({ variant: 'destructive', title: 'Erro', description: 'Falha ao alterar status.' })
-      // Revert
       setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, active: user.active } : u)))
     } else {
       toast({
@@ -105,11 +107,10 @@ export default function Usuarios() {
     const oldRole = user.role
     setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, role: newRole } : u)))
 
-    const { error } = await supabase
-      .from('profiles')
-      .update({ role: newRole })
-      .eq('id', user.id)
-      .eq('empresa_id', currentUser.companyId)
+    let query = supabase.from('profiles').update({ role: newRole }).eq('id', user.id)
+    if (!isSuperAdmin) query = query.eq('empresa_id', currentUser?.companyId)
+
+    const { error } = await query
 
     if (error) {
       toast({ variant: 'destructive', title: 'Erro', description: 'Falha ao alterar perfil.' })
@@ -129,6 +130,7 @@ export default function Usuarios() {
         email: inviteEmail,
         name: inviteName,
         role: inviteRole,
+        empresa_id: targetCompanyId,
       },
     })
 
@@ -149,9 +151,11 @@ export default function Usuarios() {
       setInviteName('')
       setInviteEmail('')
       setInviteRole('Observador')
-      fetchUsers() // Refresh list to include new user
+      fetchUsers()
     }
   }
+
+  const canInvite = isSuperAdmin ? activeCompanyId !== 'all' : true
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6 animate-fade-in-up">
@@ -165,7 +169,12 @@ export default function Usuarios() {
             Gerencie os acessos, permissões e convites da sua equipe.
           </p>
         </div>
-        <Button onClick={() => setIsInviteOpen(true)} className="flex items-center gap-2 shadow-sm">
+        <Button
+          onClick={() => setIsInviteOpen(true)}
+          disabled={!canInvite}
+          title={!canInvite ? 'Selecione uma empresa para convidar usuários' : ''}
+          className="flex items-center gap-2 shadow-sm"
+        >
           <Plus className="w-4 h-4" />
           Convidar Usuário
         </Button>
@@ -177,6 +186,7 @@ export default function Usuarios() {
             <TableRow>
               <TableHead>Nome</TableHead>
               <TableHead>Email</TableHead>
+              {isSuperAdmin && activeCompanyId === 'all' && <TableHead>Empresa</TableHead>}
               <TableHead>Perfil</TableHead>
               <TableHead>Status</TableHead>
             </TableRow>
@@ -184,7 +194,10 @@ export default function Usuarios() {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-12 text-slate-500">
+                <TableCell
+                  colSpan={isSuperAdmin && activeCompanyId === 'all' ? 5 : 4}
+                  className="text-center py-12 text-slate-500"
+                >
                   <div className="flex items-center justify-center">
                     <Loader2 className="w-5 h-5 animate-spin mr-2" />
                     Carregando equipe...
@@ -193,8 +206,11 @@ export default function Usuarios() {
               </TableRow>
             ) : users.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="text-center py-12 text-slate-500">
-                  Nenhum usuário encontrado na sua empresa.
+                <TableCell
+                  colSpan={isSuperAdmin && activeCompanyId === 'all' ? 5 : 4}
+                  className="text-center py-12 text-slate-500"
+                >
+                  Nenhum usuário encontrado.
                 </TableCell>
               </TableRow>
             ) : (
@@ -202,6 +218,11 @@ export default function Usuarios() {
                 <TableRow key={user.id} className="hover:bg-slate-50/50">
                   <TableCell className="font-medium text-slate-900">{user.name}</TableCell>
                   <TableCell className="text-slate-600">{user.email}</TableCell>
+                  {isSuperAdmin && activeCompanyId === 'all' && (
+                    <TableCell className="text-slate-600 text-xs">
+                      {user.empresas?.nome || '-'}
+                    </TableCell>
+                  )}
                   <TableCell>
                     <Select value={user.role} onValueChange={(val) => handleChangeRole(user, val)}>
                       <SelectTrigger className="w-[160px] h-8 bg-white">

@@ -11,9 +11,9 @@ import { Badge } from '@/components/ui/badge'
 import { AlertTriangle } from 'lucide-react'
 
 export default function MinhasObservacoes() {
-  const { observations, currentUser } = useMainStore()
+  const { observations, currentUser, isSuperAdmin } = useMainStore()
 
-  if (!currentUser?.companyId) {
+  if (!currentUser?.companyId && !isSuperAdmin) {
     return (
       <div className="w-full max-w-5xl mx-auto py-12">
         <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">

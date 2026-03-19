@@ -33,17 +33,22 @@ Deno.serve(async (req: Request) => {
 
     const { data: profile, error: profileError } = await supabaseClient
       .from('profiles')
-      .select('role, empresa_id')
+      .select('role, empresa_id, email')
       .eq('id', user.id)
       .single()
 
     if (profileError || !profile) throw new Error('Profile not found')
     if (profile.role !== 'Administrador')
       throw new Error('Forbidden: Only administrators can invite users')
-    if (!profile.empresa_id) throw new Error('Forbidden: Administrator has no company assigned')
 
-    const { email, name, role } = await req.json()
+    const { email, name, role, empresa_id: requestedEmpresaId } = await req.json()
     if (!email) throw new Error('Email is required')
+
+    const isSuperAdmin = profile.email === 'ferbatsan@hotmail.com'
+    const targetEmpresaId =
+      isSuperAdmin && requestedEmpresaId ? requestedEmpresaId : profile.empresa_id
+
+    if (!targetEmpresaId) throw new Error('Forbidden: No company assigned')
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -56,7 +61,7 @@ Deno.serve(async (req: Request) => {
       data: {
         name: nameToUse,
         role: role || 'Observador',
-        empresa_id: profile.empresa_id,
+        empresa_id: targetEmpresaId,
       },
       redirectTo: `${req.headers.get('origin') || 'http://localhost:5173'}/login`,
     })

@@ -6,8 +6,8 @@ import {
   ListTodo,
   Settings as SettingsIcon,
   LogOut,
-  Building2,
   Users,
+  Globe,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { useAuth } from '@/hooks/use-auth'
 import { supabase } from '@/lib/supabase/client'
 
@@ -50,17 +57,19 @@ const NAV_ITEMS = [
     roles: ['Administrador'],
   },
   {
-    name: 'Empresas',
-    path: '/admin/empresas',
-    icon: Building2,
+    name: 'Config. Globais',
+    path: '/configuracoes-globais',
+    icon: Globe,
     roles: ['Administrador'],
+    superAdminOnly: true,
   },
   { name: 'Configurações', path: '/settings', icon: SettingsIcon, roles: ['Administrador'] },
 ]
 
 export default function Layout() {
   const location = useLocation()
-  const { currentUser } = useMainStore()
+  const { currentUser, isSuperAdmin, activeCompanyId, setActiveCompanyId, companies } =
+    useMainStore()
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
   const [companyName, setCompanyName] = useState<string>('')
@@ -79,7 +88,10 @@ export default function Layout() {
   }, [currentUser?.companyId])
 
   const visibleNavItems = NAV_ITEMS.filter(
-    (item) => currentUser && item.roles.includes(currentUser.role),
+    (item) =>
+      currentUser &&
+      item.roles.includes(currentUser.role) &&
+      (!item.superAdminOnly || isSuperAdmin),
   )
 
   const handleSignOut = async () => {
@@ -100,7 +112,11 @@ export default function Layout() {
             </div>
             <span className="font-bold text-lg text-primary tracking-tight">MAPEAR</span>
           </div>
-          {companyName ? (
+          {isSuperAdmin ? (
+            <div className="text-xs font-semibold text-primary truncate border-t border-slate-200/60 pt-2 mt-1">
+              Plataforma Global
+            </div>
+          ) : companyName ? (
             <div
               className="text-xs font-semibold text-slate-600 truncate border-t border-slate-200/60 pt-2 mt-1"
               title={companyName}
@@ -158,6 +174,24 @@ export default function Layout() {
             </h1>
           </div>
           <div className="flex items-center space-x-2 md:space-x-4">
+            {isSuperAdmin && (
+              <Select value={activeCompanyId} onValueChange={setActiveCompanyId}>
+                <SelectTrigger className="w-[140px] sm:w-[200px] h-9 text-xs bg-slate-100 border-none font-medium">
+                  <SelectValue placeholder="Todas as empresas" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all" className="font-semibold text-primary">
+                    Todas as empresas
+                  </SelectItem>
+                  {companies.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.nome}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -183,7 +217,9 @@ export default function Layout() {
                       </p>
                     )}
                     {currentUser?.role && (
-                      <p className="text-xs mt-1 font-semibold text-primary">{currentUser.role}</p>
+                      <p className="text-xs mt-1 font-semibold text-primary">
+                        {isSuperAdmin ? 'Super Admin' : currentUser.role}
+                      </p>
                     )}
                   </div>
                 </DropdownMenuLabel>

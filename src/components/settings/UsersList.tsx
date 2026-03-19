@@ -26,21 +26,25 @@ export function UsersList() {
   const [loading, setLoading] = useState(true)
   const [editingUser, setEditingUser] = useState<any | null>(null)
   const { toast } = useToast()
-  const { currentUser } = useMainStore()
+  const { currentUser, isSuperAdmin, activeCompanyId } = useMainStore()
+
+  const targetCompanyId =
+    isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
 
   useEffect(() => {
-    if (currentUser?.companyId) {
+    if (targetCompanyId) {
       fetchUsers()
     }
-  }, [currentUser])
+    // eslint-disable-next-react-hooks-exhaustive-deps
+  }, [targetCompanyId])
 
   const fetchUsers = async () => {
-    if (!currentUser?.companyId) return
+    if (!targetCompanyId) return
     setLoading(true)
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
-      .eq('empresa_id', currentUser.companyId)
+      .eq('empresa_id', targetCompanyId)
       .order('name')
 
     if (data) {
@@ -97,7 +101,7 @@ export function UsersList() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <p className="text-sm text-slate-500">
-          Gerencie acessos e informações dos usuários da sua empresa.
+          Gerencie acessos e informações dos usuários da empresa.
         </p>
       </div>
 

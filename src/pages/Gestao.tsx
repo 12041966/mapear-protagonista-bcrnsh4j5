@@ -10,7 +10,7 @@ import { Observation } from '@/types'
 import { useToast } from '@/hooks/use-toast'
 
 export default function Gestao() {
-  const { observations, currentUser } = useMainStore()
+  const { observations, currentUser, isSuperAdmin } = useMainStore()
   const [search, setSearch] = useState('')
   const [editingObs, setEditingObs] = useState<Observation | null>(null)
   const { toast } = useToast()
@@ -24,11 +24,11 @@ export default function Gestao() {
     )
   }, [observations, search])
 
-  if (currentUser?.role === 'Observador') {
+  if (currentUser?.role === 'Observador' && !isSuperAdmin) {
     return <Navigate to="/" replace />
   }
 
-  if (!currentUser?.companyId) {
+  if (!currentUser?.companyId && !isSuperAdmin) {
     return (
       <div className="w-full max-w-7xl mx-auto py-12">
         <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">
@@ -57,9 +57,7 @@ export default function Gestao() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Gestão de Relatos</h2>
-          <p className="text-sm text-slate-500">
-            Acompanhe e trate as observações de segurança da sua empresa.
-          </p>
+          <p className="text-sm text-slate-500">Acompanhe e trate as observações de segurança.</p>
         </div>
         <Button onClick={handleExport} variant="outline" className="flex items-center gap-2">
           <Download className="w-4 h-4" />

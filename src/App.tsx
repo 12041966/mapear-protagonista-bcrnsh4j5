@@ -18,7 +18,7 @@ import Gestao from '@/pages/Gestao'
 import Settings from '@/pages/Settings'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
-import Empresas from '@/pages/admin/Empresas'
+import GlobalSettings from '@/pages/admin/GlobalSettings'
 import Usuarios from '@/pages/Usuarios'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -35,6 +35,10 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
   const [settings, setSettings] = useState<AppSettings>(INITIAL_SETTINGS)
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null)
 
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const [activeCompanyId, setActiveCompanyId] = useState<string | 'all'>('all')
+  const [companies, setCompanies] = useState<any[]>([])
+
   const [profileLoading, setProfileLoading] = useState(false)
   const [observationsLoading, setObservationsLoading] = useState(false)
 
@@ -42,13 +46,14 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     if (!user) {
       setCurrentUser(null)
       setObservations([])
+      setIsSuperAdmin(false)
+      setCompanies([])
       setProfileLoading(false)
       setObservationsLoading(false)
       return
     }
 
     setProfileLoading(true)
-    setObservationsLoading(true)
 
     supabase
       .from('profiles')
@@ -59,15 +64,17 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         if (data && !error) {
           const profile = data as any
           if (profile.active === false) {
-            signOut().then(() => {
-              setProfileLoading(false)
-              setObservationsLoading(false)
-            })
+            signOut().then(() => setProfileLoading(false))
             return
           }
+
+          const superAdmin = profile.email === 'ferbatsan@hotmail.com'
+          setIsSuperAdmin(superAdmin)
+
           setCurrentUser({
             id: profile.id,
             name: profile.name || '',
+            email: profile.email || '',
             whatsapp: profile.whatsapp || '',
             cpf: profile.cpf || '',
             companyId: profile.empresa_id || profile.company_id || '',
@@ -75,101 +82,119 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
             role: (profile.role as Role) || 'Observador',
           })
 
-          if (profile.empresa_id) {
-            Promise.all([
-              supabase
-                .from('observacoes')
-                .select('*, profiles(name, whatsapp, cpf, empresa_id)')
-                .eq('empresa_id', profile.empresa_id)
-                .order('date', { ascending: false }),
-              supabase
-                .from('configuracoes_sistema')
-                .select('*')
-                .eq('empresa_id', profile.empresa_id)
-                .order('created_at', { ascending: true }),
-              supabase
-                .from('efetivo_mensal')
-                .select('*')
-                .eq('empresa_id', profile.empresa_id)
-                .order('ano', { ascending: false })
-                .order('mes', { ascending: false }),
-            ]).then(([obsRes, confRes, efRes]) => {
-              if (obsRes.data && !obsRes.error) {
-                setObservations(
-                  obsRes.data.map((row: any) => ({
-                    id: row.codigo || row.id,
-                    date: row.date,
-                    observer: {
-                      name: row.profiles?.name || 'Desconhecido',
-                      whatsapp: row.profiles?.whatsapp || '',
-                      cpf: row.profiles?.cpf || '',
-                      companyId: row.profiles?.empresa_id || '',
-                    },
-                    type: row.type,
-                    detail: row.detail || '',
-                    area: row.area || '',
-                    shift: row.shift || '',
-                    riskLevel: row.risk_level || '',
-                    description: row.description || '',
-                    resolutionType: row.resolution_type || '',
-                    status: row.status || 'Pendente',
-                    assignedTo: row.assigned_to,
-                    managerComments: row.manager_comments,
-                  })),
-                )
-              }
-
-              const newSettings = { ...INITIAL_SETTINGS }
-              if (confRes.data && confRes.data.length > 0) {
-                const byCat = (cat: string) =>
-                  confRes.data.filter((c) => c.categoria === cat).map((c) => c.valor)
-
-                const areas = byCat('areas')
-                if (areas.length > 0) newSettings.areas = areas
-
-                const shifts = byCat('shifts')
-                if (shifts.length > 0) newSettings.shifts = shifts
-
-                const risks = byCat('risks')
-                if (risks.length > 0) newSettings.risks = risks
-
-                const conditions = byCat('conditions')
-                if (conditions.length > 0) newSettings.conditions = conditions
-
-                const behaviors = byCat('behaviors')
-                if (behaviors.length > 0) newSettings.behaviors = behaviors
-
-                const obsTypesStr = byCat('observationTypes')
-                if (obsTypesStr.length > 0)
-                  newSettings.observationTypes = obsTypesStr.map((s) => JSON.parse(s))
-              }
-
-              if (efRes.data) {
-                const hc: Record<string, number> = {}
-                efRes.data.forEach((e) => {
-                  const mStr = String(e.mes).padStart(2, '0')
-                  hc[`${e.ano}-${mStr}`] = e.quantidade
-                })
-                newSettings.monthlyHeadcount = hc
-              }
-
-              setSettings(newSettings)
-              setObservationsLoading(false)
-            })
+          if (superAdmin) {
+            supabase
+              .from('empresas')
+              .select('*')
+              .eq('ativa', true)
+              .order('nome')
+              .then((res) => {
+                if (res.data) setCompanies(res.data)
+              })
+            if (activeCompanyId !== 'all' && !activeCompanyId) setActiveCompanyId('all')
           } else {
-            setObservationsLoading(false)
+            setActiveCompanyId(profile.empresa_id || '')
           }
         } else {
           setCurrentUser(null)
-          setObservationsLoading(false)
         }
         setProfileLoading(false)
       })
   }, [user, signOut])
 
+  useEffect(() => {
+    if (!currentUser) return
+    if (activeCompanyId === '' && !isSuperAdmin) {
+      setObservationsLoading(false)
+      return
+    }
+
+    setObservationsLoading(true)
+
+    let obsQuery = supabase
+      .from('observacoes')
+      .select('*, profiles(name, whatsapp, cpf, empresa_id)')
+      .order('date', { ascending: false })
+    let confQuery = supabase
+      .from('configuracoes_sistema')
+      .select('*')
+      .order('created_at', { ascending: true })
+    let efQuery = supabase
+      .from('efetivo_mensal')
+      .select('*')
+      .order('ano', { ascending: false })
+      .order('mes', { ascending: false })
+
+    if (activeCompanyId !== 'all') {
+      obsQuery = obsQuery.eq('empresa_id', activeCompanyId)
+      confQuery = confQuery.eq('empresa_id', activeCompanyId)
+      efQuery = efQuery.eq('empresa_id', activeCompanyId)
+    }
+
+    Promise.all([obsQuery, confQuery, efQuery]).then(([obsRes, confRes, efRes]) => {
+      if (obsRes.data && !obsRes.error) {
+        setObservations(
+          obsRes.data.map((row: any) => ({
+            id: row.codigo || row.id,
+            date: row.date,
+            observer: {
+              name: row.profiles?.name || 'Desconhecido',
+              whatsapp: row.profiles?.whatsapp || '',
+              cpf: row.profiles?.cpf || '',
+              companyId: row.profiles?.empresa_id || '',
+            },
+            type: row.type,
+            detail: row.detail || '',
+            area: row.area || '',
+            shift: row.shift || '',
+            riskLevel: row.risk_level || '',
+            description: row.description || '',
+            resolutionType: row.resolution_type || '',
+            status: row.status || 'Pendente',
+            assignedTo: row.assigned_to,
+            managerComments: row.manager_comments,
+          })),
+        )
+      }
+
+      const newSettings = { ...INITIAL_SETTINGS }
+      if (confRes.data && confRes.data.length > 0) {
+        const byCat = (cat: string) =>
+          confRes.data.filter((c: any) => c.categoria === cat).map((c: any) => c.valor)
+        const areas = byCat('areas')
+        if (areas.length > 0) newSettings.areas = areas
+        const shifts = byCat('shifts')
+        if (shifts.length > 0) newSettings.shifts = shifts
+        const risks = byCat('risks')
+        if (risks.length > 0) newSettings.risks = risks
+        const conditions = byCat('conditions')
+        if (conditions.length > 0) newSettings.conditions = conditions
+        const behaviors = byCat('behaviors')
+        if (behaviors.length > 0) newSettings.behaviors = behaviors
+        const obsTypesStr = byCat('observationTypes')
+        if (obsTypesStr.length > 0)
+          newSettings.observationTypes = obsTypesStr.map((s: string) => JSON.parse(s))
+      }
+
+      if (efRes.data) {
+        const hc: Record<string, number> = {}
+        efRes.data.forEach((e: any) => {
+          const mStr = String(e.mes).padStart(2, '0')
+          hc[`${e.ano}-${mStr}`] = e.quantidade
+        })
+        newSettings.monthlyHeadcount = hc
+      }
+
+      setSettings(newSettings)
+      setObservationsLoading(false)
+    })
+  }, [activeCompanyId, currentUser, isSuperAdmin])
+
   const addObservation = useCallback(
     async (obs: Omit<Observation, 'id' | 'date' | 'status'>) => {
-      if (!currentUser?.companyId || !user?.id) return
+      const targetCompany =
+        isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
+      if (!targetCompany || !user?.id) return
 
       const newCode = `OBS-${new Date().getFullYear()}-${String(observations.length + 1).padStart(3, '0')}`
       const date = new Date().toISOString()
@@ -178,7 +203,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         .from('observacoes')
         .insert({
           codigo: newCode,
-          empresa_id: currentUser.companyId,
+          empresa_id: targetCompany,
           user_id: user.id,
           date,
           type: obs.type,
@@ -199,10 +224,10 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
             id: data.codigo,
             date: data.date,
             observer: {
-              name: data.profiles?.name || currentUser.name,
-              whatsapp: data.profiles?.whatsapp || currentUser.whatsapp,
-              cpf: data.profiles?.cpf || currentUser.cpf,
-              companyId: data.profiles?.empresa_id || currentUser.companyId,
+              name: data.profiles?.name || currentUser?.name || '',
+              whatsapp: data.profiles?.whatsapp || currentUser?.whatsapp || '',
+              cpf: data.profiles?.cpf || currentUser?.cpf || '',
+              companyId: data.profiles?.empresa_id || targetCompany,
             },
             type: data.type,
             detail: data.detail || '',
@@ -219,7 +244,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         ])
       }
     },
-    [observations.length, currentUser, user],
+    [observations.length, currentUser, user, isSuperAdmin, activeCompanyId],
   )
 
   const updateObservation = useCallback(async (id: string, updates: Partial<Observation>) => {
@@ -249,7 +274,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     return (
       <div className="h-screen w-screen flex flex-col items-center justify-center bg-slate-50 text-slate-500 space-y-4">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        <p className="text-sm font-medium">Carregando dados da empresa...</p>
+        <p className="text-sm font-medium">Carregando dados...</p>
       </div>
     )
   }
@@ -268,6 +293,10 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         updateSettings,
         currentUser,
         setCurrentUser,
+        isSuperAdmin,
+        activeCompanyId,
+        setActiveCompanyId,
+        companies,
       }}
     >
       {children}
@@ -297,7 +326,7 @@ const App = () => {
                 <Route path="/minhas-observacoes" element={<MinhasObservacoes />} />
                 <Route path="/gestao" element={<Gestao />} />
                 <Route path="/usuarios" element={<Usuarios />} />
-                <Route path="/admin/empresas" element={<Empresas />} />
+                <Route path="/configuracoes-globais" element={<GlobalSettings />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
               <Route path="*" element={<NotFound />} />

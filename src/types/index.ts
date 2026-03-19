@@ -7,6 +7,7 @@ export type Role = 'Administrador' | 'Supervisor' | 'Observador'
 export interface UserProfile {
   id: string
   name: string
+  email: string
   whatsapp: string
   cpf: string
   companyId: string
@@ -34,7 +35,7 @@ export interface AppSettings {
 export interface Observation {
   id: string
   date: string
-  observer: Omit<UserProfile, 'id' | 'role' | 'registrationNumber'>
+  observer: Omit<UserProfile, 'id' | 'role' | 'registrationNumber' | 'email'>
   type: string
   detail: string
   area: string
@@ -61,5 +62,9 @@ export interface StoreContextType {
   settings: AppSettings
   updateSettings: (settings: AppSettings) => void
   currentUser: UserProfile | null
-  setCurrentUser: (user: UserProfile) => void
+  setCurrentUser: (user: UserProfile | null) => void
+  isSuperAdmin: boolean
+  activeCompanyId: string | 'all'
+  setActiveCompanyId: (id: string | 'all') => void
+  companies: any[]
 }
