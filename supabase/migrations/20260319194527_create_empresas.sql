@@ -12,6 +12,9 @@ CREATE TABLE public.empresas (
 -- Habilitar RLS
 ALTER TABLE public.empresas ENABLE ROW LEVEL SECURITY;
 
+-- Atualizar tabela profiles
+ALTER TABLE public.profiles ADD COLUMN empresa_id UUID REFERENCES public.empresas(id);
+
 -- Políticas de acesso para empresas
 CREATE POLICY "Admins can manage all companies" ON public.empresas
     FOR ALL TO authenticated USING (public.is_admin()) WITH CHECK (public.is_admin());
@@ -20,9 +23,6 @@ CREATE POLICY "Users can view their own company" ON public.empresas
     FOR SELECT TO authenticated USING (
         id IN (SELECT empresa_id FROM public.profiles WHERE id = auth.uid())
     );
-
--- Atualizar tabela profiles
-ALTER TABLE public.profiles ADD COLUMN empresa_id UUID REFERENCES public.empresas(id);
 
 -- Lógica de migração de dados
 DO $$
