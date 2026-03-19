@@ -48,7 +48,7 @@ export function HeadcountSettings() {
       empresa_id: targetCompanyId,
       mes: mesStr,
       ano: parseInt(ano, 10),
-      quantidade,
+      quantidade_funcionarios: quantidade,
     })
 
     if (error) {

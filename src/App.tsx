@@ -214,7 +214,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           const hc: Record<string, number> = {}
           efRes.data.forEach((e: any) => {
             const mStr = String(e.mes).padStart(2, '0')
-            hc[`${e.ano}-${mStr}`] = e.quantidade
+            hc[`${e.ano}-${mStr}`] = e.quantidade_funcionarios
           })
           newSettings.monthlyHeadcount = hc
         }
