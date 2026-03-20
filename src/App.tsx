@@ -166,6 +166,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
               completionDate: row.completion_date || null,
               managerComments: row.manager_comments,
               companyName: row.empresas?.nome || 'Não informada',
+              justificativaCancelamento: row.justificativa_cancelamento || null,
             })),
           )
         }
@@ -284,6 +285,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
             completionDate: data.completion_date || null,
             managerComments: data.manager_comments,
             companyName: data.empresas?.nome || 'Não informada',
+            justificativaCancelamento: data.justificativa_cancelamento || null,
           },
           ...prev,
         ])
@@ -302,6 +304,8 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     if (updates.completionDate !== undefined) dbUpdates.completion_date = updates.completionDate
     if ((updates as any).justificativa_status !== undefined)
       dbUpdates.justificativa_status = (updates as any).justificativa_status
+    if (updates.justificativaCancelamento !== undefined)
+      dbUpdates.justificativa_cancelamento = updates.justificativaCancelamento
 
     const { error } = await supabase.from('observacoes').update(dbUpdates).eq('codigo', id)
     if (!error) {

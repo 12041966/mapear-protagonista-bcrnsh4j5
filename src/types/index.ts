@@ -1,4 +1,4 @@
-export type ObsStatus = 'Pendente' | 'Em Análise' | 'Concluído'
+export type ObsStatus = 'Pendente' | 'Em Análise' | 'Concluído' | 'Cancelada'
 
 export type ResolutionType = 'Feedback fornecido' | 'Ação tomada' | 'Ação necessária'
 
@@ -52,6 +52,7 @@ export interface Observation {
   completionDate?: string | null
   managerComments?: string
   companyName?: string
+  justificativaCancelamento?: string | null
 }
 
 export interface StoreContextType {

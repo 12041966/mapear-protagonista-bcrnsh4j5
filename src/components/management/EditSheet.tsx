@@ -40,6 +40,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
   const [assignedTo, setAssignedTo] = useState('')
   const [comments, setComments] = useState('')
   const [justificativa, setJustificativa] = useState('')
+  const [justificativaCancelamento, setJustificativaCancelamento] = useState('')
   const [dueDate, setDueDate] = useState<Date | undefined>()
   const [completionDate, setCompletionDate] = useState<Date | undefined>()
   const [isSaving, setIsSaving] = useState(false)
@@ -55,7 +56,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
         obs.type.toLowerCase().includes('comportamento') &&
         obs.resolutionType === 'Feedback fornecido'
       ) {
-        if (defaultStatus !== 'Concluído') {
+        if (defaultStatus !== 'Concluído' && defaultStatus !== 'Cancelada') {
           defaultStatus = 'Concluído'
         }
         if (!obs.completionDate) {
@@ -65,8 +66,9 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
 
       setStatus(defaultStatus)
       setAssignedTo(obs.assignedTo || '')
-      setComments((obs as any).managerComments || '')
+      setComments(obs.managerComments || '')
       setJustificativa('')
+      setJustificativaCancelamento(obs.justificativaCancelamento || '')
       setDueDate(obs.dueDate ? new Date(obs.dueDate) : undefined)
       setCompletionDate(defaultCompletion)
     }
@@ -91,7 +93,11 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
       completionDate: completionDate ? completionDate.toISOString() : null,
     }
 
-    if (status !== obs.status) {
+    if (status === 'Cancelada') {
+      updates.justificativaCancelamento = justificativaCancelamento
+      // Envia também como status para ser capturado no log caso a nova coluna falhe no trigger
+      updates.justificativa_status = justificativaCancelamento
+    } else if (status !== obs.status) {
       updates.justificativa_status = justificativa
     }
 
@@ -103,6 +109,11 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
         title: 'Relato Concluído',
         description: `Notificação enviada para o WhatsApp de ${obs.observer.name}.`,
       })
+    } else if (status === 'Cancelada' && obs.status !== 'Cancelada') {
+      toast({
+        title: 'Relato Cancelado',
+        description: 'A observação foi cancelada com sucesso.',
+      })
     } else {
       toast({ title: 'Atualizado', description: 'Alterações salvas com sucesso.' })
     }
@@ -111,6 +122,11 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
   }
 
   const statusChanged = obs && status !== obs.status
+
+  const isSaveDisabled =
+    isSaving ||
+    (statusChanged && status !== 'Cancelada' && !justificativa.trim()) ||
+    (status === 'Cancelada' && !justificativaCancelamento.trim())
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -153,17 +169,31 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
                   <SelectItem value="Pendente">Pendente</SelectItem>
                   <SelectItem value="Em Análise">Em Análise</SelectItem>
                   <SelectItem value="Concluído">Concluído</SelectItem>
+                  <SelectItem value="Cancelada">Cancelada</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
-            {statusChanged && (
+            {statusChanged && status !== 'Cancelada' && (
               <div className="grid gap-2 animate-in fade-in slide-in-from-top-2">
                 <Label className="text-primary">Justificativa da mudança de status</Label>
                 <Textarea
                   value={justificativa}
                   onChange={(e) => setJustificativa(e.target.value)}
                   placeholder="Informe o motivo da alteração de status..."
+                  className="min-h-[80px]"
+                  required
+                />
+              </div>
+            )}
+
+            {status === 'Cancelada' && (
+              <div className="grid gap-2 animate-in fade-in slide-in-from-top-2">
+                <Label className="text-destructive">Justificativa de Cancelamento</Label>
+                <Textarea
+                  value={justificativaCancelamento}
+                  onChange={(e) => setJustificativaCancelamento(e.target.value)}
+                  placeholder="Informe o motivo do cancelamento deste relato..."
                   className="min-h-[80px]"
                   required
                 />
@@ -247,11 +277,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
         </div>
 
         <SheetFooter className="mt-8">
-          <Button
-            onClick={handleSave}
-            disabled={isSaving || (statusChanged && !justificativa.trim())}
-            className="w-full"
-          >
+          <Button onClick={handleSave} disabled={isSaveDisabled} className="w-full">
             {isSaving ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Salvando...

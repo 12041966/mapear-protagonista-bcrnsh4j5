@@ -79,7 +79,9 @@ export function DataTable({ data, onEdit, isSuperAdmin }: Props) {
                         ? 'secondary'
                         : obs.status === 'Em Análise'
                           ? 'default'
-                          : 'outline'
+                          : obs.status === 'Cancelada'
+                            ? 'destructive'
+                            : 'outline'
                     }
                   >
                     {obs.status}

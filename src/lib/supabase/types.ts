@@ -115,6 +115,61 @@ export type Database = {
         }
         Relationships: []
       }
+      logs_observacoes: {
+        Row: {
+          data_hora: string
+          empresa_id: string
+          id: string
+          justificativa: string | null
+          observacao_id: string
+          status_anterior: string | null
+          status_novo: string
+          usuario_id: string | null
+        }
+        Insert: {
+          data_hora?: string
+          empresa_id: string
+          id?: string
+          justificativa?: string | null
+          observacao_id: string
+          status_anterior?: string | null
+          status_novo: string
+          usuario_id?: string | null
+        }
+        Update: {
+          data_hora?: string
+          empresa_id?: string
+          id?: string
+          justificativa?: string | null
+          observacao_id?: string
+          status_anterior?: string | null
+          status_novo?: string
+          usuario_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'logs_observacoes_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'logs_observacoes_observacao_id_fkey'
+            columns: ['observacao_id']
+            isOneToOne: false
+            referencedRelation: 'observacoes'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'logs_observacoes_usuario_id_fkey'
+            columns: ['usuario_id']
+            isOneToOne: false
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       observacoes: {
         Row: {
           area: string | null
@@ -128,6 +183,7 @@ export type Database = {
           due_date: string | null
           empresa_id: string
           id: string
+          justificativa_status: string | null
           manager_comments: string | null
           resolution_type: string | null
           risk_level: string | null
@@ -148,6 +204,7 @@ export type Database = {
           due_date?: string | null
           empresa_id: string
           id?: string
+          justificativa_status?: string | null
           manager_comments?: string | null
           resolution_type?: string | null
           risk_level?: string | null
@@ -168,6 +225,7 @@ export type Database = {
           due_date?: string | null
           empresa_id?: string
           id?: string
+          justificativa_status?: string | null
           manager_comments?: string | null
           resolution_type?: string | null
           risk_level?: string | null
@@ -551,6 +609,15 @@ export const Constants = {
 //   data_criacao: timestamp with time zone (not null, default: now())
 //   ativa: boolean (not null, default: true)
 //   codigo_empresa: text (not null)
+// Table: logs_observacoes
+//   id: uuid (not null, default: gen_random_uuid())
+//   observacao_id: uuid (not null)
+//   usuario_id: uuid (nullable)
+//   status_anterior: text (nullable)
+//   status_novo: text (not null)
+//   justificativa: text (nullable)
+//   data_hora: timestamp with time zone (not null, default: now())
+//   empresa_id: uuid (not null)
 // Table: observacoes
 //   id: uuid (not null, default: gen_random_uuid())
 //   codigo: text (not null)
@@ -570,6 +637,7 @@ export const Constants = {
 //   manager_comments: text (nullable)
 //   due_date: timestamp with time zone (nullable)
 //   completion_date: timestamp with time zone (nullable)
+//   justificativa_status: text (nullable)
 // Table: profiles
 //   id: uuid (not null)
 //   email: text (not null)
@@ -620,6 +688,11 @@ export const Constants = {
 // Table: empresas
 //   UNIQUE empresas_codigo_empresa_key: UNIQUE (codigo_empresa)
 //   PRIMARY KEY empresas_pkey: PRIMARY KEY (id)
+// Table: logs_observacoes
+//   FOREIGN KEY logs_observacoes_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+//   FOREIGN KEY logs_observacoes_observacao_id_fkey: FOREIGN KEY (observacao_id) REFERENCES observacoes(id) ON DELETE CASCADE
+//   PRIMARY KEY logs_observacoes_pkey: PRIMARY KEY (id)
+//   FOREIGN KEY logs_observacoes_usuario_id_fkey: FOREIGN KEY (usuario_id) REFERENCES profiles(id) ON DELETE SET NULL
 // Table: observacoes
 //   UNIQUE observacoes_codigo_key: UNIQUE (codigo)
 //   FOREIGN KEY observacoes_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
@@ -669,6 +742,12 @@ export const Constants = {
 //     WITH CHECK: is_super_admin()
 //   Policy "Users can view their own company" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: (id IN ( SELECT profiles.empresa_id    FROM profiles   WHERE (profiles.id = auth.uid())))
+// Table: logs_observacoes
+//   Policy "Super admins can do all on logs_observacoes" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
+//   Policy "Users can view logs for their company" (SELECT, PERMISSIVE) roles={authenticated}
+//     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
 // Table: observacoes
 //   Policy "Super admins can do all on observacoes" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: is_super_admin()
@@ -817,10 +896,42 @@ export const Constants = {
 //       );
 //     $function$
 //
+// FUNCTION log_observacao_status_change()
+//   CREATE OR REPLACE FUNCTION public.log_observacao_status_change()
+//    RETURNS trigger
+//    LANGUAGE plpgsql
+//    SECURITY DEFINER
+//   AS $function$
+//   BEGIN
+//       IF OLD.status IS DISTINCT FROM NEW.status THEN
+//           INSERT INTO public.logs_observacoes (
+//               observacao_id,
+//               usuario_id,
+//               status_anterior,
+//               status_novo,
+//               justificativa,
+//               empresa_id
+//           ) VALUES (
+//               NEW.id,
+//               auth.uid(),
+//               OLD.status,
+//               NEW.status,
+//               NEW.justificativa_status,
+//               NEW.empresa_id
+//           );
+//           -- Reseta a justificativa na tabela principal para atuar como campo transiente
+//           NEW.justificativa_status := NULL;
+//       END IF;
+//       RETURN NEW;
+//   END;
+//   $function$
+//
 
 // --- TRIGGERS ---
 // Table: empresas
 //   ensure_codigo_empresa: CREATE TRIGGER ensure_codigo_empresa BEFORE INSERT ON public.empresas FOR EACH ROW EXECUTE FUNCTION generate_codigo_empresa()
+// Table: observacoes
+//   on_observacao_status_change: CREATE TRIGGER on_observacao_status_change BEFORE UPDATE ON public.observacoes FOR EACH ROW EXECUTE FUNCTION log_observacao_status_change()
 
 // --- INDEXES ---
 // Table: efetivo_mensal
