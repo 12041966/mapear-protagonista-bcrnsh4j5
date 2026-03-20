@@ -101,55 +101,73 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
 
   const handleConfirmCancel = async () => {
     setIsSaving(true)
-    const updates: any = {
-      status: 'Cancelada',
-      assignedTo,
-      managerComments: comments,
-      dueDate: dueDate ? dueDate.toISOString() : null,
-      completionDate: completionDate ? completionDate.toISOString() : null,
-      justificativaCancelamento: cancelJustification,
-      justificativa_status: cancelJustification,
-    }
+    try {
+      const updates: any = {
+        status: 'Cancelada',
+        assignedTo,
+        managerComments: comments,
+        dueDate: dueDate ? dueDate.toISOString() : null,
+        completionDate: completionDate ? completionDate.toISOString() : null,
+        justificativaCancelamento: cancelJustification,
+        justificativa_status: cancelJustification,
+      }
 
-    await updateObservation(obs.id, updates)
-    setIsSaving(false)
-    setCancelDialogOpen(false)
-    onOpenChange(false)
-    toast({
-      title: 'Relato Cancelado',
-      description: 'A observação foi cancelada com sucesso.',
-    })
+      await updateObservation(obs.id, updates)
+      setCancelDialogOpen(false)
+      onOpenChange(false)
+      toast({
+        title: 'Relato Cancelado',
+        description: 'A observação foi cancelada com sucesso.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Erro',
+        description: 'Falha ao cancelar a observação. Tente novamente.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleSave = async () => {
     setIsSaving(true)
-    const updates: any = {
-      status,
-      assignedTo,
-      managerComments: comments,
-      dueDate: dueDate ? dueDate.toISOString() : null,
-      completionDate: completionDate ? completionDate.toISOString() : null,
-    }
+    try {
+      const updates: any = {
+        status,
+        assignedTo,
+        managerComments: comments,
+        dueDate: dueDate ? dueDate.toISOString() : null,
+        completionDate: completionDate ? completionDate.toISOString() : null,
+      }
 
-    if (status === 'Cancelada') {
-      updates.justificativaCancelamento = obs.justificativaCancelamento
-    } else if (status !== obs.status) {
-      updates.justificativa_status = justificativa
-    }
+      if (status === 'Cancelada') {
+        updates.justificativaCancelamento = obs.justificativaCancelamento
+      } else if (status !== obs.status) {
+        updates.justificativa_status = justificativa
+      }
 
-    await updateObservation(obs.id, updates)
-    setIsSaving(false)
+      await updateObservation(obs.id, updates)
 
-    if (status === 'Concluído' && obs.status !== 'Concluído') {
+      if (status === 'Concluído' && obs.status !== 'Concluído') {
+        toast({
+          title: 'Relato Concluído',
+          description: `Notificação enviada para o WhatsApp de ${obs.observer.name}.`,
+        })
+      } else {
+        toast({ title: 'Atualizado', description: 'Alterações salvas com sucesso.' })
+      }
+
+      onOpenChange(false)
+    } catch (error) {
       toast({
-        title: 'Relato Concluído',
-        description: `Notificação enviada para o WhatsApp de ${obs.observer.name}.`,
+        title: 'Erro',
+        description: 'Não foi possível salvar as alterações.',
+        variant: 'destructive',
       })
-    } else {
-      toast({ title: 'Atualizado', description: 'Alterações salvas com sucesso.' })
+    } finally {
+      setIsSaving(false)
     }
-
-    onOpenChange(false)
   }
 
   const statusChanged = obs && status !== obs.status
@@ -334,7 +352,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
                 id="cancel-justification"
                 value={cancelJustification}
                 onChange={(e) => setCancelJustification(e.target.value)}
-                placeholder="Detalhe os motivos que levaram ao cancelamento..."
+                placeholder="Detalhe os motivos que levam ao cancelamento..."
                 className="min-h-[100px]"
               />
             </div>

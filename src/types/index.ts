@@ -57,8 +57,8 @@ export interface Observation {
 
 export interface StoreContextType {
   observations: Observation[]
-  addObservation: (obs: Omit<Observation, 'id' | 'date' | 'status'>) => void
-  updateObservation: (id: string, updates: Partial<Observation>) => void
+  addObservation: (obs: Omit<Observation, 'id' | 'date' | 'status'>) => Promise<void>
+  updateObservation: (id: string, updates: Partial<Observation>) => Promise<void>
   users: UserProfile[]
   addUser: (user: UserProfile) => void
   updateUser: (id: string, user: Partial<UserProfile>) => void

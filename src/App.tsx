@@ -246,7 +246,6 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
 
       while (!success && attempts < 5) {
         try {
-          // Chamada para a Edge Function que gerencia o código de forma atômica
           const { data: edgeData, error: edgeError } = await supabase.functions.invoke(
             'gerar_codigo_observacao',
             {
@@ -349,8 +348,69 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     if (updates.justificativaCancelamento !== undefined)
       dbUpdates.justificativa_cancelamento = updates.justificativaCancelamento
 
-    const { error } = await supabase.from('observacoes').update(dbUpdates).eq('codigo', id)
-    if (!error) {
+    let updateQuery = supabase.from('observacoes').update(dbUpdates)
+
+    if (id.startsWith('OBS-')) {
+      updateQuery = updateQuery.eq('codigo', id)
+    } else {
+      updateQuery = updateQuery.eq('id', id)
+    }
+
+    const { error } = await updateQuery
+
+    if (error) {
+      console.error('Erro ao atualizar observação:', error)
+      throw error
+    }
+
+    // Busca o registro atualizado para sincronizar o estado perfeitamente
+    let fetchQuery = supabase
+      .from('observacoes')
+      .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
+
+    if (id.startsWith('OBS-')) {
+      fetchQuery = fetchQuery.eq('codigo', id)
+    } else {
+      fetchQuery = fetchQuery.eq('id', id)
+    }
+
+    const { data: updatedData, error: fetchError } = await fetchQuery.single()
+
+    if (!fetchError && updatedData) {
+      setObservations((prev) =>
+        prev.map((obs) => {
+          if (obs.id === id) {
+            return {
+              id: updatedData.codigo || updatedData.id,
+              date: updatedData.date,
+              observer: {
+                name: updatedData.profiles?.name || obs.observer.name,
+                whatsapp: updatedData.profiles?.whatsapp || obs.observer.whatsapp,
+                cpf: updatedData.profiles?.cpf || obs.observer.cpf,
+                email: updatedData.profiles?.email || obs.observer.email,
+                companyId: updatedData.profiles?.empresa_id || obs.observer.companyId,
+              },
+              type: updatedData.type,
+              detail: updatedData.detail || '',
+              area: updatedData.area || '',
+              shift: updatedData.shift || '',
+              riskLevel: updatedData.risk_level || '',
+              description: updatedData.description || '',
+              resolutionType: updatedData.resolution_type || '',
+              status: updatedData.status as any,
+              assignedTo: updatedData.assigned_to,
+              dueDate: updatedData.due_date || null,
+              completionDate: updatedData.completion_date || null,
+              managerComments: updatedData.manager_comments,
+              companyName: updatedData.empresas?.nome || obs.companyName,
+              justificativaCancelamento: updatedData.justificativa_cancelamento || null,
+            }
+          }
+          return obs
+        }),
+      )
+    } else {
+      // Fallback em caso de falha na busca
       setObservations((prev) => prev.map((obs) => (obs.id === id ? { ...obs, ...updates } : obs)))
     }
   }, [])
