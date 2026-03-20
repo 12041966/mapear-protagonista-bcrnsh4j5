@@ -183,6 +183,7 @@ export type Database = {
           due_date: string | null
           empresa_id: string
           id: string
+          justificativa_cancelamento: string | null
           justificativa_status: string | null
           manager_comments: string | null
           resolution_type: string | null
@@ -204,6 +205,7 @@ export type Database = {
           due_date?: string | null
           empresa_id: string
           id?: string
+          justificativa_cancelamento?: string | null
           justificativa_status?: string | null
           manager_comments?: string | null
           resolution_type?: string | null
@@ -225,6 +227,7 @@ export type Database = {
           due_date?: string | null
           empresa_id?: string
           id?: string
+          justificativa_cancelamento?: string | null
           justificativa_status?: string | null
           manager_comments?: string | null
           resolution_type?: string | null
@@ -638,6 +641,7 @@ export const Constants = {
 //   due_date: timestamp with time zone (nullable)
 //   completion_date: timestamp with time zone (nullable)
 //   justificativa_status: text (nullable)
+//   justificativa_cancelamento: text (nullable)
 // Table: profiles
 //   id: uuid (not null)
 //   email: text (not null)
@@ -916,7 +920,7 @@ export const Constants = {
 //               auth.uid(),
 //               OLD.status,
 //               NEW.status,
-//               NEW.justificativa_status,
+//               COALESCE(NEW.justificativa_status, NEW.justificativa_cancelamento),
 //               NEW.empresa_id
 //           );
 //           -- Reseta a justificativa na tabela principal para atuar como campo transiente
