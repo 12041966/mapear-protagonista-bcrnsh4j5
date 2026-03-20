@@ -47,26 +47,37 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
 
   useEffect(() => {
     if (obs) {
-      setStatus(obs.status)
-      setAssignedTo(obs.assignedTo || '')
-      setComments((obs as any).managerComments || '')
-      setDueDate(obs.dueDate ? new Date(obs.dueDate) : undefined)
-
+      let defaultStatus = obs.status
       let defaultCompletion = obs.completionDate ? new Date(obs.completionDate) : undefined
 
       if (
-        !obs.completionDate &&
         obs.type.toLowerCase().includes('comportamento') &&
         obs.resolutionType === 'Feedback fornecido'
       ) {
-        defaultCompletion = new Date(obs.date)
+        if (defaultStatus !== 'Concluído') {
+          defaultStatus = 'Concluído'
+        }
+        if (!obs.completionDate) {
+          defaultCompletion = new Date(obs.date)
+        }
       }
 
+      setStatus(defaultStatus)
+      setAssignedTo(obs.assignedTo || '')
+      setComments((obs as any).managerComments || '')
+      setDueDate(obs.dueDate ? new Date(obs.dueDate) : undefined)
       setCompletionDate(defaultCompletion)
     }
   }, [obs])
 
   if (!obs) return null
+
+  const handleStatusChange = (val: ObsStatus) => {
+    setStatus(val)
+    if (val === 'Concluído' && !completionDate) {
+      setCompletionDate(new Date())
+    }
+  }
 
   const handleSave = async () => {
     setIsSaving(true)
@@ -124,7 +135,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
           <div className="space-y-4">
             <div className="grid gap-2">
               <Label>Status</Label>
-              <Select value={status} onValueChange={(val: ObsStatus) => setStatus(val)}>
+              <Select value={status} onValueChange={handleStatusChange}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>

@@ -120,10 +120,12 @@ export type Database = {
           area: string | null
           assigned_to: string | null
           codigo: string
+          completion_date: string | null
           created_at: string
           date: string
           description: string | null
           detail: string | null
+          due_date: string | null
           empresa_id: string
           id: string
           manager_comments: string | null
@@ -138,10 +140,12 @@ export type Database = {
           area?: string | null
           assigned_to?: string | null
           codigo: string
+          completion_date?: string | null
           created_at?: string
           date: string
           description?: string | null
           detail?: string | null
+          due_date?: string | null
           empresa_id: string
           id?: string
           manager_comments?: string | null
@@ -156,10 +160,12 @@ export type Database = {
           area?: string | null
           assigned_to?: string | null
           codigo?: string
+          completion_date?: string | null
           created_at?: string
           date?: string
           description?: string | null
           detail?: string | null
+          due_date?: string | null
           empresa_id?: string
           id?: string
           manager_comments?: string | null
@@ -562,6 +568,8 @@ export const Constants = {
 //   assigned_to: text (nullable)
 //   created_at: timestamp with time zone (not null, default: now())
 //   manager_comments: text (nullable)
+//   due_date: timestamp with time zone (nullable)
+//   completion_date: timestamp with time zone (nullable)
 // Table: profiles
 //   id: uuid (not null)
 //   email: text (not null)
