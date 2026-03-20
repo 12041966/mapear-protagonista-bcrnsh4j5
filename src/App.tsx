@@ -236,60 +236,123 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
       if (!targetCompany || !user?.id) return
 
-      const newCode = `OBS-${new Date().getFullYear()}-${String(observations.length + 1).padStart(3, '0')}`
+      const targetUserId = obs.observerId || user.id
+      const currentYear = new Date().getFullYear()
       const date = new Date().toISOString()
 
-      const targetUserId = obs.observerId || user.id
+      // Fetch the most updated base count to avoid unique constraint violations
+      let baseCount = 0
+      try {
+        const { data: latestObs } = await supabase
+          .from('observacoes')
+          .select('codigo')
+          .like('codigo', `OBS-${currentYear}-%`)
+          .order('created_at', { ascending: false })
+          .limit(20)
 
-      const { data, error } = await supabase
-        .from('observacoes')
-        .insert({
-          codigo: newCode,
-          empresa_id: targetCompany,
-          user_id: targetUserId,
-          date,
-          type: obs.type,
-          detail: obs.detail,
-          area: obs.area,
-          shift: obs.shift,
-          risk_level: obs.riskLevel || null,
-          description: obs.description,
-          resolution_type: obs.resolutionType,
-          status: 'Pendente',
-        })
-        .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
-        .single()
-
-      if (data && !error) {
-        setObservations((prev) => [
-          {
-            id: data.codigo,
-            date: data.date,
-            observer: {
-              name: data.profiles?.name || currentUser?.name || '',
-              whatsapp: data.profiles?.whatsapp || currentUser?.whatsapp || '',
-              cpf: data.profiles?.cpf || currentUser?.cpf || '',
-              email: data.profiles?.email || obs.observer?.email || currentUser?.email || '',
-              companyId: data.profiles?.empresa_id || targetCompany,
-            },
-            type: data.type,
-            detail: data.detail || '',
-            area: data.area || '',
-            shift: data.shift || '',
-            riskLevel: data.risk_level || '',
-            description: data.description || '',
-            resolutionType: data.resolution_type || '',
-            status: data.status as any,
-            assignedTo: data.assigned_to,
-            dueDate: data.due_date || null,
-            completionDate: data.completion_date || null,
-            managerComments: data.manager_comments,
-            companyName: data.empresas?.nome || 'Não informada',
-            justificativaCancelamento: data.justificativa_cancelamento || null,
-          },
-          ...prev,
-        ])
+        if (latestObs && latestObs.length > 0) {
+          let max = 0
+          latestObs.forEach((o) => {
+            const parts = o.codigo.split('-')
+            if (parts.length === 3) {
+              const num = parseInt(parts[2], 10)
+              if (!isNaN(num) && num > max) max = num
+            }
+          })
+          baseCount = max
+        } else {
+          const { count } = await supabase
+            .from('observacoes')
+            .select('*', { count: 'exact', head: true })
+            .like('codigo', `OBS-${currentYear}-%`)
+          if (count !== null) {
+            baseCount = count
+          }
+        }
+      } catch (e) {
+        console.error('Erro ao buscar contagem base:', e)
+        baseCount = observations.length
       }
+
+      let success = false
+      let attempts = 0
+      let data = null
+      let lastError = null
+
+      // Loop to try incrementing the code if a duplicate key violation occurs
+      while (!success && attempts < 10) {
+        const nextNum = baseCount + 1 + attempts
+        const newCode = `OBS-${currentYear}-${String(nextNum).padStart(3, '0')}`
+
+        const res = await supabase
+          .from('observacoes')
+          .insert({
+            codigo: newCode,
+            empresa_id: targetCompany,
+            user_id: targetUserId,
+            date,
+            type: obs.type,
+            detail: obs.detail,
+            area: obs.area,
+            shift: obs.shift,
+            risk_level: obs.riskLevel || null,
+            description: obs.description,
+            resolution_type: obs.resolutionType,
+            status: 'Pendente',
+          })
+          .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
+          .single()
+
+        if (res.error) {
+          lastError = res.error
+          if (res.error.code === '23505') {
+            // '23505' is the PostgreSQL error code for unique_violation
+            attempts++
+          } else {
+            console.error('Erro ao inserir observacao:', res.error)
+            throw new Error(res.error.message)
+          }
+        } else {
+          data = res.data
+          success = true
+        }
+      }
+
+      if (!success || !data) {
+        console.error('Falha ao criar observação após várias tentativas:', lastError)
+        throw new Error(
+          'Não foi possível gerar um código único para a observação. Tente novamente.',
+        )
+      }
+
+      setObservations((prev) => [
+        {
+          id: data.codigo,
+          date: data.date,
+          observer: {
+            name: data.profiles?.name || currentUser?.name || '',
+            whatsapp: data.profiles?.whatsapp || currentUser?.whatsapp || '',
+            cpf: data.profiles?.cpf || currentUser?.cpf || '',
+            email: data.profiles?.email || obs.observer?.email || currentUser?.email || '',
+            companyId: data.profiles?.empresa_id || targetCompany,
+          },
+          type: data.type,
+          detail: data.detail || '',
+          area: data.area || '',
+          shift: data.shift || '',
+          riskLevel: data.risk_level || '',
+          description: data.description || '',
+          resolutionType: data.resolution_type || '',
+          status: data.status as any,
+          assignedTo: data.assigned_to,
+          dueDate: data.due_date || null,
+          completionDate: data.completion_date || null,
+          managerComments: data.manager_comments,
+          companyName: data.empresas?.nome || 'Não informada',
+          justificativaCancelamento: data.justificativa_cancelamento || null,
+        },
+        ...prev,
+      ])
     },
     [observations.length, currentUser, user, isSuperAdmin, activeCompanyId],
   )

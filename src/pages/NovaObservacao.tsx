@@ -110,26 +110,35 @@ export default function NovaObservacao() {
     const isCritical =
       data.type === 'Acidente' || data.type === 'Quase acidente' || data.riskLevel === 'Muito Grave'
 
-    await addObservation({ ...data, observerId } as any)
-    setIsSubmitting(false)
+    try {
+      await addObservation({ ...data, observerId } as any)
+      setIsSubmitting(false)
 
-    if (isCritical) {
+      if (isCritical) {
+        toast({
+          variant: 'destructive',
+          title: 'Alerta Crítico Emitido',
+          description: 'Notificação de alta prioridade enviada à gerência.',
+        })
+      } else {
+        toast({
+          title: 'Sucesso!',
+          description: 'Observação registrada com sucesso.',
+        })
+      }
+
+      if (currentUser?.role === 'Observador') {
+        navigate('/minhas-observacoes')
+      } else {
+        navigate('/')
+      }
+    } catch (err: any) {
+      setIsSubmitting(false)
       toast({
         variant: 'destructive',
-        title: 'Alerta Crítico Emitido',
-        description: 'Notificação de alta prioridade enviada à gerência.',
+        title: 'Erro ao registrar',
+        description: err.message || 'Houve um problema ao salvar a observação. Tente novamente.',
       })
-    } else {
-      toast({
-        title: 'Sucesso!',
-        description: 'Observação registrada com sucesso.',
-      })
-    }
-
-    if (currentUser?.role === 'Observador') {
-      navigate('/minhas-observacoes')
-    } else {
-      navigate('/')
     }
   }
 
