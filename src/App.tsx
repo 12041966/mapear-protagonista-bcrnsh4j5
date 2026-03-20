@@ -263,8 +263,9 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         } else {
           const { count } = await supabase
             .from('observacoes')
-            .select('*', { count: 'exact', head: true })
+            .select('id', { count: 'exact' })
             .like('codigo', `OBS-${currentYear}-%`)
+            .limit(1)
           if (count !== null) {
             baseCount = count
           }
