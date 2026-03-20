@@ -31,9 +31,14 @@ export default function NovaObservacao() {
   const [step, setStep] = useState(1)
   const [data, setData] = useState<any>(INITIAL_DATA)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [previewCode, setPreviewCode] = useState<string | null>(null)
+
   const { addObservation, currentUser, isSuperAdmin, activeCompanyId } = useMainStore()
   const { toast } = useToast()
   const navigate = useNavigate()
+
+  const targetCompany =
+    isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
 
   useEffect(() => {
     if (currentUser) {
@@ -45,14 +50,38 @@ export default function NovaObservacao() {
           whatsapp: currentUser.whatsapp || prev.observer.whatsapp,
           email: currentUser.email || prev.observer.email,
           cpf: currentUser.cpf || prev.observer.cpf,
-          companyId:
-            isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser.companyId,
+          companyId: targetCompany,
         },
       }))
     }
-  }, [currentUser, isSuperAdmin, activeCompanyId])
+  }, [currentUser, targetCompany])
 
-  if ((!currentUser?.companyId && !isSuperAdmin) || (isSuperAdmin && activeCompanyId === 'all')) {
+  // Busca a prévia do código ao carregar a página para o cache local
+  useEffect(() => {
+    if (!targetCompany) return
+
+    let mounted = true
+    const fetchPreviewCode = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('gerar_codigo_observacao', {
+          body: { empresa_id: targetCompany, preview: true },
+        })
+
+        if (mounted && data?.codigo && !error) {
+          setPreviewCode(data.codigo)
+        }
+      } catch (err) {
+        console.error('Falha ao buscar prévia do código:', err)
+      }
+    }
+
+    fetchPreviewCode()
+    return () => {
+      mounted = false
+    }
+  }, [targetCompany])
+
+  if (!targetCompany) {
     return (
       <div className="w-full max-w-2xl mx-auto py-12">
         <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">
@@ -102,7 +131,7 @@ export default function NovaObservacao() {
           description:
             'E-mail não encontrado no sistema. Verifique os dados ou entre em contato com o administrador.',
         })
-        return // Stop submission
+        return
       }
       observerId = profile.id
     }
@@ -168,7 +197,14 @@ export default function NovaObservacao() {
       <Card className="shadow-elevation border-0 md:border">
         <CardHeader className="bg-slate-50 border-b pb-4 rounded-t-lg">
           <div className="flex items-center justify-between mb-2">
-            <CardTitle className="text-xl">Novo Relatório</CardTitle>
+            <CardTitle className="text-xl flex items-center gap-3">
+              Novo Relatório
+              {previewCode && (
+                <span className="text-xs font-mono font-medium bg-slate-200 text-slate-600 px-2 py-1 rounded-md border border-slate-300">
+                  {previewCode} (Prévia)
+                </span>
+              )}
+            </CardTitle>
             <span className="text-sm text-slate-500 font-medium">
               Passo {step} de {TOTAL_STEPS}
             </span>
