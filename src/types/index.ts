@@ -48,6 +48,8 @@ export interface Observation {
   status: ObsStatus
   assignedTo?: string
   deadline?: string
+  dueDate?: string | null
+  completionDate?: string | null
   managerComments?: string
 }
 

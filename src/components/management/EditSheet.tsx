@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import {
   Sheet,
   SheetContent,
@@ -19,10 +21,13 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Calendar } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Observation, ObsStatus } from '@/types'
 import { useMainStore } from '@/stores/main'
 import { useToast } from '@/hooks/use-toast'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Calendar as CalendarIcon } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface Props {
   obs: Observation | null
@@ -34,6 +39,8 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
   const [status, setStatus] = useState<ObsStatus>('Pendente')
   const [assignedTo, setAssignedTo] = useState('')
   const [comments, setComments] = useState('')
+  const [dueDate, setDueDate] = useState<Date | undefined>()
+  const [completionDate, setCompletionDate] = useState<Date | undefined>()
   const [isSaving, setIsSaving] = useState(false)
   const { updateObservation } = useMainStore()
   const { toast } = useToast()
@@ -43,6 +50,19 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
       setStatus(obs.status)
       setAssignedTo(obs.assignedTo || '')
       setComments((obs as any).managerComments || '')
+      setDueDate(obs.dueDate ? new Date(obs.dueDate) : undefined)
+
+      let defaultCompletion = obs.completionDate ? new Date(obs.completionDate) : undefined
+
+      if (
+        !obs.completionDate &&
+        obs.type.toLowerCase().includes('comportamento') &&
+        obs.resolutionType === 'Feedback fornecido'
+      ) {
+        defaultCompletion = new Date(obs.date)
+      }
+
+      setCompletionDate(defaultCompletion)
     }
   }, [obs])
 
@@ -54,6 +74,8 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
       status,
       assignedTo,
       managerComments: comments,
+      dueDate: dueDate ? dueDate.toISOString() : null,
+      completionDate: completionDate ? completionDate.toISOString() : null,
     } as any)
     setIsSaving(false)
 
@@ -121,6 +143,61 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
                 onChange={(e) => setAssignedTo(e.target.value)}
                 placeholder="Ex: Manutenção Elétrica, João..."
               />
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Prazo</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      'w-full justify-start text-left font-normal',
+                      !dueDate && 'text-muted-foreground',
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {dueDate ? (
+                      format(dueDate, "dd 'de' MMMM, yyyy", { locale: ptBR })
+                    ) : (
+                      <span>Definir prazo...</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar mode="single" selected={dueDate} onSelect={setDueDate} initialFocus />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="grid gap-2">
+              <Label>Conclusão</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      'w-full justify-start text-left font-normal',
+                      !completionDate && 'text-muted-foreground',
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {completionDate ? (
+                      format(completionDate, "dd 'de' MMMM, yyyy", { locale: ptBR })
+                    ) : (
+                      <span>Definir conclusão...</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={completionDate}
+                    onSelect={setCompletionDate}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
 
             <div className="grid gap-2">

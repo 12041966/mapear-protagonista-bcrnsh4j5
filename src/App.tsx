@@ -162,6 +162,8 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
               resolutionType: row.resolution_type || '',
               status: row.status || 'Pendente',
               assignedTo: row.assigned_to,
+              dueDate: row.due_date || null,
+              completionDate: row.completion_date || null,
               managerComments: row.manager_comments,
             })),
           )
@@ -277,6 +279,8 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
             resolutionType: data.resolution_type || '',
             status: data.status as any,
             assignedTo: data.assigned_to,
+            dueDate: data.due_date || null,
+            completionDate: data.completion_date || null,
             managerComments: data.manager_comments,
           },
           ...prev,
@@ -292,6 +296,8 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     if (updates.assignedTo !== undefined) dbUpdates.assigned_to = updates.assignedTo
     if ((updates as any).managerComments !== undefined)
       dbUpdates.manager_comments = (updates as any).managerComments
+    if (updates.dueDate !== undefined) dbUpdates.due_date = updates.dueDate
+    if (updates.completionDate !== undefined) dbUpdates.completion_date = updates.completionDate
 
     const { error } = await supabase.from('observacoes').update(dbUpdates).eq('codigo', id)
     if (!error) {
