@@ -112,7 +112,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
 
     let obsQuery = supabase
       .from('observacoes')
-      .select('*, profiles(name, whatsapp, cpf, empresa_id)')
+      .select('*, profiles(name, whatsapp, cpf, email, empresa_id)')
       .order('date', { ascending: false })
 
     let defQuery = supabase
@@ -150,6 +150,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
                 name: row.profiles?.name || 'Desconhecido',
                 whatsapp: row.profiles?.whatsapp || '',
                 cpf: row.profiles?.cpf || '',
+                email: row.profiles?.email || '',
                 companyId: row.profiles?.empresa_id || '',
               },
               type: row.type,
@@ -226,7 +227,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
   }, [activeCompanyId, currentUser, isSuperAdmin])
 
   const addObservation = useCallback(
-    async (obs: Omit<Observation, 'id' | 'date' | 'status'>) => {
+    async (obs: any) => {
       const targetCompany =
         isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
       if (!targetCompany || !user?.id) return
@@ -234,12 +235,14 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       const newCode = `OBS-${new Date().getFullYear()}-${String(observations.length + 1).padStart(3, '0')}`
       const date = new Date().toISOString()
 
+      const targetUserId = obs.observerId || user.id
+
       const { data, error } = await supabase
         .from('observacoes')
         .insert({
           codigo: newCode,
           empresa_id: targetCompany,
-          user_id: user.id,
+          user_id: targetUserId,
           date,
           type: obs.type,
           detail: obs.detail,
@@ -250,7 +253,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           resolution_type: obs.resolutionType,
           status: 'Pendente',
         })
-        .select('*, profiles(name, whatsapp, cpf, empresa_id)')
+        .select('*, profiles(name, whatsapp, cpf, email, empresa_id)')
         .single()
 
       if (data && !error) {
@@ -262,6 +265,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
               name: data.profiles?.name || currentUser?.name || '',
               whatsapp: data.profiles?.whatsapp || currentUser?.whatsapp || '',
               cpf: data.profiles?.cpf || currentUser?.cpf || '',
+              email: data.profiles?.email || obs.observer?.email || currentUser?.email || '',
               companyId: data.profiles?.empresa_id || targetCompany,
             },
             type: data.type,

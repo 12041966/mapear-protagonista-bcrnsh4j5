@@ -38,12 +38,15 @@ export function Step1Identificador({ data, updateData }: Props) {
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="cpf">CPF</Label>
+            <Label htmlFor="email">E-mail do Observador</Label>
             <Input
-              id="cpf"
-              placeholder="000.000.000-00"
-              value={data.observer.cpf}
-              onChange={(e) => updateData({ observer: { ...data.observer, cpf: e.target.value } })}
+              id="email"
+              type="email"
+              placeholder="Digite seu e-mail cadastrado"
+              value={data.observer.email || ''}
+              onChange={(e) =>
+                updateData({ observer: { ...data.observer, email: e.target.value } })
+              }
             />
           </div>
           <div className="grid gap-2">
@@ -51,7 +54,7 @@ export function Step1Identificador({ data, updateData }: Props) {
             <Input
               id="companyId"
               placeholder="Matrícula"
-              value={data.observer.companyId}
+              value={data.observer.companyId || ''}
               onChange={(e) =>
                 updateData({ observer: { ...data.observer, companyId: e.target.value } })
               }

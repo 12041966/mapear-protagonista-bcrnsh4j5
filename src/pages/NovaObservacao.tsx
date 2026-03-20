@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 import { useMainStore } from '@/stores/main'
 import { AlertTriangle, Loader2 } from 'lucide-react'
+import { supabase } from '@/lib/supabase/client'
 
 import { Step1Identificador } from '@/components/form/Step1Identificador'
 import { Step2Tipo } from '@/components/form/Step2Tipo'
@@ -14,7 +15,7 @@ import { Step4Contexto } from '@/components/form/Step4Contexto'
 import { Step5Avaliacao } from '@/components/form/Step5Avaliacao'
 
 const INITIAL_DATA = {
-  observer: { name: '', whatsapp: '', cpf: '', companyId: '' },
+  observer: { name: '', whatsapp: '', email: '', cpf: '', companyId: '' },
   type: undefined,
   detail: '',
   area: '',
@@ -39,8 +40,10 @@ export default function NovaObservacao() {
       setData((prev: any) => ({
         ...prev,
         observer: {
+          ...prev.observer,
           name: currentUser.name || prev.observer.name,
           whatsapp: currentUser.whatsapp || prev.observer.whatsapp,
+          email: currentUser.email || prev.observer.email,
           cpf: currentUser.cpf || prev.observer.cpf,
           companyId:
             isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser.companyId,
@@ -80,10 +83,34 @@ export default function NovaObservacao() {
 
   const handleSubmit = async () => {
     setIsSubmitting(true)
+
+    const emailToSearch = data.observer.email?.trim()
+    let observerId = currentUser?.id
+
+    if (emailToSearch && emailToSearch !== currentUser?.email) {
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', emailToSearch)
+        .single()
+
+      if (profileError || !profile) {
+        setIsSubmitting(false)
+        toast({
+          variant: 'destructive',
+          title: 'Erro de Identificação',
+          description:
+            'E-mail não encontrado no sistema. Verifique os dados ou entre em contato com o administrador.',
+        })
+        return // Stop submission
+      }
+      observerId = profile.id
+    }
+
     const isCritical =
       data.type === 'Acidente' || data.type === 'Quase acidente' || data.riskLevel === 'Muito Grave'
 
-    await addObservation(data)
+    await addObservation({ ...data, observerId } as any)
     setIsSubmitting(false)
 
     if (isCritical) {
@@ -107,7 +134,10 @@ export default function NovaObservacao() {
   }
 
   const isStepValid = () => {
-    if (step === 1) return data.observer.name.length > 2
+    if (step === 1) {
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.observer.email || '')
+      return data.observer.name.length > 2 && emailValid
+    }
     if (step === 2) return !!data.type
     if (step === 3) return data.detail.length > 2
     if (step === 4) return !!data.area && !!data.shift
