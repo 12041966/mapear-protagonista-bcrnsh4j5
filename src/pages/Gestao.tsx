@@ -20,7 +20,8 @@ export default function Gestao() {
       (obs) =>
         obs.id.toLowerCase().includes(search.toLowerCase()) ||
         obs.area.toLowerCase().includes(search.toLowerCase()) ||
-        obs.type.toLowerCase().includes(search.toLowerCase()),
+        obs.type.toLowerCase().includes(search.toLowerCase()) ||
+        (obs.companyName && obs.companyName.toLowerCase().includes(search.toLowerCase())),
     )
   }, [observations, search])
 
@@ -69,7 +70,7 @@ export default function Gestao() {
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Buscar por ID, Área ou Tipo..."
+            placeholder="Buscar por ID, Área, Tipo ou Empresa..."
             className="pl-9"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -81,7 +82,7 @@ export default function Gestao() {
         </Button>
       </div>
 
-      <DataTable data={filteredData} onEdit={setEditingObs} />
+      <DataTable data={filteredData} onEdit={setEditingObs} isSuperAdmin={isSuperAdmin} />
 
       <EditSheet
         obs={editingObs}

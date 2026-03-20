@@ -112,7 +112,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
 
     let obsQuery = supabase
       .from('observacoes')
-      .select('*, profiles(name, whatsapp, cpf, email, empresa_id)')
+      .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
       .order('date', { ascending: false })
 
     let defQuery = supabase
@@ -165,6 +165,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
               dueDate: row.due_date || null,
               completionDate: row.completion_date || null,
               managerComments: row.manager_comments,
+              companyName: row.empresas?.nome || 'Não informada',
             })),
           )
         }
@@ -255,7 +256,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           resolution_type: obs.resolutionType,
           status: 'Pendente',
         })
-        .select('*, profiles(name, whatsapp, cpf, email, empresa_id)')
+        .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
         .single()
 
       if (data && !error) {
@@ -282,6 +283,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
             dueDate: data.due_date || null,
             completionDate: data.completion_date || null,
             managerComments: data.manager_comments,
+            companyName: data.empresas?.nome || 'Não informada',
           },
           ...prev,
         ])

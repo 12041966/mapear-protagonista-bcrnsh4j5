@@ -51,6 +51,7 @@ export interface Observation {
   dueDate?: string | null
   completionDate?: string | null
   managerComments?: string
+  companyName?: string
 }
 
 export interface StoreContextType {

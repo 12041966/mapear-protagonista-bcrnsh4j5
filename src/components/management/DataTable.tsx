@@ -15,15 +15,17 @@ import { TYPE_COLORS, RISK_COLORS } from '@/lib/constants'
 interface Props {
   data: Observation[]
   onEdit: (obs: Observation) => void
+  isSuperAdmin?: boolean
 }
 
-export function DataTable({ data, onEdit }: Props) {
+export function DataTable({ data, onEdit, isSuperAdmin }: Props) {
   return (
     <div className="rounded-md border bg-white">
       <Table>
         <TableHeader className="bg-slate-50">
           <TableRow>
             <TableHead className="w-[120px]">ID / Data</TableHead>
+            {isSuperAdmin && <TableHead className="hidden md:table-cell">Empresa</TableHead>}
             <TableHead>Tipo / Risco</TableHead>
             <TableHead>Área</TableHead>
             <TableHead>Status</TableHead>
@@ -33,7 +35,7 @@ export function DataTable({ data, onEdit }: Props) {
         <TableBody>
           {data.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={5} className="text-center py-8 text-slate-500">
+              <TableCell colSpan={isSuperAdmin ? 6 : 5} className="text-center py-8 text-slate-500">
                 Nenhum relato encontrado.
               </TableCell>
             </TableRow>
@@ -48,6 +50,11 @@ export function DataTable({ data, onEdit }: Props) {
                     </span>
                   </div>
                 </TableCell>
+                {isSuperAdmin && (
+                  <TableCell className="hidden md:table-cell text-sm text-slate-600">
+                    {obs.companyName || '-'}
+                  </TableCell>
+                )}
                 <TableCell>
                   <div className="flex flex-col gap-1 items-start">
                     <Badge
