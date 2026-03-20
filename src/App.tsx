@@ -240,82 +240,58 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       const currentYear = new Date().getFullYear()
       const date = new Date().toISOString()
 
-      // Fetch the most updated base count to avoid unique constraint violations
-      let baseCount = 0
-      try {
-        const { data: latestObs } = await supabase
-          .from('observacoes')
-          .select('codigo')
-          .like('codigo', `OBS-${currentYear}-%`)
-          .order('created_at', { ascending: false })
-          .limit(20)
-
-        if (latestObs && latestObs.length > 0) {
-          let max = 0
-          latestObs.forEach((o) => {
-            const parts = o.codigo.split('-')
-            if (parts.length === 3) {
-              const num = parseInt(parts[2], 10)
-              if (!isNaN(num) && num > max) max = num
-            }
-          })
-          baseCount = max
-        } else {
-          const { count } = await supabase
-            .from('observacoes')
-            .select('id', { count: 'exact' })
-            .like('codigo', `OBS-${currentYear}-%`)
-            .limit(1)
-          if (count !== null) {
-            baseCount = count
-          }
-        }
-      } catch (e) {
-        console.error('Erro ao buscar contagem base:', e)
-        baseCount = observations.length
-      }
-
       let success = false
       let attempts = 0
       let data = null
       let lastError = null
 
-      // Loop to try incrementing the code if a duplicate key violation occurs
-      while (!success && attempts < 10) {
-        const nextNum = baseCount + 1 + attempts
-        const newCode = `OBS-${currentYear}-${String(nextNum).padStart(3, '0')}`
-
-        const res = await supabase
-          .from('observacoes')
-          .insert({
-            codigo: newCode,
-            empresa_id: targetCompany,
-            user_id: targetUserId,
-            date,
-            type: obs.type,
-            detail: obs.detail,
-            area: obs.area,
-            shift: obs.shift,
-            risk_level: obs.riskLevel || null,
-            description: obs.description,
-            resolution_type: obs.resolutionType,
-            status: 'Pendente',
+      while (!success && attempts < 15) {
+        try {
+          // Busca de forma atômica o próximo número da sequência no banco de dados para evitar condições de corrida (race conditions)
+          const { data: seqData, error: seqError } = await supabase.rpc('get_next_sequence_value', {
+            p_empresa_id: targetCompany,
+            p_tipo: `observacao_${currentYear}`,
           })
-          .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
-          .single()
 
-        if (res.error) {
-          lastError = res.error
-          if (res.error.code === '23505') {
-            // '23505' is the PostgreSQL error code for unique_violation
-            attempts++
+          if (seqError) throw seqError
+
+          const nextNum = seqData as number
+          const newCode = `OBS-${currentYear}-${String(nextNum).padStart(3, '0')}`
+
+          const res = await supabase
+            .from('observacoes')
+            .insert({
+              codigo: newCode,
+              empresa_id: targetCompany,
+              user_id: targetUserId,
+              date,
+              type: obs.type,
+              detail: obs.detail,
+              area: obs.area,
+              shift: obs.shift,
+              risk_level: obs.riskLevel || null,
+              description: obs.description,
+              resolution_type: obs.resolutionType,
+              status: 'Pendente',
+            })
+            .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
+            .single()
+
+          if (res.error) {
+            lastError = res.error
+            if (res.error.code === '23505') {
+              attempts++
+            } else {
+              console.error('Erro ao inserir observacao:', res.error)
+              throw new Error(res.error.message)
+            }
           } else {
-            console.error('Erro ao inserir observacao:', res.error)
-            throw new Error(res.error.message)
+            data = res.data
+            success = true
           }
-        } else {
-          data = res.data
-          success = true
+        } catch (e: any) {
+          lastError = e
+          attempts++
         }
       }
 
@@ -355,7 +331,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         ...prev,
       ])
     },
-    [observations.length, currentUser, user, isSuperAdmin, activeCompanyId],
+    [currentUser, user, isSuperAdmin, activeCompanyId],
   )
 
   const updateObservation = useCallback(async (id: string, updates: Partial<Observation>) => {
