@@ -53,11 +53,14 @@ export function UsersList() {
     isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
 
   const fetchUsers = useCallback(async () => {
-    if (!targetCompanyId && !isSuperAdmin) return
+    if (!isSuperAdmin && !currentUser?.companyId) return
     setLoading(true)
 
     let query = supabase.from('profiles').select('*, empresas(nome)').order('name')
-    if (targetCompanyId) {
+
+    if (isSuperAdmin && activeCompanyId === 'all') {
+      query = query.eq('email', 'ferbatsan@hotmail.com')
+    } else if (targetCompanyId) {
       query = query.eq('empresa_id', targetCompanyId)
     }
 
@@ -73,7 +76,7 @@ export function UsersList() {
       })
     }
     setLoading(false)
-  }, [targetCompanyId, isSuperAdmin, toast])
+  }, [isSuperAdmin, activeCompanyId, targetCompanyId, currentUser?.companyId, toast])
 
   useEffect(() => {
     if (currentUser?.role === 'Administrador' || isSuperAdmin) {
@@ -196,14 +199,22 @@ export function UsersList() {
   }
 
   const canInvite = isSuperAdmin ? activeCompanyId !== 'all' : true
-  const columnsCount = isSuperAdmin && activeCompanyId === 'all' ? 7 : 6
+  const columnsCount = isSuperAdmin && activeCompanyId === 'all' ? 8 : 7
+
+  const emptyMessage =
+    isSuperAdmin && activeCompanyId === 'all'
+      ? 'Nenhum administrador global encontrado.'
+      : 'Nenhum usuário encontrado para a empresa selecionada.'
+
+  const headerText =
+    isSuperAdmin && activeCompanyId === 'all'
+      ? 'Gerencie os acessos dos administradores da plataforma.'
+      : 'Gerencie acessos, informações e convites dos usuários da empresa.'
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <p className="text-sm text-slate-500">
-          Gerencie acessos, informações e convites dos usuários da empresa.
-        </p>
+        <p className="text-sm text-slate-500">{headerText}</p>
         <Button
           onClick={() => setIsInviteOpen(true)}
           disabled={!canInvite}
@@ -222,6 +233,7 @@ export function UsersList() {
               <TableHead>Nome</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>WhatsApp</TableHead>
+              <TableHead>Matrícula</TableHead>
               {isSuperAdmin && activeCompanyId === 'all' && <TableHead>Empresa</TableHead>}
               <TableHead>Perfil</TableHead>
               <TableHead>Status</TableHead>
@@ -241,7 +253,7 @@ export function UsersList() {
             ) : users.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columnsCount} className="text-center py-8 text-slate-500">
-                  Nenhum usuário encontrado na sua empresa.
+                  {emptyMessage}
                 </TableCell>
               </TableRow>
             ) : (
@@ -251,6 +263,9 @@ export function UsersList() {
                   <TableCell className="text-slate-600">{u.email}</TableCell>
                   <TableCell className="text-slate-600 whitespace-nowrap">
                     {u.whatsapp || '-'}
+                  </TableCell>
+                  <TableCell className="text-slate-600 whitespace-nowrap">
+                    {u.registration_number || '-'}
                   </TableCell>
                   {isSuperAdmin && activeCompanyId === 'all' && (
                     <TableCell className="text-slate-600 text-xs">
