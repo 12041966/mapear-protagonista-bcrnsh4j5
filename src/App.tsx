@@ -237,7 +237,6 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       if (!targetCompany || !user?.id) return
 
       const targetUserId = obs.observerId || user.id
-      const currentYear = new Date().getFullYear()
       const date = new Date().toISOString()
 
       let success = false
@@ -245,18 +244,21 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       let data = null
       let lastError = null
 
-      while (!success && attempts < 15) {
+      while (!success && attempts < 5) {
         try {
-          // Busca de forma atômica o próximo número da sequência no banco de dados para evitar condições de corrida (race conditions)
-          const { data: seqData, error: seqError } = await supabase.rpc('get_next_sequence_value', {
-            p_empresa_id: targetCompany,
-            p_tipo: `observacao_${currentYear}`,
-          })
+          // Chamada para a Edge Function que gerencia o código de forma atômica
+          const { data: edgeData, error: edgeError } = await supabase.functions.invoke(
+            'gerar_codigo_observacao',
+            {
+              body: { empresa_id: targetCompany },
+            },
+          )
 
-          if (seqError) throw seqError
+          if (edgeError) throw edgeError
+          if (!edgeData || !edgeData.codigo)
+            throw new Error('Falha ao gerar o código da observação')
 
-          const nextNum = seqData as number
-          const newCode = `OBS-${currentYear}-${String(nextNum).padStart(3, '0')}`
+          const newCode = edgeData.codigo
 
           const res = await supabase
             .from('observacoes')

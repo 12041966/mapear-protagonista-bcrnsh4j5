@@ -301,6 +301,38 @@ export type Database = {
           },
         ]
       }
+      sequencias: {
+        Row: {
+          data_atualizacao: string
+          empresa_id: string
+          id: string
+          proximo_numero: number
+          tipo_sequencia: string
+        }
+        Insert: {
+          data_atualizacao?: string
+          empresa_id: string
+          id?: string
+          proximo_numero?: number
+          tipo_sequencia: string
+        }
+        Update: {
+          data_atualizacao?: string
+          empresa_id?: string
+          id?: string
+          proximo_numero?: number
+          tipo_sequencia?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'sequencias_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       tabelas_sistema: {
         Row: {
           dados_json: Json
@@ -443,6 +475,10 @@ export type Database = {
     }
     Functions: {
       get_empresa_id_by_code: { Args: { p_codigo: string }; Returns: string }
+      get_next_sequence_value: {
+        Args: { p_empresa_id: string; p_tipo: string }
+        Returns: number
+      }
       get_user_empresa_id: { Args: never; Returns: string }
       is_admin: { Args: never; Returns: boolean }
       is_company_admin: { Args: { check_empresa_id: string }; Returns: boolean }
@@ -653,6 +689,12 @@ export const Constants = {
 //   cpf: text (nullable)
 //   registration_number: text (nullable)
 //   empresa_id: uuid (nullable)
+// Table: sequencias
+//   id: uuid (not null, default: gen_random_uuid())
+//   empresa_id: uuid (not null)
+//   tipo_sequencia: text (not null)
+//   proximo_numero: integer (not null, default: 1)
+//   data_atualizacao: timestamp with time zone (not null, default: now())
 // Table: tabelas_sistema
 //   id: uuid (not null, default: gen_random_uuid())
 //   empresa_id: uuid (not null)
@@ -707,6 +749,10 @@ export const Constants = {
 //   FOREIGN KEY profiles_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id)
 //   FOREIGN KEY profiles_id_fkey: FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE
 //   PRIMARY KEY profiles_pkey: PRIMARY KEY (id)
+// Table: sequencias
+//   FOREIGN KEY sequencias_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
+//   UNIQUE sequencias_empresa_id_tipo_sequencia_key: UNIQUE (empresa_id, tipo_sequencia)
+//   PRIMARY KEY sequencias_pkey: PRIMARY KEY (id)
 // Table: tabelas_sistema
 //   FOREIGN KEY tabelas_sistema_empresa_id_fkey: FOREIGN KEY (empresa_id) REFERENCES empresas(id) ON DELETE CASCADE
 //   PRIMARY KEY tabelas_sistema_pkey: PRIMARY KEY (id)
@@ -768,6 +814,12 @@ export const Constants = {
 //     WITH CHECK: is_super_admin()
 //   Policy "Users can view profiles in their company" (SELECT, PERMISSIVE) roles={authenticated}
 //     USING: ((empresa_id = get_user_empresa_id()) OR (id = auth.uid()) OR is_admin())
+// Table: sequencias
+//   Policy "Super admins can manage sequencias" (ALL, PERMISSIVE) roles={authenticated}
+//     USING: is_super_admin()
+//     WITH CHECK: is_super_admin()
+//   Policy "Users can view sequencias for their company" (SELECT, PERMISSIVE) roles={authenticated}
+//     USING: ((empresa_id = get_user_empresa_id()) OR is_admin())
 // Table: tabelas_sistema
 //   Policy "Super admins can do all on tabelas_sistema" (ALL, PERMISSIVE) roles={authenticated}
 //     USING: is_super_admin()
@@ -828,6 +880,27 @@ export const Constants = {
 //    SET search_path TO 'public'
 //   AS $function$
 //     SELECT id FROM public.empresas WHERE codigo_empresa = p_codigo LIMIT 1;
+//   $function$
+//
+// FUNCTION get_next_sequence_value(uuid, text)
+//   CREATE OR REPLACE FUNCTION public.get_next_sequence_value(p_empresa_id uuid, p_tipo text)
+//    RETURNS integer
+//    LANGUAGE plpgsql
+//    SECURITY DEFINER
+//   AS $function$
+//   DECLARE
+//       v_current integer;
+//   BEGIN
+//       INSERT INTO public.sequencias (empresa_id, tipo_sequencia, proximo_numero)
+//       VALUES (p_empresa_id, p_tipo, 2)
+//       ON CONFLICT (empresa_id, tipo_sequencia)
+//       DO UPDATE SET
+//           proximo_numero = public.sequencias.proximo_numero + 1,
+//           data_atualizacao = NOW()
+//       RETURNING (proximo_numero - 1) INTO v_current;
+//
+//       RETURN v_current;
+//   END;
 //   $function$
 //
 // FUNCTION get_user_empresa_id()
@@ -946,6 +1019,8 @@ export const Constants = {
 //   CREATE UNIQUE INDEX observacoes_codigo_key ON public.observacoes USING btree (codigo)
 // Table: profiles
 //   CREATE UNIQUE INDEX profiles_email_key ON public.profiles USING btree (email)
+// Table: sequencias
+//   CREATE UNIQUE INDEX sequencias_empresa_id_tipo_sequencia_key ON public.sequencias USING btree (empresa_id, tipo_sequencia)
 // Table: tabelas_sistema_definicoes
 //   CREATE UNIQUE INDEX tabelas_sistema_definicoes_chave_key ON public.tabelas_sistema_definicoes USING btree (chave)
 // Table: tabelas_sistema_empresa_opcoes

@@ -1,0 +1,52 @@
+import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
+import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
+import { corsHeaders } from '../_shared/cors.ts'
+
+Deno.serve(async (req: Request) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+  try {
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+    )
+
+    const { empresa_id } = await req.json()
+
+    if (!empresa_id) {
+      return new Response(JSON.stringify({ error: 'O parâmetro empresa_id é obrigatório.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      })
+    }
+
+    const currentYear = new Date().getFullYear()
+    const sequenceType = `observacao_${currentYear}`
+
+    // A função RPC 'get_next_sequence_value' usa transações atômicas nativas do PostgreSQL
+    // (INSERT ... ON CONFLICT DO UPDATE) garantindo concorrência sem bloqueios (locks).
+    const { data: nextNum, error: seqError } = await supabaseAdmin.rpc('get_next_sequence_value', {
+      p_empresa_id: empresa_id,
+      p_tipo: sequenceType,
+    })
+
+    if (seqError) {
+      throw seqError
+    }
+
+    // Formata o código com 4 dígitos (ex: OBS-2026-0001)
+    const codigo = `OBS-${currentYear}-${String(nextNum).padStart(4, '0')}`
+
+    return new Response(JSON.stringify({ codigo }), {
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      status: 200,
+    })
+  } catch (error: any) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      status: 500,
+    })
+  }
+})
