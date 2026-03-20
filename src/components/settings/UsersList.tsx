@@ -32,6 +32,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Loader2, Edit2, Plus } from 'lucide-react'
 import { EditUserDialog } from './EditUserDialog'
 import { useMainStore } from '@/stores/main'
+import { formatPhone } from '@/lib/utils'
 
 export function UsersList() {
   const [users, setUsers] = useState<any[]>([])
@@ -41,6 +42,7 @@ export function UsersList() {
   const [isInviteOpen, setIsInviteOpen] = useState(false)
   const [inviteName, setInviteName] = useState('')
   const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteWhatsapp, setInviteWhatsapp] = useState('')
   const [inviteRole, setInviteRole] = useState('Observador')
   const [inviting, setInviting] = useState(false)
 
@@ -148,12 +150,25 @@ export function UsersList() {
     e.preventDefault()
     if (!inviteEmail || !inviteName) return
 
+    if (inviteWhatsapp) {
+      const digitsOnly = inviteWhatsapp.replace(/\D/g, '')
+      if (digitsOnly.length < 10 || digitsOnly.length > 11) {
+        toast({
+          variant: 'destructive',
+          title: 'WhatsApp inválido',
+          description: 'O número deve conter o DDD e ser válido.',
+        })
+        return
+      }
+    }
+
     setInviting(true)
     const { data, error } = await supabase.functions.invoke('invite-user', {
       body: {
         email: inviteEmail,
         name: inviteName,
         role: inviteRole,
+        whatsapp: inviteWhatsapp,
         empresa_id: targetCompanyId,
       },
     })
@@ -174,12 +189,14 @@ export function UsersList() {
       setIsInviteOpen(false)
       setInviteName('')
       setInviteEmail('')
+      setInviteWhatsapp('')
       setInviteRole('Observador')
       fetchUsers()
     }
   }
 
   const canInvite = isSuperAdmin ? activeCompanyId !== 'all' : true
+  const columnsCount = isSuperAdmin && activeCompanyId === 'all' ? 7 : 6
 
   return (
     <div className="space-y-4">
@@ -204,6 +221,7 @@ export function UsersList() {
             <TableRow>
               <TableHead>Nome</TableHead>
               <TableHead>Email</TableHead>
+              <TableHead>WhatsApp</TableHead>
               {isSuperAdmin && activeCompanyId === 'all' && <TableHead>Empresa</TableHead>}
               <TableHead>Perfil</TableHead>
               <TableHead>Status</TableHead>
@@ -213,10 +231,7 @@ export function UsersList() {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell
-                  colSpan={isSuperAdmin && activeCompanyId === 'all' ? 6 : 5}
-                  className="text-center py-8"
-                >
+                <TableCell colSpan={columnsCount} className="text-center py-8">
                   <div className="flex items-center justify-center text-slate-500">
                     <Loader2 className="w-5 h-5 animate-spin mr-2" />
                     Carregando usuários...
@@ -225,10 +240,7 @@ export function UsersList() {
               </TableRow>
             ) : users.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={isSuperAdmin && activeCompanyId === 'all' ? 6 : 5}
-                  className="text-center py-8 text-slate-500"
-                >
+                <TableCell colSpan={columnsCount} className="text-center py-8 text-slate-500">
                   Nenhum usuário encontrado na sua empresa.
                 </TableCell>
               </TableRow>
@@ -237,6 +249,9 @@ export function UsersList() {
                 <TableRow key={u.id} className="hover:bg-slate-50/50">
                   <TableCell className="font-medium text-slate-900">{u.name || '-'}</TableCell>
                   <TableCell className="text-slate-600">{u.email}</TableCell>
+                  <TableCell className="text-slate-600 whitespace-nowrap">
+                    {u.whatsapp || '-'}
+                  </TableCell>
                   {isSuperAdmin && activeCompanyId === 'all' && (
                     <TableCell className="text-slate-600 text-xs">
                       {u.empresas?.nome || '-'}
@@ -323,6 +338,15 @@ export function UsersList() {
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
                 required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="inviteWhatsapp">WhatsApp (Opcional)</Label>
+              <Input
+                id="inviteWhatsapp"
+                placeholder="(11) 99999-9999"
+                value={inviteWhatsapp}
+                onChange={(e) => setInviteWhatsapp(formatPhone(e.target.value))}
               />
             </div>
             <div className="space-y-2">

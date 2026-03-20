@@ -41,7 +41,7 @@ Deno.serve(async (req: Request) => {
     if (profile.role !== 'Administrador')
       throw new Error('Forbidden: Only administrators can invite users')
 
-    const { email, name, role, empresa_id: requestedEmpresaId } = await req.json()
+    const { email, name, role, whatsapp, empresa_id: requestedEmpresaId } = await req.json()
     if (!email) throw new Error('Email is required')
 
     const isSuperAdmin = profile.email === 'ferbatsan@hotmail.com'
@@ -62,6 +62,7 @@ Deno.serve(async (req: Request) => {
         name: nameToUse,
         role: role || 'Observador',
         empresa_id: targetEmpresaId,
+        ...(whatsapp && { whatsapp }),
       },
       redirectTo: `${req.headers.get('origin') || 'http://localhost:5173'}/login`,
     })

@@ -9,6 +9,8 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useToast } from '@/hooks/use-toast'
+import { formatPhone } from '@/lib/utils'
 
 interface EditUserDialogProps {
   isOpen: boolean
@@ -18,9 +20,10 @@ interface EditUserDialogProps {
 }
 
 export function EditUserDialog({ isOpen, onClose, onSave, user }: EditUserDialogProps) {
+  const { toast } = useToast()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [cpf, setCpf] = useState('')
+  const [whatsapp, setWhatsapp] = useState('')
   const [registrationNumber, setRegistrationNumber] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
@@ -28,18 +31,31 @@ export function EditUserDialog({ isOpen, onClose, onSave, user }: EditUserDialog
     if (user && isOpen) {
       setName(user.name || '')
       setEmail(user.email || '')
-      setCpf(user.cpf || '')
+      setWhatsapp(user.whatsapp || '')
       setRegistrationNumber(user.registration_number || '')
     }
   }, [user, isOpen])
 
   const handleSave = async () => {
     if (!user) return
+
+    if (whatsapp) {
+      const digitsOnly = whatsapp.replace(/\D/g, '')
+      if (digitsOnly.length > 0 && (digitsOnly.length < 10 || digitsOnly.length > 11)) {
+        toast({
+          variant: 'destructive',
+          title: 'Número inválido',
+          description: 'O WhatsApp deve conter o DDD e o número válido (10 ou 11 dígitos).',
+        })
+        return
+      }
+    }
+
     setIsSaving(true)
     await onSave(user.id, {
       name,
       email,
-      cpf,
+      whatsapp,
       registration_number: registrationNumber,
     })
     setIsSaving(false)
@@ -75,16 +91,16 @@ export function EditUserDialog({ isOpen, onClose, onSave, user }: EditUserDialog
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="cpf">CPF</Label>
+            <Label htmlFor="whatsapp">WhatsApp</Label>
             <Input
-              id="cpf"
-              value={cpf}
-              onChange={(e) => setCpf(e.target.value)}
-              placeholder="000.000.000-00"
+              id="whatsapp"
+              value={whatsapp}
+              onChange={(e) => setWhatsapp(formatPhone(e.target.value))}
+              placeholder="(11) 99999-9999"
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="registration">Matrícula</Label>
+            <Label htmlFor="registration">Matrícula (ID do Funcionário)</Label>
             <Input
               id="registration"
               value={registrationNumber}
