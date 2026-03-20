@@ -39,6 +39,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
   const [status, setStatus] = useState<ObsStatus>('Pendente')
   const [assignedTo, setAssignedTo] = useState('')
   const [comments, setComments] = useState('')
+  const [justificativa, setJustificativa] = useState('')
   const [dueDate, setDueDate] = useState<Date | undefined>()
   const [completionDate, setCompletionDate] = useState<Date | undefined>()
   const [isSaving, setIsSaving] = useState(false)
@@ -65,6 +66,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
       setStatus(defaultStatus)
       setAssignedTo(obs.assignedTo || '')
       setComments((obs as any).managerComments || '')
+      setJustificativa('')
       setDueDate(obs.dueDate ? new Date(obs.dueDate) : undefined)
       setCompletionDate(defaultCompletion)
     }
@@ -81,13 +83,19 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
 
   const handleSave = async () => {
     setIsSaving(true)
-    await updateObservation(obs.id, {
+    const updates: any = {
       status,
       assignedTo,
       managerComments: comments,
       dueDate: dueDate ? dueDate.toISOString() : null,
       completionDate: completionDate ? completionDate.toISOString() : null,
-    } as any)
+    }
+
+    if (status !== obs.status) {
+      updates.justificativa_status = justificativa
+    }
+
+    await updateObservation(obs.id, updates)
     setIsSaving(false)
 
     if (status === 'Concluído' && obs.status !== 'Concluído') {
@@ -101,6 +109,8 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
 
     onOpenChange(false)
   }
+
+  const statusChanged = obs && status !== obs.status
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -146,6 +156,19 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
                 </SelectContent>
               </Select>
             </div>
+
+            {statusChanged && (
+              <div className="grid gap-2 animate-in fade-in slide-in-from-top-2">
+                <Label className="text-primary">Justificativa da mudança de status</Label>
+                <Textarea
+                  value={justificativa}
+                  onChange={(e) => setJustificativa(e.target.value)}
+                  placeholder="Informe o motivo da alteração de status..."
+                  className="min-h-[80px]"
+                  required
+                />
+              </div>
+            )}
 
             <div className="grid gap-2">
               <Label>Atribuir a (Responsável)</Label>
@@ -224,7 +247,11 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
         </div>
 
         <SheetFooter className="mt-8">
-          <Button onClick={handleSave} disabled={isSaving} className="w-full">
+          <Button
+            onClick={handleSave}
+            disabled={isSaving || (statusChanged && !justificativa.trim())}
+            className="w-full"
+          >
             {isSaving ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Salvando...

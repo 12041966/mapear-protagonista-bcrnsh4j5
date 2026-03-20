@@ -300,6 +300,8 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       dbUpdates.manager_comments = (updates as any).managerComments
     if (updates.dueDate !== undefined) dbUpdates.due_date = updates.dueDate
     if (updates.completionDate !== undefined) dbUpdates.completion_date = updates.completionDate
+    if ((updates as any).justificativa_status !== undefined)
+      dbUpdates.justificativa_status = (updates as any).justificativa_status
 
     const { error } = await supabase.from('observacoes').update(dbUpdates).eq('codigo', id)
     if (!error) {
