@@ -63,7 +63,9 @@ export function DataTable({ data, onEdit, isSuperAdmin, hideActions = false }: P
     try {
       const saved = localStorage.getItem('mapear-table-visibility')
       if (saved) return JSON.parse(saved)
-    } catch (e) {}
+    } catch (e) {
+      // Ignore parsing errors and fall back to default visibility
+    }
     return DEFAULT_VISIBILITY
   })
 
