@@ -29,8 +29,9 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog'
 import { useToast } from '@/hooks/use-toast'
-import { Loader2, Edit2, Plus } from 'lucide-react'
+import { Loader2, Edit2, Plus, Upload } from 'lucide-react'
 import { EditUserDialog } from './EditUserDialog'
+import { ImportUsersDialog } from './ImportUsersDialog'
 import { useMainStore } from '@/stores/main'
 import { formatPhone } from '@/lib/utils'
 
@@ -40,6 +41,8 @@ export function UsersList() {
   const [editingUser, setEditingUser] = useState<any | null>(null)
 
   const [isInviteOpen, setIsInviteOpen] = useState(false)
+  const [isImportOpen, setIsImportOpen] = useState(false)
+
   const [inviteName, setInviteName] = useState('')
   const [inviteEmail, setInviteEmail] = useState('')
   const [inviteWhatsapp, setInviteWhatsapp] = useState('')
@@ -138,7 +141,10 @@ export function UsersList() {
       toast({
         variant: 'destructive',
         title: 'Erro ao salvar usuário',
-        description: error.message,
+        description:
+          error.code === '23505'
+            ? 'A matrícula informada já existe na base de dados.'
+            : error.message,
       })
     } else {
       toast({
@@ -215,15 +221,27 @@ export function UsersList() {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <p className="text-sm text-slate-500">{headerText}</p>
-        <Button
-          onClick={() => setIsInviteOpen(true)}
-          disabled={!canInvite}
-          title={!canInvite ? 'Selecione uma empresa para convidar usuários' : ''}
-          className="flex items-center gap-2 shadow-sm"
-        >
-          <Plus className="w-4 h-4" />
-          Convidar Usuário
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            onClick={() => setIsImportOpen(true)}
+            disabled={!canInvite}
+            title={!canInvite ? 'Selecione uma empresa para importar usuários' : ''}
+            className="flex items-center gap-2 shadow-sm"
+          >
+            <Upload className="w-4 h-4" />
+            Importar CSV
+          </Button>
+          <Button
+            onClick={() => setIsInviteOpen(true)}
+            disabled={!canInvite}
+            title={!canInvite ? 'Selecione uma empresa para convidar usuários' : ''}
+            className="flex items-center gap-2 shadow-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Convidar Usuário
+          </Button>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
@@ -323,6 +341,13 @@ export function UsersList() {
         onClose={() => setEditingUser(null)}
         onSave={handleSaveUser}
         user={editingUser}
+      />
+
+      <ImportUsersDialog
+        isOpen={isImportOpen}
+        onClose={() => setIsImportOpen(false)}
+        targetCompanyId={targetCompanyId || ''}
+        onSuccess={fetchUsers}
       />
 
       <Dialog open={isInviteOpen} onOpenChange={setIsInviteOpen}>
