@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
   const { user, loading: authLoading, signOut } = useAuth()
-  const [observations, setObservations] = useState<Observation[]>([])
+  const [observations, setObservations] = useState<any[]>([])
   const [users, setUsers] = useState<UserProfile[]>(INITIAL_USERS)
   const [settings, setSettings] = useState<AppSettings>(INITIAL_SETTINGS)
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null)
@@ -101,6 +101,52 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       })
   }, [user, signOut])
 
+  const refreshObservations = useCallback(async () => {
+    if (!currentUser) return
+    if (activeCompanyId === '' && !isSuperAdmin) return
+
+    let obsQuery = supabase
+      .from('observacoes')
+      .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
+      .order('date', { ascending: false })
+
+    if (activeCompanyId !== 'all') {
+      obsQuery = obsQuery.eq('empresa_id', activeCompanyId)
+    }
+
+    const { data, error } = await obsQuery
+    if (data && !error) {
+      setObservations(
+        data.map((row: any) => ({
+          id: row.codigo || row.id,
+          userId: row.user_id,
+          date: row.date,
+          observer: {
+            name: row.profiles?.name || 'Desconhecido',
+            whatsapp: row.profiles?.whatsapp || '',
+            cpf: row.profiles?.cpf || '',
+            email: row.profiles?.email || '',
+            companyId: row.profiles?.empresa_id || '',
+          },
+          type: row.type,
+          detail: row.detail || '',
+          area: row.area || '',
+          shift: row.shift || '',
+          riskLevel: row.risk_level || '',
+          description: row.description || '',
+          resolutionType: row.resolution_type || '',
+          status: row.status || 'Pendente',
+          assignedTo: row.assigned_to,
+          dueDate: row.due_date || null,
+          completionDate: row.completion_date || null,
+          managerComments: row.manager_comments,
+          companyName: row.empresas?.nome || 'Não informada',
+          justificativaCancelamento: row.justificativa_cancelamento || null,
+        })),
+      )
+    }
+  }, [activeCompanyId, currentUser, isSuperAdmin])
+
   useEffect(() => {
     if (!currentUser) return
     if (activeCompanyId === '' && !isSuperAdmin) {
@@ -109,11 +155,6 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     }
 
     setObservationsLoading(true)
-
-    let obsQuery = supabase
-      .from('observacoes')
-      .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
-      .order('date', { ascending: false })
 
     let defQuery = supabase
       .from('tabelas_sistema_definicoes')
@@ -134,43 +175,12 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       .order('mes', { ascending: false })
 
     if (activeCompanyId !== 'all') {
-      obsQuery = obsQuery.eq('empresa_id', activeCompanyId)
       empOptQuery = empOptQuery.eq('empresa_id', activeCompanyId)
       efQuery = efQuery.eq('empresa_id', activeCompanyId)
     }
 
-    Promise.all([obsQuery, defQuery, optQuery, empOptQuery, efQuery]).then(
-      ([obsRes, defRes, optRes, empOptRes, efRes]) => {
-        if (obsRes.data && !obsRes.error) {
-          setObservations(
-            obsRes.data.map((row: any) => ({
-              id: row.codigo || row.id,
-              date: row.date,
-              observer: {
-                name: row.profiles?.name || 'Desconhecido',
-                whatsapp: row.profiles?.whatsapp || '',
-                cpf: row.profiles?.cpf || '',
-                email: row.profiles?.email || '',
-                companyId: row.profiles?.empresa_id || '',
-              },
-              type: row.type,
-              detail: row.detail || '',
-              area: row.area || '',
-              shift: row.shift || '',
-              riskLevel: row.risk_level || '',
-              description: row.description || '',
-              resolutionType: row.resolution_type || '',
-              status: row.status || 'Pendente',
-              assignedTo: row.assigned_to,
-              dueDate: row.due_date || null,
-              completionDate: row.completion_date || null,
-              managerComments: row.manager_comments,
-              companyName: row.empresas?.nome || 'Não informada',
-              justificativaCancelamento: row.justificativa_cancelamento || null,
-            })),
-          )
-        }
-
+    Promise.all([refreshObservations(), defQuery, optQuery, empOptQuery, efQuery]).then(
+      ([_, defRes, optRes, empOptRes, efRes]) => {
         const newSettings = { ...INITIAL_SETTINGS }
 
         if (defRes.data && optRes.data) {
@@ -228,9 +238,8 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         setObservationsLoading(false)
       },
     )
-  }, [activeCompanyId, currentUser, isSuperAdmin])
+  }, [activeCompanyId, currentUser, isSuperAdmin, refreshObservations])
 
-  // Real-time synchronization for observations (e.g., Atividades Recentes sync)
   useEffect(() => {
     if (!currentUser) return
 
@@ -251,6 +260,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
               setObservations((prev) => {
                 const mapped = {
                   id: data.codigo || data.id,
+                  userId: data.user_id,
                   date: data.date,
                   observer: {
                     name: data.profiles?.name || 'Desconhecido',
@@ -289,6 +299,10 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
                 )
               })
             }
+          } else if (payload.eventType === 'DELETE') {
+            setObservations((prev) =>
+              prev.filter((o) => o.id !== (payload.old as any).codigo && o.id !== payload.old.id),
+            )
           }
         },
       )
@@ -312,6 +326,17 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       let attempts = 0
       let data = null
       let lastError = null
+
+      let initialStatus = 'Pendente'
+      let completionDate = null
+      if (
+        obs.type &&
+        obs.type.toLowerCase().includes('comportamento') &&
+        obs.resolutionType === 'Feedback fornecido'
+      ) {
+        initialStatus = 'Concluído'
+        completionDate = date
+      }
 
       while (!success && attempts < 5) {
         try {
@@ -342,7 +367,8 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
               risk_level: obs.riskLevel || null,
               description: obs.description,
               resolution_type: obs.resolutionType,
-              status: 'Pendente',
+              status: initialStatus,
+              completion_date: completionDate,
             })
             .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
             .single()
@@ -372,10 +398,10 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         )
       }
 
-      // Let real-time subscription handle it, but update locally for instant UI response
       setObservations((prev) => {
         const mapped = {
           id: data.codigo,
+          userId: data.user_id,
           date: data.date,
           observer: {
             name: data.profiles?.name || currentUser?.name || '',
@@ -434,7 +460,6 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       throw error
     }
 
-    // Busca o registro atualizado para sincronizar o estado perfeitamente (caso Realtime atrase)
     let fetchQuery = supabase
       .from('observacoes')
       .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
@@ -453,6 +478,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           if (obs.id === id) {
             return {
               id: updatedData.codigo || updatedData.id,
+              userId: updatedData.user_id,
               date: updatedData.date,
               observer: {
                 name: updatedData.profiles?.name || obs.observer.name,
@@ -481,7 +507,6 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         }),
       )
     } else {
-      // Fallback em caso de falha na busca
       setObservations((prev) => prev.map((obs) => (obs.id === id ? { ...obs, ...updates } : obs)))
     }
   }, [])
@@ -507,23 +532,26 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <StoreContext.Provider
-      value={{
-        observations,
-        addObservation,
-        updateObservation,
-        users,
-        addUser,
-        updateUser,
-        removeUser,
-        settings,
-        updateSettings,
-        currentUser,
-        setCurrentUser,
-        isSuperAdmin,
-        activeCompanyId,
-        setActiveCompanyId,
-        companies,
-      }}
+      value={
+        {
+          observations,
+          addObservation,
+          updateObservation,
+          users,
+          addUser,
+          updateUser,
+          removeUser,
+          settings,
+          updateSettings,
+          currentUser,
+          setCurrentUser,
+          isSuperAdmin,
+          activeCompanyId,
+          setActiveCompanyId,
+          companies,
+          refreshObservations,
+        } as any
+      }
     >
       {children}
     </StoreContext.Provider>

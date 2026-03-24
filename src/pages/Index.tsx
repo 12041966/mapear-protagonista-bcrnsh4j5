@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useMainStore } from '@/stores/main'
 import { MetricsCards } from '@/components/dashboard/MetricsCards'
 import { DashboardCharts } from '@/components/dashboard/Charts'
@@ -15,7 +15,11 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 
 export default function Index() {
-  const { observations, settings, currentUser, isSuperAdmin } = useMainStore()
+  const { observations, settings, currentUser, isSuperAdmin, refreshObservations } = useMainStore()
+
+  useEffect(() => {
+    refreshObservations?.()
+  }, [refreshObservations])
 
   const [selectedYears, setSelectedYears] = useState<string[]>([])
   const [selectedMonths, setSelectedMonths] = useState<string[]>([])

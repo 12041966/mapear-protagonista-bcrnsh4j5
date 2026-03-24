@@ -56,7 +56,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false)
   const [cancelJustification, setCancelJustification] = useState('')
 
-  const { updateObservation, currentUser } = useMainStore()
+  const { updateObservation, currentUser, refreshObservations } = useMainStore()
   const { toast } = useToast()
 
   useEffect(() => {
@@ -85,6 +85,13 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
       setCancelJustification('')
     }
   }, [obs])
+
+  const handleOpenChangeWrapper = (isOpen: boolean) => {
+    if (!isOpen) {
+      refreshObservations?.()
+    }
+    onOpenChange(isOpen)
+  }
 
   if (!obs) return null
 
@@ -128,6 +135,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
         })
         .catch((err) => console.error('Erro ao enviar notificação:', err))
 
+      await refreshObservations?.()
       setCancelDialogOpen(false)
       onOpenChange(false)
       toast({
@@ -190,6 +198,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
         toast({ title: 'Atualizado', description: 'Alterações salvas com sucesso.' })
       }
 
+      await refreshObservations?.()
       onOpenChange(false)
     } catch (error) {
       toast({
@@ -209,7 +218,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
 
   return (
     <>
-      <Sheet open={open} onOpenChange={onOpenChange}>
+      <Sheet open={open} onOpenChange={handleOpenChangeWrapper}>
         <SheetContent className="w-full sm:max-w-md overflow-y-auto">
           <SheetHeader className="mb-6">
             <SheetTitle>Tratar Relato {obs.id}</SheetTitle>

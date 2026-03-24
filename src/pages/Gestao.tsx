@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,10 +10,14 @@ import { Observation } from '@/types'
 import { useToast } from '@/hooks/use-toast'
 
 export default function Gestao() {
-  const { observations, currentUser, isSuperAdmin } = useMainStore()
+  const { observations, currentUser, isSuperAdmin, refreshObservations } = useMainStore()
   const [search, setSearch] = useState('')
   const [editingObs, setEditingObs] = useState<Observation | null>(null)
   const { toast } = useToast()
+
+  useEffect(() => {
+    refreshObservations?.()
+  }, [refreshObservations])
 
   const filteredData = useMemo(() => {
     return observations.filter(
