@@ -12,6 +12,36 @@ import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 
 import { Observation } from '@/types'
 import { CHART_COLORS } from '@/lib/constants'
 
+const RISK_CHART_COLORS: Record<string, string> = {
+  Leve: '#10b981',
+  Moderado: '#f59e0b',
+  Grave: '#ea580c',
+  'Muito Grave': '#ef4444',
+}
+
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+  const RADIAN = Math.PI / 180
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5
+  const x = cx + radius * Math.cos(-midAngle * RADIAN)
+  const y = cy + radius * Math.sin(-midAngle * RADIAN)
+
+  if (percent < 0.05) return null
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="white"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize={11}
+      fontWeight="bold"
+    >
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  )
+}
+
 export function DashboardCharts({ data }: { data: Observation[] }) {
   const typeData = useMemo(() => {
     const counts = data.reduce(
@@ -31,6 +61,27 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
     }, {} as ChartConfig)
   }, [typeData])
 
+  const riskData = useMemo(() => {
+    const counts = data.reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.riskLevel || 'Não Informado']: (acc[curr.riskLevel || 'Não Informado'] || 0) + 1,
+      }),
+      {} as Record<string, number>,
+    )
+    return Object.entries(counts).map(([name, value]) => ({ name, value }))
+  }, [data])
+
+  const riskConfig = useMemo(() => {
+    return riskData.reduce((acc, d) => {
+      acc[d.name] = {
+        label: d.name,
+        color: RISK_CHART_COLORS[d.name] || '#94a3b8',
+      }
+      return acc
+    }, {} as ChartConfig)
+  }, [riskData])
+
   const trendData = useMemo(() => {
     const grouped = data.reduce(
       (acc, obs) => {
@@ -41,7 +92,7 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
 
         if (!acc[key]) acc[key] = { name: month, abertos: 0, fechados: 0, sortKey: key }
 
-        if (obs.status === 'Concluído') {
+        if (obs.status === 'Concluído' || obs.status === 'Cancelada') {
           acc[key].fechados++
         } else {
           acc[key].abertos++
@@ -57,7 +108,10 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
 
   const areaData = useMemo(() => {
     const counts = data.reduce(
-      (acc, curr) => ({ ...acc, [curr.area]: (acc[curr.area] || 0) + 1 }),
+      (acc, curr) => ({
+        ...acc,
+        [curr.area || 'Não Informada']: (acc[curr.area || 'Não Informada'] || 0) + 1,
+      }),
       {} as Record<string, number>,
     )
     return Object.entries(counts)
@@ -66,11 +120,35 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
       .slice(0, 5)
   }, [data])
 
+  const detailData = useMemo(() => {
+    const grouped = data.reduce(
+      (acc, obs) => {
+        const detail = obs.detail || 'Não Informado'
+        if (!acc[detail]) {
+          acc[detail] = { name: detail, abertos: 0, concluidos: 0, total: 0 }
+        }
+        if (obs.status === 'Concluído' || obs.status === 'Cancelada') {
+          acc[detail].concluidos++
+        } else {
+          acc[detail].abertos++
+        }
+        acc[detail].total++
+        return acc
+      },
+      {} as Record<string, any>,
+    )
+
+    return Object.values(grouped)
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 7) // limit to top 7
+  }, [data])
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
+      {/* 1. Tipo */}
       <Card className="col-span-1">
         <CardHeader>
-          <CardTitle className="text-base">Observações por Tipo</CardTitle>
+          <CardTitle className="text-base">Por Tipo</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-[280px] w-full">
@@ -81,7 +159,7 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
                   cx="50%"
                   cy="45%"
                   innerRadius={55}
-                  outerRadius={75}
+                  outerRadius={80}
                   paddingAngle={5}
                   dataKey="value"
                   nameKey="name"
@@ -101,7 +179,40 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
         </CardContent>
       </Card>
 
-      <Card className="col-span-1 lg:col-span-2">
+      {/* 2. Risco */}
+      <Card className="col-span-1">
+        <CardHeader>
+          <CardTitle className="text-base">Por Grau de Risco</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[280px] w-full">
+            <ChartContainer config={riskConfig} className="h-full w-full">
+              <PieChart>
+                <Pie
+                  data={riskData}
+                  cx="50%"
+                  cy="45%"
+                  innerRadius={0}
+                  outerRadius={80}
+                  dataKey="value"
+                  nameKey="name"
+                  labelLine={false}
+                  label={renderCustomizedLabel}
+                >
+                  {riskData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={RISK_CHART_COLORS[entry.name] || '#94a3b8'} />
+                  ))}
+                </Pie>
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent className="flex-wrap pt-4" />} />
+              </PieChart>
+            </ChartContainer>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* 3. Trend */}
+      <Card className="col-span-1 md:col-span-2 lg:col-span-1">
         <CardHeader>
           <CardTitle className="text-base">Tendência Mensal</CardTitle>
         </CardHeader>
@@ -109,12 +220,12 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
           <div className="h-[280px] w-full">
             <ChartContainer
               config={{
-                abertos: { label: 'Comunicados abertos', color: '#f59e0b' },
-                fechados: { label: 'Comunicados fechados', color: '#10b981' },
+                abertos: { label: 'Abertos', color: '#f59e0b' },
+                fechados: { label: 'Resolvidos', color: '#10b981' },
               }}
               className="h-full w-full"
             >
-              <BarChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+              <BarChart data={trendData} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                 <XAxis
                   dataKey="name"
@@ -138,23 +249,24 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
         </CardContent>
       </Card>
 
-      <Card className="col-span-1 md:col-span-2 lg:col-span-3">
+      {/* 4. Area */}
+      <Card className="col-span-1 md:col-span-1 lg:col-span-1">
         <CardHeader>
-          <CardTitle className="text-base">Distribuição por Área</CardTitle>
+          <CardTitle className="text-base">Por Área (Top 5)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[250px] w-full">
+          <div className="h-[280px] w-full">
             <ChartContainer
               config={{ value: { label: 'Relatos', color: '#3b82f6' } }}
               className="h-full w-full"
             >
-              <BarChart data={areaData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+              <BarChart data={areaData} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                 <XAxis
                   dataKey="name"
                   tickLine={false}
                   axisLine={false}
-                  tick={{ fill: '#64748b', fontSize: 12 }}
+                  tick={{ fill: '#64748b', fontSize: 11 }}
                 />
                 <YAxis
                   tickLine={false}
@@ -165,6 +277,66 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
                 <Bar dataKey="value" fill="var(--color-value)" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ChartContainer>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* 5. Detalhamento (Stacked Bar) */}
+      <Card className="col-span-1 md:col-span-1 lg:col-span-2">
+        <CardHeader>
+          <CardTitle className="text-base">Por Detalhamento (Top 7)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[280px] w-full">
+            <ChartContainer
+              config={{
+                abertos: { label: 'Abertos', color: '#f59e0b' },
+                concluidos: { label: 'Resolvidos', color: '#10b981' },
+              }}
+              className="h-full w-full"
+            >
+              <BarChart
+                data={detailData}
+                layout="vertical"
+                margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+              >
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  horizontal={false}
+                  vertical={true}
+                  stroke="#e2e8f0"
+                />
+                <XAxis
+                  type="number"
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: '#64748b', fontSize: 12 }}
+                  allowDecimals={false}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={160}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: '#64748b', fontSize: 11 }}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartLegend content={<ChartLegendContent />} />
+                <Bar
+                  dataKey="concluidos"
+                  stackId="a"
+                  fill="var(--color-concluidos)"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar
+                  dataKey="abertos"
+                  stackId="a"
+                  fill="var(--color-abertos)"
+                  radius={[0, 4, 4, 0]}
+                />
               </BarChart>
             </ChartContainer>
           </div>
