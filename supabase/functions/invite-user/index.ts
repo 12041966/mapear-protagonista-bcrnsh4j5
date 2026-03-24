@@ -18,6 +18,7 @@ Deno.serve(async (req: Request) => {
     if (!authHeader) {
       throw new Error('Missing Authorization header')
     }
+    const token = authHeader.replace('Bearer ', '')
 
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -28,8 +29,10 @@ Deno.serve(async (req: Request) => {
     const {
       data: { user },
       error: userError,
-    } = await supabaseClient.auth.getUser()
-    if (userError || !user) throw new Error('Unauthorized')
+    } = await supabaseClient.auth.getUser(token)
+    if (userError || !user) {
+      throw new Error('Unauthorized: ' + (userError?.message || 'User not found'))
+    }
 
     const { data: profile, error: profileError } = await supabaseClient
       .from('profiles')
@@ -37,18 +40,24 @@ Deno.serve(async (req: Request) => {
       .eq('id', user.id)
       .single()
 
-    if (profileError || !profile) throw new Error('Profile not found')
-    if (profile.role !== 'Administrador')
+    if (profileError || !profile) {
+      throw new Error('Profile not found')
+    }
+
+    const isSuperAdmin = profile.email === 'ferbatsan@hotmail.com'
+    if (profile.role !== 'Administrador' && !isSuperAdmin) {
       throw new Error('Forbidden: Only administrators can invite users')
+    }
 
     const { email, name, role, whatsapp, empresa_id: requestedEmpresaId } = await req.json()
     if (!email) throw new Error('Email is required')
 
-    const isSuperAdmin = profile.email === 'ferbatsan@hotmail.com'
     const targetEmpresaId =
       isSuperAdmin && requestedEmpresaId ? requestedEmpresaId : profile.empresa_id
 
-    if (!targetEmpresaId) throw new Error('Forbidden: No company assigned')
+    if (!targetEmpresaId) {
+      throw new Error('Forbidden: No company assigned')
+    }
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
