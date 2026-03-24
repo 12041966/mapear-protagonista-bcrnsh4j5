@@ -36,6 +36,7 @@ import { useMainStore } from '@/stores/main'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2, Calendar as CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { supabase } from '@/lib/supabase/client'
 
 interface Props {
   obs: Observation | null
@@ -55,7 +56,7 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false)
   const [cancelJustification, setCancelJustification] = useState('')
 
-  const { updateObservation } = useMainStore()
+  const { updateObservation, currentUser } = useMainStore()
   const { toast } = useToast()
 
   useEffect(() => {
@@ -113,6 +114,20 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
       }
 
       await updateObservation(obs.id, updates)
+
+      // Notificação via Edge Function
+      supabase.functions
+        .invoke('notificar_alteracao_status_observacao', {
+          body: {
+            observacao_id: obs.id,
+            status_anterior: obs.status,
+            status_novo: 'Cancelada',
+            justificativa: cancelJustification,
+            responsavel_nome: currentUser?.name || 'Gestor',
+          },
+        })
+        .catch((err) => console.error('Erro ao enviar notificação:', err))
+
       setCancelDialogOpen(false)
       onOpenChange(false)
       toast({
@@ -141,18 +156,35 @@ export function EditSheet({ obs, open, onOpenChange }: Props) {
         completionDate: completionDate ? completionDate.toISOString() : null,
       }
 
+      const statusChanged = status !== obs.status
+
       if (status === 'Cancelada') {
         updates.justificativaCancelamento = obs.justificativaCancelamento
-      } else if (status !== obs.status) {
+      } else if (statusChanged) {
         updates.justificativa_status = justificativa
       }
 
       await updateObservation(obs.id, updates)
 
+      // Notificação via Edge Function se o status foi alterado
+      if (statusChanged) {
+        supabase.functions
+          .invoke('notificar_alteracao_status_observacao', {
+            body: {
+              observacao_id: obs.id,
+              status_anterior: obs.status,
+              status_novo: status,
+              justificativa: status === 'Cancelada' ? obs.justificativaCancelamento : justificativa,
+              responsavel_nome: currentUser?.name || 'Gestor',
+            },
+          })
+          .catch((err) => console.error('Erro ao enviar notificação:', err))
+      }
+
       if (status === 'Concluído' && obs.status !== 'Concluído') {
         toast({
           title: 'Relato Concluído',
-          description: `Notificação enviada para o WhatsApp de ${obs.observer.name}.`,
+          description: `Notificação enviada para o WhatsApp e E-mail de ${obs.observer.name}.`,
         })
       } else {
         toast({ title: 'Atualizado', description: 'Alterações salvas com sucesso.' })

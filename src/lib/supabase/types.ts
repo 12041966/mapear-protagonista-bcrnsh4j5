@@ -920,7 +920,7 @@ export const Constants = {
 //    SECURITY DEFINER
 //   AS $function$
 //   BEGIN
-//     INSERT INTO public.profiles (id, email, name, active, role, empresa_id, whatsapp)
+//     INSERT INTO public.profiles (id, email, name, active, role, empresa_id, whatsapp, registration_number, cpf)
 //     VALUES (
 //       NEW.id,
 //       NEW.email,
@@ -928,7 +928,9 @@ export const Constants = {
 //       true,
 //       COALESCE(NEW.raw_user_meta_data->>'role', 'Observador'),
 //       NULLIF(NEW.raw_user_meta_data->>'empresa_id', '')::uuid,
-//       NEW.raw_user_meta_data->>'whatsapp'
+//       NEW.raw_user_meta_data->>'whatsapp',
+//       NEW.raw_user_meta_data->>'registration_number',
+//       NEW.raw_user_meta_data->>'cpf'
 //     );
 //     RETURN NEW;
 //   END;
@@ -1019,6 +1021,7 @@ export const Constants = {
 //   CREATE UNIQUE INDEX observacoes_codigo_key ON public.observacoes USING btree (codigo)
 // Table: profiles
 //   CREATE UNIQUE INDEX profiles_email_key ON public.profiles USING btree (email)
+//   CREATE UNIQUE INDEX profiles_empresa_id_registration_number_key ON public.profiles USING btree (empresa_id, registration_number) WHERE ((registration_number IS NOT NULL) AND (registration_number <> ''::text))
 // Table: sequencias
 //   CREATE UNIQUE INDEX sequencias_empresa_id_tipo_sequencia_key ON public.sequencias USING btree (empresa_id, tipo_sequencia)
 // Table: tabelas_sistema_definicoes

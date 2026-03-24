@@ -3,6 +3,7 @@
     "request-password-reset": 1,
     "invite-user": 3,
     "gerar_codigo_observacao": 2,
-    "importar_funcionarios_csv": 1
+    "importar_funcionarios_csv": 1,
+    "notificar_alteracao_status_observacao": 1
   }
 }
