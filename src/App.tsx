@@ -230,6 +230,75 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     )
   }, [activeCompanyId, currentUser, isSuperAdmin])
 
+  // Real-time synchronization for observations (e.g., Atividades Recentes sync)
+  useEffect(() => {
+    if (!currentUser) return
+
+    const channel = supabase
+      .channel('realtime_observacoes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'observacoes' },
+        async (payload) => {
+          if (payload.eventType === 'UPDATE' || payload.eventType === 'INSERT') {
+            const { data, error } = await supabase
+              .from('observacoes')
+              .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
+              .eq('id', payload.new.id)
+              .single()
+
+            if (data && !error) {
+              setObservations((prev) => {
+                const mapped = {
+                  id: data.codigo || data.id,
+                  date: data.date,
+                  observer: {
+                    name: data.profiles?.name || 'Desconhecido',
+                    whatsapp: data.profiles?.whatsapp || '',
+                    cpf: data.profiles?.cpf || '',
+                    email: data.profiles?.email || '',
+                    companyId: data.profiles?.empresa_id || '',
+                  },
+                  type: data.type,
+                  detail: data.detail || '',
+                  area: data.area || '',
+                  shift: data.shift || '',
+                  riskLevel: data.risk_level || '',
+                  description: data.description || '',
+                  resolutionType: data.resolution_type || '',
+                  status: data.status as any,
+                  assignedTo: data.assigned_to,
+                  dueDate: data.due_date || null,
+                  completionDate: data.completion_date || null,
+                  managerComments: data.manager_comments,
+                  companyName: data.empresas?.nome || 'Não informada',
+                  justificativaCancelamento: data.justificativa_cancelamento || null,
+                }
+
+                if (activeCompanyId !== 'all' && mapped.observer.companyId !== activeCompanyId) {
+                  return prev
+                }
+
+                const exists = prev.some((o) => o.id === mapped.id)
+                if (exists) {
+                  return prev.map((o) => (o.id === mapped.id ? mapped : o))
+                }
+
+                return [mapped, ...prev].sort(
+                  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+                )
+              })
+            }
+          }
+        },
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [currentUser, activeCompanyId])
+
   const addObservation = useCallback(
     async (obs: any) => {
       const targetCompany =
@@ -303,8 +372,9 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
         )
       }
 
-      setObservations((prev) => [
-        {
+      // Let real-time subscription handle it, but update locally for instant UI response
+      setObservations((prev) => {
+        const mapped = {
           id: data.codigo,
           date: data.date,
           observer: {
@@ -328,9 +398,10 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           managerComments: data.manager_comments,
           companyName: data.empresas?.nome || 'Não informada',
           justificativaCancelamento: data.justificativa_cancelamento || null,
-        },
-        ...prev,
-      ])
+        }
+        const exists = prev.some((o) => o.id === mapped.id)
+        return exists ? prev : [mapped, ...prev]
+      })
     },
     [currentUser, user, isSuperAdmin, activeCompanyId],
   )
@@ -363,7 +434,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       throw error
     }
 
-    // Busca o registro atualizado para sincronizar o estado perfeitamente
+    // Busca o registro atualizado para sincronizar o estado perfeitamente (caso Realtime atrase)
     let fetchQuery = supabase
       .from('observacoes')
       .select('*, profiles(name, whatsapp, cpf, email, empresa_id), empresas(nome)')
