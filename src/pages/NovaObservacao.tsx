@@ -27,11 +27,15 @@ const INITIAL_DATA = {
   resolutionAction: '',
 }
 
+const DEFAULT_INSTRUCOES =
+  'Utilize este formulário para registrar observações de Segurança, Saúde e Meio Ambiente com objetivo de corrigir ou melhorar condições de risco, alertar sobre comportamentos de risco ou reforçar comportamentos seguros.'
+
 export default function NovaObservacao() {
   const [step, setStep] = useState(1)
   const [data, setData] = useState<any>(INITIAL_DATA)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [previewCode, setPreviewCode] = useState<string | null>(null)
+  const [instrucoes, setInstrucoes] = useState(DEFAULT_INSTRUCOES)
 
   const { addObservation, currentUser, isSuperAdmin, activeCompanyId } = useMainStore()
   const { toast } = useToast()
@@ -78,6 +82,54 @@ export default function NovaObservacao() {
     fetchPreviewCode()
     return () => {
       mounted = false
+    }
+  }, [targetCompany])
+
+  // Busca e sincroniza em tempo real as instruções de uso do formulário
+  useEffect(() => {
+    if (!targetCompany) return
+
+    let mounted = true
+    const fetchInstrucoes = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('configuracoes_sistema')
+          .select('valor')
+          .eq('empresa_id', targetCompany)
+          .eq('chave', 'instrucoes_uso')
+          .maybeSingle()
+
+        if (mounted && data?.valor && !error) {
+          setInstrucoes(data.valor)
+        }
+      } catch (err) {
+        console.error('Falha ao buscar instruções:', err)
+      }
+    }
+
+    fetchInstrucoes()
+
+    const channel = supabase
+      .channel(`config_instrucoes_${targetCompany}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'configuracoes_sistema',
+          filter: `empresa_id=eq.${targetCompany}`,
+        },
+        (payload) => {
+          if (payload.new && (payload.new as any).chave === 'instrucoes_uso') {
+            setInstrucoes((payload.new as any).valor)
+          }
+        },
+      )
+      .subscribe()
+
+    return () => {
+      mounted = false
+      supabase.removeChannel(channel)
     }
   }, [targetCompany])
 
@@ -186,11 +238,9 @@ export default function NovaObservacao() {
   return (
     <div className="w-full max-w-2xl mx-auto py-4">
       <div className="mb-6 bg-blue-50 border border-blue-200 p-4 rounded-lg shadow-sm animate-fade-in">
-        <p className="text-sm text-blue-900 leading-relaxed">
+        <p className="text-sm text-blue-900 leading-relaxed whitespace-pre-wrap">
           <strong className="block mb-1 text-blue-950">Instruções de Uso:</strong>
-          Utilize este formulário para registrar observações de Segurança, Saúde e Meio Ambiente com
-          objetivo de corrigir ou melhorar condições de risco, alertar sobre comportamentos de risco
-          ou reforçar comportamentos seguros.
+          {instrucoes}
         </p>
       </div>
 
