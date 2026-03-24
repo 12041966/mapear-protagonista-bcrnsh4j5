@@ -11,13 +11,19 @@ import {
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts'
 import { Observation } from '@/types'
 import { CHART_COLORS } from '@/lib/constants'
+import { useMainStore } from '@/stores/main'
 
-const RISK_CHART_COLORS: Record<string, string> = {
-  Leve: '#10b981',
-  Moderado: '#f59e0b',
-  Grave: '#ea580c',
-  'Muito Grave': '#ef4444',
-}
+const RISK_PALETTE = [
+  '#10b981', // Leve - emerald
+  '#f59e0b', // Moderado - amber
+  '#ea580c', // Grave - orange
+  '#ef4444', // Muito Grave - red
+  '#8b5cf6', // purple
+  '#06b6d4', // cyan
+  '#f43f5e', // rose
+  '#eab308', // yellow
+  '#3b82f6', // blue
+]
 
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
   const RADIAN = Math.PI / 180
@@ -43,13 +49,24 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 }
 
 export function DashboardCharts({ data }: { data: Observation[] }) {
+  const { settings } = useMainStore()
+
+  const validTypes = useMemo(() => {
+    return (settings.observationTypes || []).map((t: any) => (typeof t === 'string' ? t : t.value))
+  }, [settings.observationTypes])
+
   const typeData = useMemo(() => {
     const counts = data.reduce(
-      (acc, curr) => ({ ...acc, [curr.type]: (acc[curr.type] || 0) + 1 }),
+      (acc, curr) => {
+        if (validTypes.includes(curr.type)) {
+          acc[curr.type] = (acc[curr.type] || 0) + 1
+        }
+        return acc
+      },
       {} as Record<string, number>,
     )
     return Object.entries(counts).map(([name, value]) => ({ name, value }))
-  }, [data])
+  }, [data, validTypes])
 
   const typeConfig = useMemo(() => {
     return typeData.reduce((acc, d, i) => {
@@ -73,14 +90,17 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
   }, [data])
 
   const riskConfig = useMemo(() => {
-    return riskData.reduce((acc, d) => {
+    const knownRisks = settings.risks || []
+    return riskData.reduce((acc, d, i) => {
+      let idx = knownRisks.indexOf(d.name)
+      if (idx === -1) idx = i
       acc[d.name] = {
         label: d.name,
-        color: RISK_CHART_COLORS[d.name] || '#94a3b8',
+        color: RISK_PALETTE[idx % RISK_PALETTE.length],
       }
       return acc
     }, {} as ChartConfig)
-  }, [riskData])
+  }, [riskData, settings.risks])
 
   const trendData = useMemo(() => {
     const grouped = data.reduce(
@@ -90,17 +110,19 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
         const month = rawMonth.charAt(0).toUpperCase() + rawMonth.slice(1)
         const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, '0')}`
 
-        if (!acc[key]) acc[key] = { name: month, abertos: 0, fechados: 0, sortKey: key }
+        if (!acc[key]) acc[key] = { name: month, observacoes: 0, fechados: 0, sortKey: key }
 
+        acc[key].observacoes++
         if (obs.status === 'Concluído' || obs.status === 'Cancelada') {
           acc[key].fechados++
-        } else {
-          acc[key].abertos++
         }
 
         return acc
       },
-      {} as Record<string, { name: string; abertos: number; fechados: number; sortKey: string }>,
+      {} as Record<
+        string,
+        { name: string; observacoes: number; fechados: number; sortKey: string }
+      >,
     )
 
     return Object.values(grouped).sort((a, b) => a.sortKey.localeCompare(b.sortKey))
@@ -167,7 +189,9 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
                   {typeData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={CHART_COLORS[entry.name] || `hsl(${(index * 137) % 360}, 70%, 50%)`}
+                      fill={
+                        typeConfig[entry.name]?.color || `hsl(${(index * 137) % 360}, 70%, 50%)`
+                      }
                     />
                   ))}
                 </Pie>
@@ -200,7 +224,7 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
                   label={renderCustomizedLabel}
                 >
                   {riskData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={RISK_CHART_COLORS[entry.name] || '#94a3b8'} />
+                    <Cell key={`cell-${index}`} fill={riskConfig[entry.name]?.color || '#94a3b8'} />
                   ))}
                 </Pie>
                 <ChartTooltip content={<ChartTooltipContent />} />
@@ -220,7 +244,7 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
           <div className="h-[280px] w-full">
             <ChartContainer
               config={{
-                abertos: { label: 'Abertos', color: '#f59e0b' },
+                observacoes: { label: 'Observações', color: '#3b82f6' },
                 fechados: { label: 'Resolvidos', color: '#10b981' },
               }}
               className="h-full w-full"
@@ -241,7 +265,7 @@ export function DashboardCharts({ data }: { data: Observation[] }) {
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
-                <Bar dataKey="abertos" fill="var(--color-abertos)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="observacoes" fill="var(--color-observacoes)" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="fechados" fill="var(--color-fechados)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ChartContainer>
