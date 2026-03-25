@@ -1,5 +1,5 @@
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 import { corsHeaders } from '../_shared/cors.ts'
 
 Deno.serve(async (req: Request) => {
@@ -10,7 +10,7 @@ Deno.serve(async (req: Request) => {
   try {
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
     const { email } = await req.json()
@@ -22,7 +22,9 @@ Deno.serve(async (req: Request) => {
       })
     }
 
-    const { error } = await supabaseAdmin.auth.resetPasswordForEmail(email)
+    const { error } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://www.mapear.net.br/recuperar-senha'
+    })
 
     if (error) {
       console.error('Password reset request error:', error)
@@ -33,7 +35,7 @@ Deno.serve(async (req: Request) => {
       {
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
         status: 200,
-      },
+      }
     )
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {

@@ -1,11 +1,17 @@
 // AVOID UPDATING THIS FILE DIRECTLY. It is automatically generated.
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: '14.4'
+    PostgrestVersion: "14.4"
   }
   public: {
     Tables: {
@@ -36,11 +42,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'configuracoes_sistema_empresa_id_fkey'
-            columns: ['empresa_id']
+            foreignKeyName: "configuracoes_sistema_empresa_id_fkey"
+            columns: ["empresa_id"]
             isOneToOne: false
-            referencedRelation: 'empresas'
-            referencedColumns: ['id']
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -74,11 +80,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'efetivo_mensal_empresa_id_fkey'
-            columns: ['empresa_id']
+            foreignKeyName: "efetivo_mensal_empresa_id_fkey"
+            columns: ["empresa_id"]
             isOneToOne: false
-            referencedRelation: 'empresas'
-            referencedColumns: ['id']
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -148,25 +154,25 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'logs_observacoes_empresa_id_fkey'
-            columns: ['empresa_id']
+            foreignKeyName: "logs_observacoes_empresa_id_fkey"
+            columns: ["empresa_id"]
             isOneToOne: false
-            referencedRelation: 'empresas'
-            referencedColumns: ['id']
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'logs_observacoes_observacao_id_fkey'
-            columns: ['observacao_id']
+            foreignKeyName: "logs_observacoes_observacao_id_fkey"
+            columns: ["observacao_id"]
             isOneToOne: false
-            referencedRelation: 'observacoes'
-            referencedColumns: ['id']
+            referencedRelation: "observacoes"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'logs_observacoes_usuario_id_fkey'
-            columns: ['usuario_id']
+            foreignKeyName: "logs_observacoes_usuario_id_fkey"
+            columns: ["usuario_id"]
             isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -239,18 +245,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'observacoes_empresa_id_fkey'
-            columns: ['empresa_id']
+            foreignKeyName: "observacoes_empresa_id_fkey"
+            columns: ["empresa_id"]
             isOneToOne: false
-            referencedRelation: 'empresas'
-            referencedColumns: ['id']
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'observacoes_user_id_fkey'
-            columns: ['user_id']
+            foreignKeyName: "observacoes_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -293,11 +299,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'profiles_empresa_id_fkey'
-            columns: ['empresa_id']
+            foreignKeyName: "profiles_empresa_id_fkey"
+            columns: ["empresa_id"]
             isOneToOne: false
-            referencedRelation: 'empresas'
-            referencedColumns: ['id']
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -325,11 +331,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'sequencias_empresa_id_fkey'
-            columns: ['empresa_id']
+            foreignKeyName: "sequencias_empresa_id_fkey"
+            columns: ["empresa_id"]
             isOneToOne: false
-            referencedRelation: 'empresas'
-            referencedColumns: ['id']
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -363,11 +369,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'tabelas_sistema_empresa_id_fkey'
-            columns: ['empresa_id']
+            foreignKeyName: "tabelas_sistema_empresa_id_fkey"
+            columns: ["empresa_id"]
             isOneToOne: false
-            referencedRelation: 'empresas'
-            referencedColumns: ['id']
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -422,18 +428,18 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'tabelas_sistema_empresa_opcoes_empresa_id_fkey'
-            columns: ['empresa_id']
+            foreignKeyName: "tabelas_sistema_empresa_opcoes_empresa_id_fkey"
+            columns: ["empresa_id"]
             isOneToOne: false
-            referencedRelation: 'empresas'
-            referencedColumns: ['id']
+            referencedRelation: "empresas"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'tabelas_sistema_empresa_opcoes_opcao_id_fkey'
-            columns: ['opcao_id']
+            foreignKeyName: "tabelas_sistema_empresa_opcoes_opcao_id_fkey"
+            columns: ["opcao_id"]
             isOneToOne: false
-            referencedRelation: 'tabelas_sistema_opcoes'
-            referencedColumns: ['id']
+            referencedRelation: "tabelas_sistema_opcoes"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -461,11 +467,11 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'tabelas_sistema_opcoes_tabela_id_fkey'
-            columns: ['tabela_id']
+            foreignKeyName: "tabelas_sistema_opcoes_tabela_id_fkey"
+            columns: ["tabela_id"]
             isOneToOne: false
-            referencedRelation: 'tabelas_sistema_definicoes'
-            referencedColumns: ['id']
+            referencedRelation: "tabelas_sistema_definicoes"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -493,31 +499,33 @@ export type Database = {
   }
 }
 
-type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>]
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
-        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
-    ? (DefaultSchema['Tables'] & DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -526,23 +534,23 @@ export type Tables<
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema['Tables']
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
-    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -551,23 +559,23 @@ export type TablesInsert<
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema['Tables']
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
-    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -576,36 +584,36 @@ export type TablesUpdate<
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema['Enums']
+    | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
-    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema['CompositeTypes']
+    | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
-    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
 
 export const Constants = {
@@ -613,6 +621,7 @@ export const Constants = {
     Enums: {},
   },
 } as const
+
 
 // ====== DATABASE EXTENDED CONTEXT (auto-generated) ======
 // This section contains actual PostgreSQL column types, constraints, RLS policies,
@@ -859,9 +868,9 @@ export const Constants = {
 //           creation_year := TO_CHAR(COALESCE(NEW.data_criacao, NOW()), 'YYYY');
 //           LOOP
 //               new_code := 'EMP-' || creation_year || '-' || LPAD(FLOOR(RANDOM() * 10000)::TEXT, 4, '0');
-//
+//               
 //               SELECT EXISTS(SELECT 1 FROM public.empresas WHERE codigo_empresa = new_code) INTO code_exists;
-//
+//               
 //               IF NOT code_exists THEN
 //                   NEW.codigo_empresa := new_code;
 //                   EXIT;
@@ -871,7 +880,7 @@ export const Constants = {
 //       RETURN NEW;
 //   END;
 //   $function$
-//
+//   
 // FUNCTION get_empresa_id_by_code(text)
 //   CREATE OR REPLACE FUNCTION public.get_empresa_id_by_code(p_codigo text)
 //    RETURNS uuid
@@ -881,7 +890,7 @@ export const Constants = {
 //   AS $function$
 //     SELECT id FROM public.empresas WHERE codigo_empresa = p_codigo LIMIT 1;
 //   $function$
-//
+//   
 // FUNCTION get_next_sequence_value(uuid, text)
 //   CREATE OR REPLACE FUNCTION public.get_next_sequence_value(p_empresa_id uuid, p_tipo text)
 //    RETURNS integer
@@ -894,15 +903,15 @@ export const Constants = {
 //       INSERT INTO public.sequencias (empresa_id, tipo_sequencia, proximo_numero)
 //       VALUES (p_empresa_id, p_tipo, 2)
 //       ON CONFLICT (empresa_id, tipo_sequencia)
-//       DO UPDATE SET
+//       DO UPDATE SET 
 //           proximo_numero = public.sequencias.proximo_numero + 1,
 //           data_atualizacao = NOW()
 //       RETURNING (proximo_numero - 1) INTO v_current;
-//
+//       
 //       RETURN v_current;
 //   END;
 //   $function$
-//
+//   
 // FUNCTION get_user_empresa_id()
 //   CREATE OR REPLACE FUNCTION public.get_user_empresa_id()
 //    RETURNS uuid
@@ -912,7 +921,7 @@ export const Constants = {
 //   AS $function$
 //     SELECT empresa_id FROM profiles WHERE id = auth.uid();
 //   $function$
-//
+//   
 // FUNCTION handle_new_user()
 //   CREATE OR REPLACE FUNCTION public.handle_new_user()
 //    RETURNS trigger
@@ -935,7 +944,7 @@ export const Constants = {
 //     RETURN NEW;
 //   END;
 //   $function$
-//
+//   
 // FUNCTION is_admin()
 //   CREATE OR REPLACE FUNCTION public.is_admin()
 //    RETURNS boolean
@@ -948,7 +957,7 @@ export const Constants = {
 //         WHERE id = auth.uid() AND email = 'ferbatsan@hotmail.com'
 //       );
 //     $function$
-//
+//   
 // FUNCTION is_company_admin(uuid)
 //   CREATE OR REPLACE FUNCTION public.is_company_admin(check_empresa_id uuid)
 //    RETURNS boolean
@@ -957,11 +966,11 @@ export const Constants = {
 //    SET search_path TO 'public'
 //   AS $function$
 //     SELECT EXISTS (
-//       SELECT 1 FROM profiles
+//       SELECT 1 FROM profiles 
 //       WHERE id = auth.uid() AND role = 'Administrador' AND empresa_id = check_empresa_id
 //     );
 //   $function$
-//
+//   
 // FUNCTION is_super_admin()
 //   CREATE OR REPLACE FUNCTION public.is_super_admin()
 //    RETURNS boolean
@@ -974,7 +983,7 @@ export const Constants = {
 //         WHERE id = auth.uid() AND email = 'ferbatsan@hotmail.com'
 //       );
 //     $function$
-//
+//   
 // FUNCTION log_observacao_status_change()
 //   CREATE OR REPLACE FUNCTION public.log_observacao_status_change()
 //    RETURNS trigger
@@ -1004,7 +1013,7 @@ export const Constants = {
 //       RETURN NEW;
 //   END;
 //   $function$
-//
+//   
 
 // --- TRIGGERS ---
 // Table: empresas
@@ -1028,3 +1037,4 @@ export const Constants = {
 //   CREATE UNIQUE INDEX tabelas_sistema_definicoes_chave_key ON public.tabelas_sistema_definicoes USING btree (chave)
 // Table: tabelas_sistema_empresa_opcoes
 //   CREATE UNIQUE INDEX tabelas_sistema_empresa_opcoes_empresa_id_opcao_id_key ON public.tabelas_sistema_empresa_opcoes USING btree (empresa_id, opcao_id)
+
