@@ -33,11 +33,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false)
     })
 
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session)
-      setUser(data.session?.user ?? null)
-      setLoading(false)
-    })
+    supabase.auth
+      .getSession()
+      .then(({ data, error }) => {
+        if (error) {
+          console.warn('Session retrieval error:', error.message)
+          if (
+            error.message.includes('Refresh Token') ||
+            error.message.includes('Invalid Refresh Token')
+          ) {
+            // Clear corrupted session
+            supabase.auth.signOut().catch(() => {})
+          }
+        }
+        setSession(data?.session ?? null)
+        setUser(data?.session?.user ?? null)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.error('Unexpected error during session initialization:', err)
+        setSession(null)
+        setUser(null)
+        setLoading(false)
+      })
 
     return () => subscription.unsubscribe()
   }, [])
@@ -68,8 +86,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
-    return { error }
+    try {
+      const { error } = await supabase.auth.signOut()
+      return { error }
+    } catch (err: any) {
+      return { error: err }
+    }
   }
 
   return (
