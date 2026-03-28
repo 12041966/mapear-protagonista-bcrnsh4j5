@@ -172,25 +172,20 @@ export function UsersList() {
     }
 
     setInviting(true)
-    const { data, error } = await supabase.functions.invoke('invite-user', {
-      body: {
-        email: inviteEmail,
-        name: inviteName,
-        role: inviteRole,
-        whatsapp: inviteWhatsapp,
-        empresa_id: targetCompanyId,
-      },
-    })
-
-    setInviting(false)
-
-    if (error || data?.error) {
-      toast({
-        variant: 'destructive',
-        title: 'Erro ao convidar',
-        description: data?.error || error?.message || 'Falha ao enviar convite.',
+    try {
+      const { data, error } = await supabase.functions.invoke('invite-user', {
+        body: {
+          email: inviteEmail,
+          name: inviteName,
+          role: inviteRole,
+          whatsapp: inviteWhatsapp,
+          empresa_id: targetCompanyId,
+        },
       })
-    } else {
+
+      if (error) throw error
+      if (data?.error) throw new Error(data.error)
+
       toast({
         title: 'Convite enviado',
         description: `Um email com instruções foi enviado para ${inviteEmail}.`,
@@ -201,6 +196,14 @@ export function UsersList() {
       setInviteWhatsapp('')
       setInviteRole('Observador')
       fetchUsers()
+    } catch (err: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao convidar',
+        description: err.message || 'Falha ao enviar convite.',
+      })
+    } finally {
+      setInviting(false)
     }
   }
 
