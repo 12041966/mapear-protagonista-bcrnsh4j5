@@ -41,7 +41,7 @@ export function ImportUsersDialog({
 
   const handleDownloadTemplate = () => {
     const template =
-      'id_funcionario,nome,email,whatsapp\n1234,João da Silva,joao@empresa.com.br,11999999999\n'
+      'email,perfil,empresa_id\njoao@empresa.com.br,Observador,123e4567-e89b-12d3-a456-426614174000\nmaria@empresa.com.br,Administrador,123e4567-e89b-12d3-a456-426614174000\n'
     const blob = new Blob([template], { type: 'text/csv;charset=utf-8;' })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -117,7 +117,8 @@ export function ImportUsersDialog({
         <DialogHeader>
           <DialogTitle>Importação em Massa (CSV)</DialogTitle>
           <DialogDescription>
-            Envie uma planilha CSV para convidar múltiplos colaboradores de uma vez.
+            Envie uma planilha CSV (colunas: email, perfil, empresa_id) para convidar múltiplos
+            colaboradores de uma vez.
           </DialogDescription>
         </DialogHeader>
 

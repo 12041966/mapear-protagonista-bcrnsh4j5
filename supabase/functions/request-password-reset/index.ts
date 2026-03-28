@@ -10,7 +10,7 @@ Deno.serve(async (req: Request) => {
   try {
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     )
 
     const { email } = await req.json()
@@ -23,7 +23,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const { error } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://www.mapear.net.br/recuperar-senha'
+      redirectTo: 'https://www.mapear.net.br/recuperar-senha',
     })
 
     if (error) {
@@ -35,7 +35,7 @@ Deno.serve(async (req: Request) => {
       {
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
         status: 200,
-      }
+      },
     )
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {

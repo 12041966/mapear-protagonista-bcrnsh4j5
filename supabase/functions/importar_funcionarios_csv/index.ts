@@ -1,122 +1,115 @@
-import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
-import { createClient } from 'npm:@supabase/supabase-js@2';
+import 'jsr:@supabase/functions-js/edge-runtime.d.ts'
+import { createClient } from 'npm:@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
-};
+  'Access-Control-Allow-Headers':
+    'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
+}
 
 // Helper to parse a single CSV line with basic quote handling
 function parseCSVLine(line: string) {
-  const result = [];
-  let current = '';
-  let inQuotes = false;
+  const result = []
+  let current = ''
+  let inQuotes = false
   for (let i = 0; i < line.length; i++) {
-    const char = line[i];
+    const char = line[i]
     if (char === '"') {
       if (i < line.length - 1 && line[i + 1] === '"') {
-        current += '"';
-        i++;
+        current += '"'
+        i++
       } else {
-        inQuotes = !inQuotes;
+        inQuotes = !inQuotes
       }
     } else if (char === ',' && !inQuotes) {
-      result.push(current.trim());
-      current = '';
+      result.push(current.trim())
+      current = ''
     } else {
-      current += char;
+      current += char
     }
   }
-  result.push(current.trim());
-  return result;
+  result.push(current.trim())
+  return result
 }
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const { csvData, empresaId } = await req.json();
+    const { csvData, empresaId } = await req.json()
 
     if (!csvData || !empresaId) {
       return new Response(JSON.stringify({ error: 'Dados insuficientes (csvData ou empresaId)' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      })
     }
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+    )
 
-    const lines = csvData.split(/\r?\n/).filter((l: string) => l.trim().length > 0);
+    const lines = csvData.split(/\r?\n/).filter((l: string) => l.trim().length > 0)
     if (lines.length < 2) {
       return new Response(JSON.stringify({ error: 'Arquivo CSV vazio ou sem registros' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      })
     }
 
-    const headers = parseCSVLine(lines[0]).map((h) => h.toLowerCase().replace(/[^a-z0-9_]/g, ''));
-    const colMap: Record<string, number> = {};
+    const headers = parseCSVLine(lines[0]).map((h) => h.toLowerCase().replace(/[^a-z0-9_]/g, ''))
+    const colMap: Record<string, number> = {}
 
     headers.forEach((h, i) => {
-      if (h.includes('idfuncionario') || h.includes('matricula')) colMap.id_funcionario = i;
-      if (h.includes('nome')) colMap.nome = i;
-      if (h.includes('email')) colMap.email = i;
-      if (h.includes('whatsapp') || h.includes('telefone')) colMap.whatsapp = i;
-    });
+      if (h.includes('email')) colMap.email = i
+      if (h.includes('perfil') || h.includes('role')) colMap.perfil = i
+      if (h.includes('empresaid') || h.includes('empresa_id')) colMap.empresa_id = i
+    })
 
-    if (colMap.nome === undefined || colMap.email === undefined) {
+    if (colMap.email === undefined) {
       return new Response(
-        JSON.stringify({ error: 'O arquivo CSV deve conter pelo menos as colunas "nome" e "email"' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+        JSON.stringify({ error: 'O arquivo CSV deve conter pelo menos a coluna "email"' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+      )
     }
 
-    const results = [];
+    const results = []
+    const roleMap: Record<string, string> = {
+      admin: 'Administrador',
+      administrador: 'Administrador',
+      user: 'Supervisor',
+      usuario: 'Supervisor',
+      usuário: 'Supervisor',
+      viewer: 'Observador',
+      observador: 'Observador',
+    }
 
     for (let i = 1; i < lines.length; i++) {
-      const cols = parseCSVLine(lines[i]);
+      const cols = parseCSVLine(lines[i])
+      if (cols.length === 1 && cols[0] === '') continue
 
-      const id_funcionario = colMap.id_funcionario !== undefined ? cols[colMap.id_funcionario] : '';
-      const nome = cols[colMap.nome];
-      const email = cols[colMap.email];
-      const whatsapp = colMap.whatsapp !== undefined ? cols[colMap.whatsapp] : '';
+      const email = cols[colMap.email]?.trim()
+      const rawPerfil = colMap.perfil !== undefined ? cols[colMap.perfil]?.trim() : 'Observador'
+      const rowEmpresaId =
+        colMap.empresa_id !== undefined && cols[colMap.empresa_id]?.trim() !== ''
+          ? cols[colMap.empresa_id]?.trim()
+          : empresaId
+      const nome = email ? email.split('@')[0] : '-'
+      const mappedRole = roleMap[rawPerfil.toLowerCase()] || 'Observador'
 
-      if (!nome || !email) {
+      if (!email) {
         results.push({
           linha: i + 1,
-          nome: nome || '-',
-          email: email || '-',
+          nome: '-',
+          email: '-',
           status: 'erro',
-          motivo: 'Nome e email são obrigatórios',
-        });
-        continue;
-      }
-
-      // Check for duplicate registration_number (Matrícula)
-      if (id_funcionario) {
-        const { data: existingReg } = await supabaseAdmin
-          .from('profiles')
-          .select('id')
-          .eq('empresa_id', empresaId)
-          .eq('registration_number', id_funcionario)
-          .single();
-
-        if (existingReg) {
-          results.push({
-            linha: i + 1,
-            nome,
-            email,
-            status: 'erro',
-            motivo: `Matrícula '${id_funcionario}' já está em uso na empresa`,
-          });
-          continue;
-        }
+          motivo: 'Email é obrigatório',
+        })
+        continue
       }
 
       // Check for duplicate email
@@ -124,7 +117,7 @@ Deno.serve(async (req: Request) => {
         .from('profiles')
         .select('id')
         .eq('email', email)
-        .single();
+        .maybeSingle()
 
       if (existingEmail) {
         results.push({
@@ -132,22 +125,20 @@ Deno.serve(async (req: Request) => {
           nome,
           email,
           status: 'erro',
-          motivo: `Email '${email}' já está cadastrado no sistema`,
-        });
-        continue;
+          motivo: `O usuário já foi convidado ou cadastrado no sistema.`,
+        })
+        continue
       }
 
       // Invite User securely via Supabase Auth Admin API
       const { error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
         data: {
           name: nome,
-          whatsapp: whatsapp || null,
-          role: 'Observador',
-          empresa_id: empresaId,
-          registration_number: id_funcionario || null,
+          role: mappedRole,
+          empresa_id: rowEmpresaId,
         },
-        redirectTo: 'https://www.mapear.net.br/login',
-      });
+        redirectTo: `https://www.mapear.net.br/cadastro?email=${encodeURIComponent(email)}&perfil=${encodeURIComponent(mappedRole)}`,
+      })
 
       if (inviteError) {
         results.push({
@@ -156,7 +147,7 @@ Deno.serve(async (req: Request) => {
           email,
           status: 'erro',
           motivo: inviteError.message,
-        });
+        })
       } else {
         results.push({
           linha: i + 1,
@@ -164,17 +155,17 @@ Deno.serve(async (req: Request) => {
           email,
           status: 'sucesso',
           motivo: 'Colaborador convidado com sucesso',
-        });
+        })
       }
     }
 
     return new Response(JSON.stringify({ results }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    })
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    })
   }
-});
+})

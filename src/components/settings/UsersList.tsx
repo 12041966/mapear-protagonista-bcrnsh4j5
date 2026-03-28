@@ -308,14 +308,24 @@ export function UsersList() {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Switch checked={u.active} onCheckedChange={() => handleToggleStatus(u)} />
-                      <Badge
-                        variant={u.active ? 'default' : 'secondary'}
-                        className={
-                          u.active ? 'bg-emerald-500 hover:bg-emerald-600' : 'text-slate-500'
-                        }
-                      >
-                        {u.active ? 'Ativo' : 'Inativo'}
-                      </Badge>
+                      <div className="flex flex-col gap-1">
+                        <Badge
+                          variant={u.active ? 'default' : 'secondary'}
+                          className={
+                            u.active ? 'bg-emerald-500 hover:bg-emerald-600' : 'text-slate-500'
+                          }
+                        >
+                          {u.active ? 'Ativo' : 'Inativo'}
+                        </Badge>
+                        {u.status === 'pendente_confirmacao' && (
+                          <Badge
+                            variant="outline"
+                            className="text-amber-600 border-amber-300 bg-amber-50"
+                          >
+                            Pendente
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -396,9 +406,9 @@ export function UsersList() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Administrador">Administrador</SelectItem>
-                  <SelectItem value="Supervisor">Supervisor</SelectItem>
-                  <SelectItem value="Observador">Observador</SelectItem>
+                  <SelectItem value="Administrador">Administrador (Admin)</SelectItem>
+                  <SelectItem value="Supervisor">Supervisor (User)</SelectItem>
+                  <SelectItem value="Observador">Observador (Viewer)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
