@@ -4,8 +4,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers':
-    'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
 }
 
 Deno.serve(async (req: Request) => {
@@ -23,13 +22,10 @@ Deno.serve(async (req: Request) => {
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } },
+      { global: { headers: { Authorization: authHeader } } }
     )
 
-    const {
-      data: { user },
-      error: userError,
-    } = await supabaseClient.auth.getUser(token)
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token)
     if (userError || !user) {
       throw new Error('Unauthorized: ' + (userError?.message || 'User not found'))
     }
@@ -52,8 +48,7 @@ Deno.serve(async (req: Request) => {
     const { email, name, role, whatsapp, empresa_id: requestedEmpresaId } = await req.json()
     if (!email) throw new Error('Email is required')
 
-    const targetEmpresaId =
-      isSuperAdmin && requestedEmpresaId ? requestedEmpresaId : profile.empresa_id
+    const targetEmpresaId = isSuperAdmin && requestedEmpresaId ? requestedEmpresaId : profile.empresa_id
 
     if (!targetEmpresaId) {
       throw new Error('Forbidden: No company assigned')
@@ -61,7 +56,7 @@ Deno.serve(async (req: Request) => {
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
     // Check if user already exists
@@ -69,16 +64,14 @@ Deno.serve(async (req: Request) => {
       .from('profiles')
       .select('id')
       .eq('email', email)
+      .eq('empresa_id', targetEmpresaId)
       .maybeSingle()
 
     if (existingProfile) {
-      return new Response(
-        JSON.stringify({ error: 'O usuário já foi convidado ou cadastrado no sistema.' }),
-        {
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
-          status: 200,
-        },
-      )
+      return new Response(JSON.stringify({ error: 'O usuário já foi convidado ou cadastrado no sistema nesta empresa.' }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        status: 400,
+      })
     }
 
     const nameToUse = name || email.split('@')[0]
@@ -88,12 +81,37 @@ Deno.serve(async (req: Request) => {
         name: nameToUse,
         role: role || 'Observador',
         empresa_id: targetEmpresaId,
-        ...(whatsapp && { whatsapp }),
+        ...(whatsapp && { whatsapp })
       },
-      redirectTo: `https://www.mapear.net.br/cadastro?email=${encodeURIComponent(email)}&perfil=${encodeURIComponent(role || 'Observador')}`,
+      redirectTo: `https://www.mapear.net.br/cadastro?email=${encodeURIComponent(email)}&empresa_id=${targetEmpresaId}&perfil=${encodeURIComponent(role || 'Observador')}`
     })
 
-    if (error) throw error
+    if (error) {
+      if (
+        error.message.toLowerCase().includes('already registered') ||
+        (error as any).status === 422 ||
+        (error as any).code === 'user_already_exists'
+      ) {
+        // User exists in auth.users, create secondary profile
+        const { error: insertError } = await supabaseAdmin.from('profiles').insert({
+          id: crypto.randomUUID(),
+          email,
+          name: nameToUse,
+          role: role || 'Observador',
+          empresa_id: targetEmpresaId,
+          whatsapp,
+          status: 'pendente_confirmacao'
+        });
+
+        if (insertError) throw insertError;
+        
+        return new Response(JSON.stringify({ success: true, message: 'Vínculo adicionado com sucesso (o usuário já possuía conta no sistema).' }), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          status: 200,
+        })
+      }
+      throw error;
+    }
 
     return new Response(JSON.stringify({ success: true, user: data.user }), {
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
