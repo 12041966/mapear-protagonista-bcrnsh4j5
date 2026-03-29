@@ -100,6 +100,8 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
       }
     }
 
+    let profileError: any = null
+
     if (!error && targetEmpresaId) {
       if (empresa) {
         const originallySelected = admins
@@ -107,25 +109,36 @@ export function EmpresaModal({ open, onOpenChange, empresa, onSuccess }: Props) 
           .map((a) => a.id)
         const toRemove = originallySelected.filter((id) => !selectedAdmins.includes(id))
         if (toRemove.length > 0) {
-          await supabase.from('profiles').update({ empresa_id: null }).in('id', toRemove)
+          const { error: rmErr } = await supabase
+            .from('profiles')
+            .update({ empresa_id: null })
+            .in('id', toRemove)
+          if (rmErr) profileError = rmErr
         }
       }
 
-      if (selectedAdmins.length > 0) {
-        await supabase
+      if (!profileError && selectedAdmins.length > 0) {
+        const { error: addErr } = await supabase
           .from('profiles')
           .update({ empresa_id: targetEmpresaId })
           .in('id', selectedAdmins)
+        if (addErr) profileError = addErr
       }
     }
 
     setLoading(false)
 
-    if (error) {
+    if (error || profileError) {
+      const isUniqueConflict =
+        profileError?.code === '23505' ||
+        profileError?.message?.includes('profiles_email_empresa_id_key')
+
       toast({
         variant: 'destructive',
         title: 'Erro',
-        description: 'Não foi possível salvar os dados da empresa.',
+        description: isUniqueConflict
+          ? 'Não foi possível vincular o administrador: este e-mail já possui um perfil ativo nesta empresa.'
+          : 'Não foi possível salvar os dados da empresa.',
       })
     } else {
       toast({
