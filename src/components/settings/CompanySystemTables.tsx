@@ -1,473 +1,288 @@
 import { useState, useEffect } from 'react'
+import { supabase } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent } from '@/components/ui/card'
-import { Loader2, Plus, Eye, EyeOff, Trash2 } from 'lucide-react'
-import { supabase } from '@/lib/supabase/client'
 import { useToast } from '@/hooks/use-toast'
-import { cn } from '@/lib/utils'
+import { Loader2, Plus, GripVertical } from 'lucide-react'
+import { useMainStore } from '@/stores/main'
 
-export function CompanySystemTables({ targetCompanyId }: { targetCompanyId?: string }) {
-  const { toast } = useToast()
-  const [data, setData] = useState({
-    defs: [],
-    opts: [],
-    customMap: {},
-    localMap: {},
-    hiddenMap: {},
-  } as any)
+export function CompanySystemTables({ targetCompanyId }: { targetCompanyId: string | undefined }) {
+  const [definitions, setDefinitions] = useState<any[]>([])
+  const [options, setOptions] = useState<any[]>([])
+  const [customOptions, setCustomOptions] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-  const [isSaving, setIsSaving] = useState(false)
-  const [activeTab, setActiveTab] = useState<string>('')
+  const [saving, setSaving] = useState(false)
+  const [newOptionValues, setNewOptionValues] = useState<Record<string, string>>({})
+  const { refreshObservations } = useMainStore()
+  const { toast } = useToast()
 
-  const [newOptLabel, setNewOptLabel] = useState('')
-  const [newOptDesc, setNewOptDesc] = useState('')
+  const [draggedItemId, setDraggedItemId] = useState<string | null>(null)
 
   useEffect(() => {
-    async function fetch() {
-      if (!targetCompanyId) return
-      setLoading(true)
-      const [defRes, optRes, empRes] = await Promise.all([
-        supabase.from('tabelas_sistema_definicoes').select('*').order('data_criacao'),
-        supabase
-          .from('tabelas_sistema_opcoes')
-          .select('*')
-          .or(`empresa_id.is.null,empresa_id.eq.${targetCompanyId}`)
-          .order('data_criacao'),
-        supabase
-          .from('tabelas_sistema_empresa_opcoes')
-          .select('*')
-          .eq('empresa_id', targetCompanyId),
-      ])
-
-      const cMap: any = {}
-      const lMap: any = {}
-      const hMap: any = {}
-
-      optRes.data?.forEach((o) => {
-        if (o.empresa_id === targetCompanyId) {
-          lMap[o.id] = o.valor_padrao
-        }
-      })
-
-      empRes.data?.forEach((co) => {
-        if (co.valor_customizado) {
-          cMap[co.opcao_id] = co.valor_customizado
-          lMap[co.opcao_id] = co.valor_customizado
-        }
-        if (co.oculto) {
-          hMap[co.opcao_id] = true
-        }
-      })
-
-      setData({
-        defs: defRes.data || [],
-        opts: optRes.data || [],
-        customMap: cMap,
-        localMap: lMap,
-        hiddenMap: hMap,
-      })
-      if (defRes.data?.length > 0 && !activeTab) setActiveTab(defRes.data[0].id)
-      setLoading(false)
-    }
-    fetch()
-  }, [targetCompanyId, activeTab])
-
-  const handleSave = async (opt: any, val: string) => {
     if (!targetCompanyId) return
-    setIsSaving(true)
+    fetchData()
+  }, [targetCompanyId])
 
-    if (opt.empresa_id === targetCompanyId) {
-      const activeDef = data.defs.find((d: any) => d.id === activeTab)
-      let newLabel = val
-      try {
-        if (activeDef?.chave === 'observationTypes') {
-          newLabel = JSON.parse(val).label || val
-        }
-      } catch (e) {
-        /* ignore parse error */
-      }
-
-      const { error } = await supabase
+  const fetchData = async () => {
+    setLoading(true)
+    const [defRes, optRes, customRes] = await Promise.all([
+      supabase.from('tabelas_sistema_definicoes').select('*').order('data_criacao'),
+      supabase
         .from('tabelas_sistema_opcoes')
-        .update({
-          valor_padrao: val,
-          nome_opcao: newLabel,
-        })
-        .eq('id', opt.id)
+        .select('*')
+        .or(`empresa_id.is.null,empresa_id.eq.${targetCompanyId}`),
+      supabase.from('tabelas_sistema_empresa_opcoes').select('*').eq('empresa_id', targetCompanyId),
+    ])
 
-      if (!error) {
-        setData((p: any) => ({
-          ...p,
-          opts: p.opts.map((o: any) =>
-            o.id === opt.id ? { ...o, valor_padrao: val, nome_opcao: newLabel } : o,
-          ),
-          localMap: { ...p.localMap, [opt.id]: val },
-        }))
-        toast({ title: 'Sucesso', description: 'Opção customizada salva.' })
-      } else toast({ variant: 'destructive', title: 'Erro', description: error.message })
-      setIsSaving(false)
-      return
-    }
-
-    const valToSave = val?.trim()
-    const isHidden = data.hiddenMap[opt.id] || false
-
-    if (!valToSave && !isHidden) {
-      const { error } = await supabase
-        .from('tabelas_sistema_empresa_opcoes')
-        .delete()
-        .match({ empresa_id: targetCompanyId, opcao_id: opt.id })
-      if (!error) {
-        setData((p: any) => {
-          const next = { ...p }
-          delete next.customMap[opt.id]
-          next.localMap[opt.id] = ''
-          return next
-        })
-        toast({ title: 'Restaurado', description: 'O valor padrão foi restaurado.' })
-      } else toast({ variant: 'destructive', title: 'Erro', description: error.message })
-    } else {
-      const { error } = await supabase.from('tabelas_sistema_empresa_opcoes').upsert(
-        {
-          empresa_id: targetCompanyId,
-          opcao_id: opt.id,
-          valor_customizado: valToSave || '',
-          oculto: isHidden,
-        },
-        { onConflict: 'empresa_id,opcao_id' },
-      )
-      if (!error) {
-        setData((p: any) => ({
-          ...p,
-          customMap: { ...p.customMap, [opt.id]: valToSave },
-          localMap: { ...p.localMap, [opt.id]: valToSave },
-        }))
-        toast({ title: 'Sucesso', description: 'Valor salvo com sucesso.' })
-      } else toast({ variant: 'destructive', title: 'Erro', description: error.message })
-    }
-    setIsSaving(false)
+    if (defRes.data) setDefinitions(defRes.data)
+    if (optRes.data) setOptions(optRes.data)
+    if (customRes.data) setCustomOptions(customRes.data)
+    setLoading(false)
   }
 
-  const handleToggleHide = async (opt: any) => {
-    if (!targetCompanyId) return
-    setIsSaving(true)
-    const isHidden = data.hiddenMap[opt.id] || false
-    const newVal = !isHidden
-
-    const customVal = data.customMap[opt.id] || ''
-
-    if (!newVal && !customVal) {
-      const { error } = await supabase
-        .from('tabelas_sistema_empresa_opcoes')
-        .delete()
-        .match({ empresa_id: targetCompanyId, opcao_id: opt.id })
-      if (!error) {
-        setData((p: any) => ({ ...p, hiddenMap: { ...p.hiddenMap, [opt.id]: false } }))
+  const handleCustomValueChange = (opcaoId: string, value: string) => {
+    setCustomOptions((prev) => {
+      const existing = prev.find((p) => p.opcao_id === opcaoId)
+      if (existing) {
+        return prev.map((p) => (p.opcao_id === opcaoId ? { ...p, valor_customizado: value } : p))
       }
-    } else {
-      const { error } = await supabase.from('tabelas_sistema_empresa_opcoes').upsert(
-        {
-          empresa_id: targetCompanyId,
-          opcao_id: opt.id,
-          valor_customizado: customVal,
-          oculto: newVal,
-        },
-        { onConflict: 'empresa_id,opcao_id' },
-      )
-      if (!error) {
-        setData((p: any) => ({ ...p, hiddenMap: { ...p.hiddenMap, [opt.id]: newVal } }))
+      return [...prev, { opcao_id: opcaoId, valor_customizado: value, oculto: false, ordem: 0 }]
+    })
+  }
+
+  const handleHiddenChange = (opcaoId: string, hidden: boolean) => {
+    setCustomOptions((prev) => {
+      const existing = prev.find((p) => p.opcao_id === opcaoId)
+      if (existing) {
+        return prev.map((p) => (p.opcao_id === opcaoId ? { ...p, oculto: hidden } : p))
       }
-    }
-    setIsSaving(false)
+      return [...prev, { opcao_id: opcaoId, valor_customizado: '', oculto: hidden, ordem: 0 }]
+    })
   }
 
-  const handleDeleteCustom = async (optId: string) => {
+  const handleAddNewOption = async (defId: string) => {
+    const val = newOptionValues[defId]
+    if (!val || !val.trim()) return
+
+    try {
+      setSaving(true)
+      const maxOrder = options
+        .filter((o) => o.tabela_id === defId)
+        .reduce((max, o) => {
+          const cOpt = customOptions.find((c) => c.opcao_id === o.id)
+          const order = cOpt?.ordem ?? o.ordem ?? 0
+          return Math.max(max, order)
+        }, 0)
+
+      const { data, error } = await supabase
+        .from('tabelas_sistema_opcoes')
+        .insert({
+          tabela_id: defId,
+          nome_opcao: val.trim(),
+          valor_padrao: val.trim(),
+          empresa_id: targetCompanyId,
+          ordem: maxOrder + 1,
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+
+      setOptions((prev) => [...prev, data])
+      setNewOptionValues((prev) => ({ ...prev, [defId]: '' }))
+      toast({ title: 'Opção adicionada com sucesso' })
+    } catch (e: any) {
+      toast({ title: 'Erro ao adicionar opção', description: e.message, variant: 'destructive' })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const saveChanges = async () => {
     if (!targetCompanyId) return
-    setIsSaving(true)
-    const { error } = await supabase.from('tabelas_sistema_opcoes').delete().eq('id', optId)
-    if (!error) {
-      setData((p: any) => ({
-        ...p,
-        opts: p.opts.filter((o: any) => o.id !== optId),
-      }))
-      toast({ title: 'Removido', description: 'Opção customizada removida.' })
-    } else toast({ variant: 'destructive', title: 'Erro', description: error.message })
-    setIsSaving(false)
-  }
-
-  const handleCreateOption = async () => {
-    if (!targetCompanyId || !newOptLabel.trim()) return
-    setIsSaving(true)
-
-    const activeDef = data.defs.find((d: any) => d.id === activeTab)
-    const isObs = activeDef?.chave === 'observationTypes'
-    let valor_padrao = newOptLabel.trim()
-
-    if (isObs) {
-      valor_padrao = JSON.stringify({
-        value: newOptLabel.trim(),
-        label: newOptLabel.trim(),
-        desc: newOptDesc.trim(),
-      })
-    }
-
-    const { data: newOpt, error } = await supabase
-      .from('tabelas_sistema_opcoes')
-      .insert({
-        tabela_id: activeTab,
-        nome_opcao: newOptLabel.trim(),
-        valor_padrao: valor_padrao,
+    setSaving(true)
+    try {
+      const updates = customOptions.map((c) => ({
         empresa_id: targetCompanyId,
-      })
-      .select()
-      .single()
-
-    if (!error && newOpt) {
-      setData((p: any) => ({
-        ...p,
-        opts: [...p.opts, newOpt],
-        localMap: { ...p.localMap, [newOpt.id]: newOpt.valor_padrao },
+        opcao_id: c.opcao_id,
+        valor_customizado: c.valor_customizado || '',
+        oculto: c.oculto || false,
+        ordem: c.ordem || 0,
       }))
-      setNewOptLabel('')
-      setNewOptDesc('')
-      toast({ title: 'Sucesso', description: 'Nova opção adicionada.' })
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Erro',
-        description: error?.message || 'Falha ao adicionar opção',
-      })
+
+      for (const update of updates) {
+        const existing = await supabase
+          .from('tabelas_sistema_empresa_opcoes')
+          .select('id')
+          .eq('empresa_id', targetCompanyId)
+          .eq('opcao_id', update.opcao_id)
+          .maybeSingle()
+
+        if (existing.data) {
+          await supabase
+            .from('tabelas_sistema_empresa_opcoes')
+            .update(update)
+            .eq('id', existing.data.id)
+        } else {
+          await supabase.from('tabelas_sistema_empresa_opcoes').insert(update)
+        }
+      }
+
+      toast({ title: 'Configurações salvas com sucesso' })
+      refreshObservations()
+    } catch (e: any) {
+      toast({ title: 'Erro ao salvar', description: e.message, variant: 'destructive' })
+    } finally {
+      setSaving(false)
     }
-    setIsSaving(false)
+  }
+
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    setDraggedItemId(id)
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
+  const handleDragOver = (e: React.DragEvent, id: string, defId: string) => {
+    e.preventDefault()
+    if (!draggedItemId || draggedItemId === id) return
+
+    const defOptions = getSortedOptions(defId)
+    const draggedIndex = defOptions.findIndex((o) => o.id === draggedItemId)
+    const dropIndex = defOptions.findIndex((o) => o.id === id)
+
+    if (draggedIndex < 0 || dropIndex < 0) return
+
+    const newOptions = [...defOptions]
+    const [draggedItem] = newOptions.splice(draggedIndex, 1)
+    newOptions.splice(dropIndex, 0, draggedItem)
+
+    const updatedCustoms = [...customOptions]
+    newOptions.forEach((opt, index) => {
+      const cIndex = updatedCustoms.findIndex((c) => c.opcao_id === opt.id)
+      if (cIndex >= 0) {
+        updatedCustoms[cIndex] = { ...updatedCustoms[cIndex], ordem: index }
+      } else {
+        updatedCustoms.push({
+          opcao_id: opt.id,
+          valor_customizado: '',
+          oculto: false,
+          ordem: index,
+        })
+      }
+    })
+    setCustomOptions(updatedCustoms)
+  }
+
+  const getSortedOptions = (defId: string) => {
+    return options
+      .filter((o) => o.tabela_id === defId)
+      .sort((a, b) => {
+        const cA = customOptions.find((c) => c.opcao_id === a.id)
+        const cB = customOptions.find((c) => c.opcao_id === b.id)
+        const orderA = cA?.ordem ?? a.ordem ?? 0
+        const orderB = cB?.ordem ?? b.ordem ?? 0
+        if (orderA === orderB) {
+          return new Date(a.data_criacao).getTime() - new Date(b.data_criacao).getTime()
+        }
+        return orderA - orderB
+      })
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-12">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="flex justify-center p-8">
+        <Loader2 className="w-6 h-6 animate-spin" />
       </div>
     )
   }
 
-  const activeDef = data.defs.find((d: any) => d.id === activeTab)
-  const activeOpts = data.opts.filter((o: any) => o.tabela_id === activeTab)
-  const isObsDef = activeDef?.chave === 'observationTypes'
-
   return (
-    <div className="grid md:grid-cols-[250px_1fr] gap-6 items-start">
-      <div className="flex flex-col space-y-1">
-        {data.defs.map((def: any) => (
-          <Button
-            key={def.id}
-            variant={activeTab === def.id ? 'default' : 'ghost'}
-            className="justify-start font-normal h-auto py-2 px-3 text-left"
-            onClick={() => setActiveTab(def.id)}
-          >
-            {def.nome_tabela}
-          </Button>
-        ))}
-      </div>
-      <div className="bg-white p-6 rounded-lg border shadow-sm relative">
-        {isSaving && (
-          <div className="absolute inset-0 bg-white/50 flex items-center justify-center z-10 rounded-lg">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        )}
-        <div className="mb-6">
-          <h3 className="text-lg font-medium">{activeDef?.nome_tabela}</h3>
-          <p className="text-sm text-slate-500 mt-1">
-            {activeDef?.descricao || 'Gerencie as opções desta tabela.'}
-          </p>
-        </div>
+    <div className="space-y-8 pb-10">
+      {definitions.map((def) => {
+        const sortedOpts = getSortedOptions(def.id)
+        const isObsTypes = def.chave === 'observationTypes'
 
-        <Card className="bg-slate-50 border-dashed mb-6 shadow-none">
-          <CardContent className="p-4 space-y-4">
-            <div className="font-medium text-sm text-slate-700">Adicionar Nova Opção</div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="grid gap-2">
-                <Label>Nome / Rótulo</Label>
-                <Input
-                  placeholder="Ex: Novo Setor"
-                  value={newOptLabel}
-                  onChange={(e) => setNewOptLabel(e.target.value)}
-                />
-              </div>
-              {isObsDef && (
-                <div className="grid gap-2">
-                  <Label>Descrição</Label>
-                  <Input
-                    placeholder="Descreva a finalidade desta opção"
-                    value={newOptDesc}
-                    onChange={(e) => setNewOptDesc(e.target.value)}
-                  />
-                </div>
-              )}
+        return (
+          <div key={def.id} className="bg-white p-6 rounded-lg border shadow-sm space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold">{def.nome_tabela}</h3>
+              {def.descricao && <p className="text-sm text-gray-500">{def.descricao}</p>}
             </div>
-            <div className="flex justify-end pt-2">
-              <Button
-                size="sm"
-                onClick={handleCreateOption}
-                disabled={!newOptLabel.trim() || isSaving}
-              >
-                <Plus className="w-4 h-4 mr-2" /> Adicionar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
 
-        <div className="space-y-4">
-          {activeOpts.map((opt: any) => {
-            const isCustom = opt.empresa_id === targetCompanyId
-            const isHidden = data.hiddenMap[opt.id] || false
+            <div className="space-y-3">
+              {sortedOpts.map((opt) => {
+                const custom = customOptions.find((c) => c.opcao_id === opt.id)
+                const value = custom?.valor_customizado || opt.valor_padrao
+                const hidden = custom?.oculto || false
 
-            let pDef = { value: opt.valor_padrao, label: '', desc: '' }
-            let pCus = { ...pDef }
-            if (isObsDef) {
-              try {
-                pDef = JSON.parse(opt.valor_padrao)
-                pCus = data.localMap[opt.id] ? JSON.parse(data.localMap[opt.id]) : pDef
-              } catch (e) {
-                /* ignore parse error */
-              }
-            }
-            const customVal = data.localMap[opt.id] ?? ''
-
-            const isModified = isCustom
-              ? data.localMap[opt.id] !== opt.valor_padrao
-              : data.localMap[opt.id] !== (data.customMap[opt.id] || '')
-
-            return (
-              <Card
-                key={opt.id}
-                className={cn(
-                  'transition-opacity',
-                  isHidden ? 'opacity-60 bg-slate-100' : 'bg-white',
-                )}
-              >
-                <CardContent className="p-4 space-y-4">
-                  <div className="flex justify-between items-center pb-2 border-b">
-                    <Label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                      {isCustom ? 'Opção Customizada' : 'Opção do Sistema'}
-                      {isHidden && ' (Oculto)'}
-                    </Label>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8"
-                        onClick={() => handleToggleHide(opt)}
-                        title={isHidden ? 'Exibir' : 'Ocultar'}
-                      >
-                        {isHidden ? (
-                          <EyeOff className="h-4 w-4 text-slate-400" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-slate-600" />
-                        )}
-                      </Button>
-                      {isCustom && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
-                          onClick={() => handleDeleteCustom(opt.id)}
-                          title="Excluir Opção"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      )}
+                return (
+                  <div
+                    key={opt.id}
+                    className={`flex items-center gap-4 bg-slate-50 p-3 rounded-md border transition-opacity ${draggedItemId === opt.id ? 'opacity-50' : 'opacity-100'} ${!isObsTypes ? 'cursor-grab active:cursor-grabbing' : ''}`}
+                    draggable={!isObsTypes}
+                    onDragStart={(e) => handleDragStart(e, opt.id)}
+                    onDragOver={(e) => handleDragOver(e, opt.id, def.id)}
+                    onDragEnd={() => setDraggedItemId(null)}
+                  >
+                    {!isObsTypes && (
+                      <div className="text-slate-400">
+                        <GripVertical className="w-5 h-5" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <Label className="text-xs text-slate-500 mb-1 block">
+                        Valor original: {opt.valor_padrao}
+                      </Label>
+                      <Input
+                        value={value}
+                        onChange={(e) => handleCustomValueChange(opt.id, e.target.value)}
+                        placeholder="Novo nome (opcional)"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 mt-5">
+                      <Switch
+                        checked={!hidden}
+                        onCheckedChange={(checked) => handleHiddenChange(opt.id, !checked)}
+                      />
+                      <Label className="text-sm">{hidden ? 'Oculto' : 'Visível'}</Label>
                     </div>
                   </div>
-
-                  {isObsDef ? (
-                    <>
-                      {!isCustom && (
-                        <div className="text-xs text-slate-500 mb-2 font-mono">
-                          Padrão: {pDef.value}
-                        </div>
-                      )}
-                      <div className="grid gap-2">
-                        <Label>Rótulo</Label>
-                        <Input
-                          value={pCus.label || ''}
-                          onChange={(e) =>
-                            setData((p: any) => ({
-                              ...p,
-                              localMap: {
-                                ...p.localMap,
-                                [opt.id]: JSON.stringify({ ...pCus, label: e.target.value }),
-                              },
-                            }))
-                          }
-                        />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label>Descrição</Label>
-                        <Input
-                          value={pCus.desc || ''}
-                          onChange={(e) =>
-                            setData((p: any) => ({
-                              ...p,
-                              localMap: {
-                                ...p.localMap,
-                                [opt.id]: JSON.stringify({ ...pCus, desc: e.target.value }),
-                              },
-                            }))
-                          }
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      {!isCustom && (
-                        <div className="grid gap-2">
-                          <Label>Valor Padrão</Label>
-                          <Input
-                            value={opt.valor_padrao}
-                            disabled
-                            className="bg-slate-50 text-slate-500"
-                          />
-                        </div>
-                      )}
-                      <div className="grid gap-2">
-                        <Label>{isCustom ? 'Valor' : 'Valor Customizado'}</Label>
-                        <Input
-                          value={customVal}
-                          onChange={(e) =>
-                            setData((p: any) => ({
-                              ...p,
-                              localMap: { ...p.localMap, [opt.id]: e.target.value },
-                            }))
-                          }
-                        />
-                      </div>
-                    </>
-                  )}
-                  <div className="flex justify-end gap-2 pt-2">
-                    {!isCustom && data.customMap[opt.id] && (
-                      <Button variant="outline" size="sm" onClick={() => handleSave(opt, '')}>
-                        Restaurar Padrão
-                      </Button>
-                    )}
-                    <Button
-                      size="sm"
-                      onClick={() => handleSave(opt, data.localMap[opt.id] || '')}
-                      disabled={!isModified}
-                    >
-                      Salvar Alterações
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-          {activeOpts.length === 0 && (
-            <div className="text-center py-8 text-slate-500 text-sm">
-              Nenhuma opção encontrada para esta tabela.
+                )
+              })}
             </div>
-          )}
-        </div>
+
+            {!isObsTypes && (
+              <div className="flex items-center gap-2 pt-2 border-t mt-4">
+                <Input
+                  value={newOptionValues[def.id] || ''}
+                  onChange={(e) =>
+                    setNewOptionValues((prev) => ({ ...prev, [def.id]: e.target.value }))
+                  }
+                  placeholder="Adicionar novo valor..."
+                  className="max-w-md"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleAddNewOption(def.id)}
+                  disabled={saving}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Adicionar
+                </Button>
+              </div>
+            )}
+          </div>
+        )
+      })}
+
+      <div className="flex justify-end sticky bottom-0 bg-white/80 backdrop-blur-sm p-4 border-t z-10">
+        <Button onClick={saveChanges} disabled={saving}>
+          {saving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+          Salvar Configurações
+        </Button>
       </div>
     </div>
   )

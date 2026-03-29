@@ -204,7 +204,23 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           const buildList = (chave: string) => {
             const def = defRes.data.find((d: any) => d.chave === chave)
             if (!def) return []
-            const opts = optRes.data.filter((o: any) => o.tabela_id === def.id)
+            let opts = optRes.data.filter((o: any) => o.tabela_id === def.id)
+
+            const getOrder = (id: string, defaultOrder: number) => {
+              if (!empOptRes.data) return defaultOrder ?? 0
+              const custom = empOptRes.data.find((co: any) => co.opcao_id === id)
+              return custom?.ordem ?? defaultOrder ?? 0
+            }
+
+            opts = opts.sort((a: any, b: any) => {
+              const orderA = getOrder(a.id, a.ordem)
+              const orderB = getOrder(b.id, b.ordem)
+              if (orderA === orderB) {
+                return new Date(a.data_criacao).getTime() - new Date(b.data_criacao).getTime()
+              }
+              return orderA - orderB
+            })
+
             return opts
               .filter((o: any) => !hiddenOptions.has(o.id))
               .map((o: any) => customValues.get(o.id) || o.valor_padrao)
