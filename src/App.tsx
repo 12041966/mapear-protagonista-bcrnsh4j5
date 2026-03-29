@@ -176,8 +176,11 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
       .order('mes', { ascending: false })
 
     if (activeCompanyId !== 'all') {
+      optQuery = optQuery.or(`empresa_id.is.null,empresa_id.eq.${activeCompanyId}`)
       empOptQuery = empOptQuery.eq('empresa_id', activeCompanyId)
       efQuery = efQuery.eq('empresa_id', activeCompanyId)
+    } else {
+      optQuery = optQuery.is('empresa_id', null)
     }
 
     Promise.all([refreshObservations(), defQuery, optQuery, empOptQuery, efQuery]).then(
@@ -186,9 +189,15 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
 
         if (defRes.data && optRes.data) {
           const customValues = new Map()
+          const hiddenOptions = new Set()
           if (empOptRes.data) {
             empOptRes.data.forEach((co: any) => {
-              customValues.set(co.opcao_id, co.valor_customizado)
+              if (co.valor_customizado) {
+                customValues.set(co.opcao_id, co.valor_customizado)
+              }
+              if (co.oculto) {
+                hiddenOptions.add(co.opcao_id)
+              }
             })
           }
 
@@ -196,7 +205,9 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
             const def = defRes.data.find((d: any) => d.chave === chave)
             if (!def) return []
             const opts = optRes.data.filter((o: any) => o.tabela_id === def.id)
-            return opts.map((o: any) => customValues.get(o.id) || o.valor_padrao)
+            return opts
+              .filter((o: any) => !hiddenOptions.has(o.id))
+              .map((o: any) => customValues.get(o.id) || o.valor_padrao)
           }
 
           const areas = buildList('areas')
