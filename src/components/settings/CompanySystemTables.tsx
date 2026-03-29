@@ -217,31 +217,52 @@ export function CompanySystemTables({ targetCompanyId }: { targetCompanyId: stri
                 const value = custom?.valor_customizado || opt.valor_padrao
                 const hidden = custom?.oculto || false
 
+                let parsedName = opt.valor_padrao
+                let parsedDesc = ''
+                if (isObsTypes) {
+                  try {
+                    const parsed = JSON.parse(opt.valor_padrao)
+                    parsedName = parsed.name || parsed.label || opt.valor_padrao
+                    parsedDesc = parsed.description || ''
+                  } catch (e) {
+                    // Fallback se não for JSON
+                  }
+                }
+
                 return (
                   <div
                     key={opt.id}
-                    className={`flex items-center gap-4 bg-slate-50 p-3 rounded-md border transition-opacity ${draggedItemId === opt.id ? 'opacity-50' : 'opacity-100'} ${!isObsTypes ? 'cursor-grab active:cursor-grabbing' : ''}`}
-                    draggable={!isObsTypes}
+                    className={`flex items-center gap-4 bg-slate-50 p-3 rounded-md border transition-opacity cursor-grab active:cursor-grabbing ${draggedItemId === opt.id ? 'opacity-50' : 'opacity-100'}`}
+                    draggable={true}
                     onDragStart={(e) => handleDragStart(e, opt.id)}
                     onDragOver={(e) => handleDragOver(e, opt.id, def.id)}
                     onDragEnd={() => setDraggedItemId(null)}
                   >
-                    {!isObsTypes && (
-                      <div className="text-slate-400">
-                        <GripVertical className="w-5 h-5" />
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <Label className="text-xs text-slate-500 mb-1 block">
-                        Valor original: {opt.valor_padrao}
-                      </Label>
-                      <Input
-                        value={value}
-                        onChange={(e) => handleCustomValueChange(opt.id, e.target.value)}
-                        placeholder="Novo nome (opcional)"
-                      />
+                    <div className="text-slate-400">
+                      <GripVertical className="w-5 h-5" />
                     </div>
-                    <div className="flex items-center gap-2 mt-5">
+                    <div className="flex-1">
+                      {isObsTypes ? (
+                        <div className="flex flex-col justify-center">
+                          <span className="text-sm font-semibold text-slate-900">{parsedName}</span>
+                          {parsedDesc && (
+                            <span className="text-xs text-slate-500 mt-0.5">{parsedDesc}</span>
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          <Label className="text-xs text-slate-500 mb-1 block">
+                            Valor original: {opt.valor_padrao}
+                          </Label>
+                          <Input
+                            value={value}
+                            onChange={(e) => handleCustomValueChange(opt.id, e.target.value)}
+                            placeholder="Novo nome (opcional)"
+                          />
+                        </>
+                      )}
+                    </div>
+                    <div className={`flex items-center gap-2 ${!isObsTypes ? 'mt-5' : ''}`}>
                       <Switch
                         checked={!hidden}
                         onCheckedChange={(checked) => handleHiddenChange(opt.id, !checked)}
