@@ -20,6 +20,21 @@ import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
 import GlobalSettings from '@/pages/admin/GlobalSettings'
 
+const CadastroRedirect = () => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.location.href = '/login'
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [])
+  return (
+    <div className="h-screen w-screen flex flex-col items-center justify-center bg-slate-50 text-slate-500 space-y-4">
+      <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <p className="text-sm font-medium">Validando convite e redirecionando para o login...</p>
+    </div>
+  )
+}
+
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth()
   if (loading) return null
@@ -568,6 +583,7 @@ const App = () => {
             <Sonner />
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/cadastro" element={<CadastroRedirect />} />
               <Route
                 element={
                   <ProtectedRoute>
