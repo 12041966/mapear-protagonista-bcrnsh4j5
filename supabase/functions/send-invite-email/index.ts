@@ -12,15 +12,10 @@ Deno.serve(async (req: Request) => {
     const { email, nome_usuario, link_convite, empresa_nome } = payload
 
     if (!email || !link_convite) {
-      return new Response(
-        JSON.stringify({
-          error: 'Parâmetros insuficientes: email e link_convite são obrigatórios.',
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        },
-      )
+      return new Response(JSON.stringify({ error: 'Parâmetros insuficientes: email e link_convite são obrigatórios.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      })
     }
 
     const smtpHost = Deno.env.get('SMTP_HOST')
@@ -29,16 +24,11 @@ Deno.serve(async (req: Request) => {
     const smtpPassword = Deno.env.get('SMTP_PASSWORD')
 
     if (!smtpHost || !smtpUser || !smtpPassword) {
-      console.error(
-        'Variáveis de ambiente SMTP não configuradas (SMTP_HOST, SMTP_USER, SMTP_PASSWORD).',
-      )
-      return new Response(
-        JSON.stringify({ error: 'Configuração de e-mail ausente no servidor.' }),
-        {
-          status: 500,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        },
-      )
+      console.error('Variáveis de ambiente SMTP não configuradas (SMTP_HOST, SMTP_USER, SMTP_PASSWORD).')
+      return new Response(JSON.stringify({ error: 'Configuração de e-mail ausente no servidor.' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      })
     }
 
     const port = parseInt(smtpPort, 10)
@@ -54,9 +44,7 @@ Deno.serve(async (req: Request) => {
     })
 
     const nomeApresentacao = nome_usuario || 'Profissional'
-    const nomeEmpresaApresentacao = empresa_nome
-      ? ` da empresa <strong>${empresa_nome}</strong>`
-      : ''
+    const nomeEmpresaApresentacao = empresa_nome ? ` da empresa <strong>${empresa_nome}</strong>` : ''
 
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; color: #333; background-color: #ffffff;">
@@ -99,33 +87,23 @@ Deno.serve(async (req: Request) => {
     `
 
     const info = await transporter.sendMail({
-      from: `"MAPEAR Protagonista" <${smtpUser}>`,
-      to: email,
-      subject: 'Convite de Acesso - MAPEAR Protagonista',
-      html: html,
+      from: `"MAPEAR Protagonista" <${smtpUser}>`, 
+      to: email, 
+      subject: "Convite de Acesso - MAPEAR Protagonista",
+      html: html, 
     })
 
-    console.log('E-mail enviado com sucesso. MessageId: %s', info.messageId)
+    console.log("E-mail enviado com sucesso. MessageId: %s", info.messageId)
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'E-mail enviado com sucesso.',
-        messageId: info.messageId,
-      }),
-      {
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        status: 200,
-      },
-    )
+    return new Response(JSON.stringify({ success: true, message: 'E-mail enviado com sucesso.', messageId: info.messageId }), {
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      status: 200,
+    })
   } catch (error: any) {
     console.error('Erro ao enviar e-mail via SMTP:', error)
-    return new Response(
-      JSON.stringify({ error: error.message || 'Erro interno ao enviar e-mail via SMTP.' }),
-      {
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        status: 500,
-      },
-    )
+    return new Response(JSON.stringify({ error: error.message || 'Erro interno ao enviar e-mail via SMTP.' }), {
+      headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      status: 500,
+    })
   }
 })

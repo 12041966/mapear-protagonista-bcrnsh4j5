@@ -10,7 +10,7 @@ Deno.serve(async (req: Request) => {
   try {
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
     const { empresa_id, preview } = await req.json()
@@ -44,13 +44,10 @@ Deno.serve(async (req: Request) => {
     } else {
       // A função RPC 'get_next_sequence_value' usa transações atômicas nativas do PostgreSQL
       // (INSERT ... ON CONFLICT DO UPDATE) garantindo concorrência sem bloqueios (locks).
-      const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc(
-        'get_next_sequence_value',
-        {
-          p_empresa_id: empresa_id,
-          p_tipo: sequenceType,
-        },
-      )
+      const { data: rpcData, error: rpcError } = await supabaseAdmin.rpc('get_next_sequence_value', {
+        p_empresa_id: empresa_id,
+        p_tipo: sequenceType,
+      })
 
       if (rpcError) {
         throw rpcError
