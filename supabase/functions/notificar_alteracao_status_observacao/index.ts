@@ -4,7 +4,8 @@ import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
+  'Access-Control-Allow-Headers':
+    'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
 }
 
 Deno.serve(async (req: Request) => {
@@ -13,7 +14,8 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { observacao_id, status_anterior, status_novo, justificativa, responsavel_nome } = await req.json()
+    const { observacao_id, status_anterior, status_novo, justificativa, responsavel_nome } =
+      await req.json()
 
     if (!observacao_id || !status_novo) {
       return new Response(JSON.stringify({ error: 'Parâmetros insuficientes' }), {
@@ -24,24 +26,24 @@ Deno.serve(async (req: Request) => {
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     )
 
-    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(observacao_id);
-    let query = supabaseAdmin
-      .from('observacoes')
-      .select(`
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+      observacao_id,
+    )
+    let query = supabaseAdmin.from('observacoes').select(`
         id,
         codigo,
         status,
         user_id,
         profiles(name, email)
-      `);
-      
+      `)
+
     if (isUuid) {
-      query = query.eq('id', observacao_id);
+      query = query.eq('id', observacao_id)
     } else {
-      query = query.eq('codigo', observacao_id);
+      query = query.eq('codigo', observacao_id)
     }
 
     const { data: obs, error: obsError } = await query.single()
@@ -51,15 +53,18 @@ Deno.serve(async (req: Request) => {
     }
 
     // Usando Array(obs.profiles) ou objeto direto dependendo do retorno (foreign key única retorna objeto único no Supabase)
-    const profile = Array.isArray(obs.profiles) ? obs.profiles[0] : obs.profiles;
+    const profile = Array.isArray(obs.profiles) ? obs.profiles[0] : obs.profiles
     const observerEmail = profile?.email
     const observerName = profile?.name || 'Observador'
 
     if (!observerEmail) {
-      return new Response(JSON.stringify({ success: false, message: 'Observador sem email cadastrado' }), {
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        status: 200,
-      })
+      return new Response(
+        JSON.stringify({ success: false, message: 'Observador sem email cadastrado' }),
+        {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          status: 200,
+        },
+      )
     }
 
     const dataHora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })
@@ -89,7 +94,9 @@ Deno.serve(async (req: Request) => {
       </div>
     `
 
-    console.log(`[EMAIL SIMULADO] Para: ${observerEmail} | Assunto: Atualização na Observação ${obs.codigo}`)
+    console.log(
+      `[EMAIL SIMULADO] Para: ${observerEmail} | Assunto: Atualização na Observação ${obs.codigo}`,
+    )
 
     const resendApiKey = Deno.env.get('RESEND_API_KEY')
     if (resendApiKey) {
@@ -97,26 +104,28 @@ Deno.serve(async (req: Request) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${resendApiKey}`
+          Authorization: `Bearer ${resendApiKey}`,
         },
         body: JSON.stringify({
-          from: 'Cultura de Segurança <nao-responda@resend.dev>', 
+          from: 'Cultura de Segurança <nao-responda@resend.dev>',
           to: observerEmail,
           subject: `Atualização na Observação ${obs.codigo}`,
-          html: emailHtml
-        })
-      });
+          html: emailHtml,
+        }),
+      })
       if (!res.ok) {
-         const errData = await res.text();
-         console.error('Erro ao enviar email pelo Resend:', errData);
+        const errData = await res.text()
+        console.error('Erro ao enviar email pelo Resend:', errData)
       }
     }
 
-    return new Response(JSON.stringify({ success: true, message: 'Notificação processada com sucesso' }), {
-      headers: { 'Content-Type': 'application/json', ...corsHeaders },
-      status: 200,
-    })
-
+    return new Response(
+      JSON.stringify({ success: true, message: 'Notificação processada com sucesso' }),
+      {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        status: 200,
+      },
+    )
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
