@@ -4,6 +4,7 @@
     "invite-user": 10,
     "gerar_codigo_observacao": 3,
     "importar_funcionarios_csv": 6,
-    "notificar_alteracao_status_observacao": 3
+    "notificar_alteracao_status_observacao": 3,
+    "send-invite-email": 1
   }
 }
