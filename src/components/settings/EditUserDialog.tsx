@@ -81,10 +81,11 @@ export function EditUserDialog({ isOpen, onClose, onSave, user }: EditUserDialog
     }
 
     setIsDeleting(true)
-    const { count, error } = await supabase
+    const { data, error } = await supabase
       .from('observacoes')
-      .select('*', { count: 'exact', head: true })
+      .select('id')
       .eq('user_id', user.id)
+      .limit(1)
 
     if (error) {
       toast({
@@ -96,7 +97,7 @@ export function EditUserDialog({ isOpen, onClose, onSave, user }: EditUserDialog
       return
     }
 
-    if (count && count > 0) {
+    if (data && data.length > 0) {
       toast({
         variant: 'destructive',
         title: 'Ação não permitida',
