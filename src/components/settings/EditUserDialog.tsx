@@ -149,6 +149,54 @@ export function EditUserDialog({ isOpen, onClose, onSave, user }: EditUserDialog
           <DialogTitle>Editar Usuário</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
+          <div className="flex flex-col gap-3 p-3 bg-slate-50 border rounded-lg mb-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-slate-600">Status do Convite</span>
+              {inviteLoading ? (
+                <span className="text-sm text-slate-400 flex items-center">
+                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                </span>
+              ) : (
+                <span
+                  className={cn(
+                    'text-sm font-bold',
+                    inviteStatus === 'pendente'
+                      ? 'text-amber-500'
+                      : inviteStatus === 'aceito'
+                        ? 'text-emerald-600'
+                        : inviteStatus === 'revogado'
+                          ? 'text-red-500'
+                          : 'text-slate-500',
+                  )}
+                >
+                  {inviteStatus?.toUpperCase() || 'N/A'}
+                </span>
+              )}
+            </div>
+            {inviteStatus === 'pendente' && (
+              <div className="flex gap-2 w-full pt-1 border-t">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="flex-1"
+                  onClick={handleReenviar}
+                  disabled={actionLoading}
+                >
+                  {actionLoading ? 'Processando...' : 'Reenviar'}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="destructive"
+                  className="flex-1"
+                  onClick={handleRevogar}
+                  disabled={actionLoading}
+                >
+                  {actionLoading ? 'Processando...' : 'Revogar'}
+                </Button>
+              </div>
+            )}
+          </div>
+
           <div className="grid gap-2">
             <Label htmlFor="name">Nome Completo</Label>
             <Input

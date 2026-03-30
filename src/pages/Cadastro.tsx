@@ -23,17 +23,30 @@ export default function Cadastro() {
   const emailParam = searchParams.get('email') || ''
   const empresaIdParam = searchParams.get('empresa_id') || ''
   const nomeParam = searchParams.get('nome') || ''
+  const tokenParam = searchParams.get('token') || ''
 
   const [empresaNome, setEmpresaNome] = useState('')
   const [loading, setLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
+  const [tokenError, setTokenError] = useState('')
 
   const [whatsapp, setWhatsapp] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
   useEffect(() => {
-    const fetchEmpresa = async () => {
+    const init = async () => {
+      if (tokenParam) {
+        const { data, error } = await supabase.functions.invoke('gerenciar_convites', {
+          body: { action: 'validar', token: tokenParam },
+        })
+        if (error || !data?.success) {
+          setTokenError(data?.error || error?.message || 'Convite inválido ou expirado.')
+          setInitialLoading(false)
+          return
+        }
+      }
+
       if (empresaIdParam) {
         const { data } = await supabase
           .from('empresas')
@@ -46,8 +59,8 @@ export default function Cadastro() {
       }
       setInitialLoading(false)
     }
-    fetchEmpresa()
-  }, [empresaIdParam])
+    init()
+  }, [empresaIdParam, tokenParam])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -103,6 +116,8 @@ export default function Cadastro() {
           status: 'ativo',
           active: true,
           name: nomeParam || emailParam.split('@')[0],
+          status_convite: 'aceito',
+          token_convite: null,
         })
         .eq('id', user.id)
 
@@ -133,6 +148,26 @@ export default function Cadastro() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  if (tokenError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+        <Card className="w-full max-w-lg shadow-lg border-0">
+          <CardHeader className="space-y-1 text-center">
+            <CardTitle className="text-2xl font-bold text-slate-800 text-destructive">
+              Convite Inválido
+            </CardTitle>
+            <CardDescription className="text-slate-500 mt-2">{tokenError}</CardDescription>
+          </CardHeader>
+          <CardFooter className="pt-6">
+            <Button onClick={() => navigate('/login')} className="w-full">
+              Voltar para o Login
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     )
   }

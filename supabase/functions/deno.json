@@ -1,9 +1,9 @@
 {
   "_versions": {
     "request-password-reset": 5,
-    "invite-user": 15,
+    "invite-user": 16,
     "gerar_codigo_observacao": 3,
-    "importar_funcionarios_csv": 8,
+    "importar_funcionarios_csv": 9,
     "notificar_alteracao_status_observacao": 4,
     "send-invite-email": 2
   }
