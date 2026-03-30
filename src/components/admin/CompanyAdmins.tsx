@@ -52,7 +52,7 @@ export function CompanyAdmins() {
       supabase
         .from('profiles')
         .select('*, empresas(nome)')
-        .eq('role', 'Administrador')
+        .or('role.eq.Administrador,is_super_admin.eq.true')
         .order('name'),
       supabase.from('empresas').select('id, nome').eq('ativa', true).order('nome'),
     ])
@@ -90,7 +90,9 @@ export function CompanyAdmins() {
       .from('profiles')
       .update({
         name: editData.name,
-        empresa_id: editData.empresa_id,
+        empresa_id: editData.empresa_id === 'none' ? null : editData.empresa_id,
+        is_super_admin: editData.is_super_admin,
+        role: 'Administrador',
       })
       .eq('id', editData.id)
 
@@ -136,6 +138,7 @@ export function CompanyAdmins() {
               <TableHead>Nome</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Empresa Vinculada</TableHead>
+              <TableHead>Perfil</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
@@ -143,13 +146,13 @@ export function CompanyAdmins() {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8">
+                <TableCell colSpan={6} className="text-center py-8">
                   <Loader2 className="w-5 h-5 animate-spin mx-auto text-slate-400" />
                 </TableCell>
               </TableRow>
             ) : admins.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-slate-500">
+                <TableCell colSpan={6} className="text-center py-8 text-slate-500">
                   Nenhum administrador encontrado.
                 </TableCell>
               </TableRow>
@@ -162,6 +165,18 @@ export function CompanyAdmins() {
                     {adm.empresas?.nome || (
                       <span className="text-slate-400 italic">Sem empresa</span>
                     )}
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="outline"
+                      className={
+                        adm.is_super_admin
+                          ? 'bg-primary/10 text-primary border-primary/20'
+                          : 'bg-slate-100 text-slate-700'
+                      }
+                    >
+                      {adm.is_super_admin ? 'Super Admin' : 'Admin'}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge
@@ -229,13 +244,16 @@ export function CompanyAdmins() {
                 <Label>Empresa Vinculada</Label>
                 <Select
                   required
-                  value={inviteData.empresa_id}
-                  onValueChange={(v) => setInviteData((prev) => ({ ...prev, empresa_id: v }))}
+                  value={inviteData.empresa_id || 'none'}
+                  onValueChange={(v) =>
+                    setInviteData((prev) => ({ ...prev, empresa_id: v === 'none' ? '' : v }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione a empresa" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Selecione a empresa</SelectItem>
                     {empresas.map((emp) => (
                       <SelectItem key={emp.id} value={emp.id}>
                         {emp.nome}
@@ -254,7 +272,10 @@ export function CompanyAdmins() {
               >
                 Cancelar
               </Button>
-              <Button type="submit" disabled={inviting || !inviteData.empresa_id}>
+              <Button
+                type="submit"
+                disabled={inviting || !inviteData.empresa_id || inviteData.empresa_id === 'none'}
+              >
                 {inviting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />} Enviar Convite
               </Button>
             </DialogFooter>
@@ -286,16 +307,38 @@ export function CompanyAdmins() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label>Empresa Vinculada</Label>
+                <Label>Perfil de Acesso</Label>
                 <Select
                   required
-                  value={editData?.empresa_id || ''}
+                  value={editData?.is_super_admin ? 'super_admin' : 'admin'}
+                  onValueChange={(v) =>
+                    setEditData((prev: any) => ({
+                      ...prev,
+                      is_super_admin: v === 'super_admin',
+                    }))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione o perfil" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin (Apenas Empresa)</SelectItem>
+                    <SelectItem value="super_admin">Super Admin (Acesso Global)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label>Empresa Vinculada</Label>
+                <Select
+                  required={!editData?.is_super_admin}
+                  value={editData?.empresa_id || 'none'}
                   onValueChange={(v) => setEditData((prev: any) => ({ ...prev, empresa_id: v }))}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione a empresa" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="none">Nenhuma (Acesso Global)</SelectItem>
                     {empresas.map((emp) => (
                       <SelectItem key={emp.id} value={emp.id}>
                         {emp.nome}
