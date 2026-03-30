@@ -25,11 +25,15 @@ export default function Cadastro() {
   const nomeParam = searchParams.get('nome') || ''
   const tokenParam = searchParams.get('token') || ''
 
+  const perfilParam = searchParams.get('perfil') || 'Observador'
+
   const [empresaNome, setEmpresaNome] = useState('')
   const [loading, setLoading] = useState(false)
   const [initialLoading, setInitialLoading] = useState(true)
   const [tokenError, setTokenError] = useState('')
 
+  const [nome, setNome] = useState(nomeParam)
+  const [email, setEmail] = useState(emailParam)
   const [whatsapp, setWhatsapp] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -41,7 +45,7 @@ export default function Cadastro() {
           body: { action: 'validar', token: tokenParam },
         })
         if (error || !data?.success) {
-          setTokenError(data?.error || error?.message || 'Convite inválido ou expirado.')
+          setTokenError('Convite expirado ou inválido. Solicite um novo convite ao administrador.')
           setInitialLoading(false)
           return
         }
@@ -92,37 +96,61 @@ export default function Cadastro() {
 
     try {
       const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser()
-      if (userError || !user) {
-        throw new Error(
-          'Sessão inválida. O link pode ter expirado ou você não acessou por um convite válido.',
-        )
+        data: { session },
+      } = await supabase.auth.getSession()
+      let currentUserId = session?.user?.id
+
+      if (session?.user) {
+        const { error: updateAuthError } = await supabase.auth.updateUser({
+          password: password,
+        })
+        if (updateAuthError) throw updateAuthError
+      } else {
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              name: nome,
+              empresa_id: empresaIdParam,
+              whatsapp,
+              role: perfilParam,
+            },
+          },
+        })
+        if (signUpError) {
+          if (
+            signUpError.message.toLowerCase().includes('already registered') ||
+            signUpError.status === 422
+          ) {
+            throw new Error('Este e-mail já está cadastrado no sistema. Faça login.')
+          }
+          throw signUpError
+        }
+        currentUserId = signUpData.user?.id
       }
 
-      const { error: updateAuthError } = await supabase.auth.updateUser({
-        password: password,
-      })
-
-      if (updateAuthError) {
-        throw updateAuthError
-      }
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
+      if (currentUserId) {
+        const updates: any = {
           whatsapp: whatsapp,
           status: 'ativo',
           active: true,
-          name: nomeParam || emailParam.split('@')[0],
-          status_convite: 'aceito',
-          token_convite: null,
-        })
-        .eq('id', user.id)
+          name: nome,
+        }
 
-      if (profileError) {
-        console.error('Erro ao atualizar perfil:', profileError)
+        if (tokenParam) {
+          updates.status_convite = 'aceito'
+          updates.token_convite = null
+        }
+
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update(updates)
+          .eq('id', currentUserId)
+
+        if (profileError) {
+          console.error('Erro ao atualizar perfil:', profileError)
+        }
       }
 
       toast({
@@ -136,7 +164,7 @@ export default function Cadastro() {
       console.error(error)
       toast({
         title: 'Erro ao concluir cadastro',
-        description: error.message || 'Ocorreu um erro ao definir sua senha.',
+        description: error.message || 'Ocorreu um erro ao processar seu cadastro.',
         variant: 'destructive',
       })
     } finally {
@@ -198,11 +226,24 @@ export default function Cadastro() {
             </div>
             <div className="space-y-2">
               <Label>Nome</Label>
-              <Input value={nomeParam} disabled className="bg-slate-100 text-slate-600" />
+              <Input
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                disabled={!!tokenParam}
+                className={tokenParam ? 'bg-slate-100 text-slate-600' : ''}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label>E-mail</Label>
-              <Input value={emailParam} disabled className="bg-slate-100 text-slate-600" />
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={!!tokenParam}
+                className={tokenParam ? 'bg-slate-100 text-slate-600' : ''}
+                required
+              />
             </div>
             <div className="space-y-2">
               <Label>WhatsApp</Label>
