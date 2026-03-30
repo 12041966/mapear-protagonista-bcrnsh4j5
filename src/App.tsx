@@ -68,7 +68,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
             return
           }
 
-          const superAdmin = profile.email === 'ferbatsan@hotmail.com'
+          const superAdmin = profile.is_super_admin === true
           setIsSuperAdmin(superAdmin)
 
           setCurrentUser({
@@ -80,6 +80,7 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
             companyId: profile.empresa_id || profile.company_id || '',
             registrationNumber: profile.registration_number || null,
             role: (profile.role as Role) || 'Observador',
+            isSuperAdmin: superAdmin,
           })
 
           if (superAdmin) {

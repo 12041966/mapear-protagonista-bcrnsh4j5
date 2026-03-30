@@ -13,6 +13,7 @@ export interface UserProfile {
   companyId: string
   registrationNumber?: string | null
   role: Role
+  isSuperAdmin?: boolean
 }
 
 export interface ObservationTypeConfig {
