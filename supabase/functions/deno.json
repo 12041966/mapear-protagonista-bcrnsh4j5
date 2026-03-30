@@ -5,6 +5,7 @@
     "gerar_codigo_observacao": 3,
     "importar_funcionarios_csv": 9,
     "notificar_alteracao_status_observacao": 4,
-    "send-invite-email": 2
+    "send-invite-email": 2,
+    "gerenciar_convites": 1
   }
 }

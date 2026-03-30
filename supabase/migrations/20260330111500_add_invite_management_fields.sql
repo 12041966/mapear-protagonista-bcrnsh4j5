@@ -4,7 +4,7 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS data_expiracao_convite time
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS token_convite text;
 
 -- Adiciona index para o token se não existir
-DO $
+DO $$
 BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
@@ -12,7 +12,7 @@ BEGIN
     ) THEN
         CREATE INDEX profiles_token_convite_idx ON public.profiles (token_convite);
     END IF;
-END $;
+END $$;
 
 UPDATE public.profiles
 SET status_convite = 'pendente'

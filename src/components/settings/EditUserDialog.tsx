@@ -10,9 +10,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/hooks/use-toast'
-import { formatPhone } from '@/lib/utils'
+import { formatPhone, cn } from '@/lib/utils'
 import { supabase } from '@/lib/supabase/client'
 import { StoreContext } from '@/stores/main'
+import { Loader2 } from 'lucide-react'
 
 interface EditUserDialogProps {
   isOpen: boolean
@@ -31,6 +32,54 @@ export function EditUserDialog({ isOpen, onClose, onSave, user }: EditUserDialog
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false)
+
+  const [inviteLoading, setInviteLoading] = useState(false)
+  const [actionLoading, setActionLoading] = useState(false)
+  const [inviteStatus, setInviteStatus] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (user?.status_convite) {
+      setInviteStatus(user.status_convite)
+    }
+  }, [user?.status_convite])
+
+  const handleReenviar = async () => {
+    if (!user) return
+    setActionLoading(true)
+    const { data, error } = await supabase.functions.invoke('gerenciar_convites', {
+      body: { action: 'reenviar', profile_id: user.id },
+    })
+    setActionLoading(false)
+    if (error || !data?.success) {
+      toast({
+        title: 'Erro',
+        description: data?.error || 'Não foi possível reenviar o convite.',
+        variant: 'destructive',
+      })
+    } else {
+      toast({ title: 'Sucesso', description: 'Convite reenviado com sucesso.' })
+      setInviteStatus('pendente')
+    }
+  }
+
+  const handleRevogar = async () => {
+    if (!user) return
+    setActionLoading(true)
+    const { data, error } = await supabase.functions.invoke('gerenciar_convites', {
+      body: { action: 'revogar', profile_id: user.id },
+    })
+    setActionLoading(false)
+    if (error || !data?.success) {
+      toast({
+        title: 'Erro',
+        description: data?.error || 'Não foi possível revogar o convite.',
+        variant: 'destructive',
+      })
+    } else {
+      toast({ title: 'Sucesso', description: 'Convite revogado com sucesso.' })
+      setInviteStatus('revogado')
+    }
+  }
 
   useEffect(() => {
     if (user && isOpen) {
