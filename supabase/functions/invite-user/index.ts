@@ -4,8 +4,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers':
-    'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
 }
 
 Deno.serve(async (req: Request) => {
@@ -23,13 +22,10 @@ Deno.serve(async (req: Request) => {
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } },
+      { global: { headers: { Authorization: authHeader } } }
     )
 
-    const {
-      data: { user },
-      error: userError,
-    } = await supabaseClient.auth.getUser(token)
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token)
     if (userError || !user) {
       throw new Error('Unauthorized: ' + (userError?.message || 'User not found'))
     }
@@ -52,8 +48,7 @@ Deno.serve(async (req: Request) => {
     const { email, name, role, whatsapp, empresa_id: requestedEmpresaId } = await req.json()
     if (!email) throw new Error('Email is required')
 
-    const targetEmpresaId =
-      isSuperAdmin && requestedEmpresaId ? requestedEmpresaId : profile.empresa_id
+    const targetEmpresaId = isSuperAdmin && requestedEmpresaId ? requestedEmpresaId : profile.empresa_id
 
     if (!targetEmpresaId) {
       throw new Error('Forbidden: No company assigned')
@@ -61,7 +56,7 @@ Deno.serve(async (req: Request) => {
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
     // Check if user already exists
@@ -73,15 +68,10 @@ Deno.serve(async (req: Request) => {
       .maybeSingle()
 
     if (existingProfile) {
-      return new Response(
-        JSON.stringify({
-          error: 'O usuário já foi convidado ou cadastrado no sistema nesta empresa.',
-        }),
-        {
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
-          status: 200,
-        },
-      )
+      return new Response(JSON.stringify({ error: 'O usuário já foi convidado ou cadastrado no sistema nesta empresa.' }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        status: 200,
+      })
     }
 
     const nameToUse = name || email.split('@')[0]
@@ -94,10 +84,9 @@ Deno.serve(async (req: Request) => {
           name: nameToUse,
           role: role || 'Observador',
           empresa_id: targetEmpresaId,
-          ...(whatsapp && { whatsapp }),
+          ...(whatsapp && { whatsapp })
         },
-        redirectTo: `https://mapear-protagonista.goskip.app/cadastro?email=${encodeURIComponent(email)}&empresa_id=${targetEmpresaId}&nome=${encodeURIComponent(nameToUse)}&perfil=${encodeURIComponent(role || 'Observador')}`,
-      },
+        redirectTo: `https://mapear-protagonista.goskip.app/cadastro?email=${encodeURIComponent(email)}&empresa_id=${targetEmpresaId}&nome=${encodeURIComponent(nameToUse)}&perfil=${encodeURIComponent(role || 'Observador')}`      }
     })
 
     if (linkError) {
@@ -114,44 +103,38 @@ Deno.serve(async (req: Request) => {
           role: role || 'Observador',
           empresa_id: targetEmpresaId,
           whatsapp,
-          status: 'pendente_confirmacao',
+          status: 'pendente_confirmacao'
+        });
+
+        if (insertError) throw insertError;
+        
+        return new Response(JSON.stringify({ success: true, message: 'Vínculo adicionado com sucesso (o usuário já possuía conta no sistema).' }), {
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          status: 200,
         })
-
-        if (insertError) throw insertError
-
-        return new Response(
-          JSON.stringify({
-            success: true,
-            message: 'Vínculo adicionado com sucesso (o usuário já possuía conta no sistema).',
-          }),
-          {
-            headers: { 'Content-Type': 'application/json', ...corsHeaders },
-            status: 200,
-          },
-        )
       }
-      throw linkError
+      throw linkError;
     }
 
     const { data: empresaData } = await supabaseAdmin
       .from('empresas')
       .select('nome')
       .eq('id', targetEmpresaId)
-      .maybeSingle()
+      .maybeSingle();
 
     await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/send-invite-email`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+        'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`
       },
       body: JSON.stringify({
         email: email,
         nome_usuario: nameToUse,
         link_convite: linkData.properties.action_link,
-        empresa_nome: empresaData?.nome || '',
-      }),
-    }).catch((err) => console.error('Erro ao chamar send-invite-email:', err))
+        empresa_nome: empresaData?.nome || ''
+      })
+    }).catch(err => console.error('Erro ao chamar send-invite-email:', err));
 
     return new Response(JSON.stringify({ success: true, user: linkData.user }), {
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
