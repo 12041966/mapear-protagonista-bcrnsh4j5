@@ -4,8 +4,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers':
-    'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
 }
 
 Deno.serve(async (req: Request) => {
@@ -25,12 +24,12 @@ Deno.serve(async (req: Request) => {
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
     if (action === 'validar') {
       if (!token) throw new Error('Token não informado')
-
+      
       const { data, error } = await supabaseAdmin
         .from('profiles')
         .select('status_convite, data_expiracao_convite')
@@ -38,8 +37,7 @@ Deno.serve(async (req: Request) => {
         .single()
 
       if (error || !data) throw new Error('Convite não encontrado ou inválido.')
-      if (data.status_convite !== 'pendente')
-        throw new Error('Este convite não está mais pendente ou já foi aceito.')
+      if (data.status_convite !== 'pendente') throw new Error('Este convite não está mais pendente ou já foi aceito.')
       if (data.data_expiracao_convite && new Date(data.data_expiracao_convite) < new Date()) {
         throw new Error('Este convite expirou.')
       }
@@ -52,7 +50,7 @@ Deno.serve(async (req: Request) => {
 
     if (action === 'revogar') {
       if (!profile_id) throw new Error('Profile ID não informado')
-
+      
       const { error } = await supabaseAdmin
         .from('profiles')
         .update({ status_convite: 'revogado', token_convite: null })
@@ -60,13 +58,10 @@ Deno.serve(async (req: Request) => {
 
       if (error) throw error
 
-      return new Response(
-        JSON.stringify({ success: true, message: 'Convite revogado com sucesso.' }),
-        {
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
-          status: 200,
-        },
-      )
+      return new Response(JSON.stringify({ success: true, message: 'Convite revogado com sucesso.' }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        status: 200,
+      })
     }
 
     if (action === 'reenviar') {
@@ -89,25 +84,20 @@ Deno.serve(async (req: Request) => {
       const genRes = await supabaseAdmin.auth.admin.generateLink({
         type: 'invite',
         email: profile.email,
-        options: {
-          data: { name: profile.name, role: profile.role, empresa_id: profile.empresa_id },
-          redirectTo,
-        },
+        options: { 
+          data: { name: profile.name, role: profile.role, empresa_id: profile.empresa_id }, 
+          redirectTo 
+        }
       })
-
+      
       linkData = genRes.data
       linkError = genRes.error
 
-      if (
-        linkError &&
-        (linkError.message.toLowerCase().includes('already registered') ||
-          (linkError as any).status === 422 ||
-          (linkError as any).code === 'user_already_exists')
-      ) {
+      if (linkError && (linkError.message.toLowerCase().includes('already registered') || (linkError as any).status === 422 || (linkError as any).code === 'user_already_exists')) {
         const magicRes = await supabaseAdmin.auth.admin.generateLink({
           type: 'magiclink',
           email: profile.email,
-          options: { redirectTo },
+          options: { redirectTo }
         })
         linkData = magicRes.data
         linkError = magicRes.error
@@ -121,7 +111,7 @@ Deno.serve(async (req: Request) => {
           status_convite: 'pendente',
           token_convite: tokenConvite,
           data_envio_convite: new Date().toISOString(),
-          data_expiracao_convite: dataExpiracao,
+          data_expiracao_convite: dataExpiracao
         })
         .eq('id', profile_id)
 
@@ -137,23 +127,20 @@ Deno.serve(async (req: Request) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+          'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`
         },
         body: JSON.stringify({
           email: profile.email,
           nome_usuario: profile.name,
           link_convite: linkData.properties.action_link,
-          empresa_nome: empresaData?.nome || '',
-        }),
+          empresa_nome: empresaData?.nome || ''
+        })
       })
 
-      return new Response(
-        JSON.stringify({ success: true, message: 'Convite reenviado com sucesso.' }),
-        {
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
-          status: 200,
-        },
-      )
+      return new Response(JSON.stringify({ success: true, message: 'Convite reenviado com sucesso.' }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        status: 200,
+      })
     }
 
     return new Response(JSON.stringify({ success: false, error: 'Ação inválida' }), {
@@ -163,7 +150,7 @@ Deno.serve(async (req: Request) => {
   } catch (error: any) {
     return new Response(JSON.stringify({ success: false, error: error.message }), {
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
-      status: 200,
+      status: 200, 
     })
   }
 })

@@ -1,11 +1,11 @@
 {
   "_versions": {
-    "request-password-reset": 5,
-    "invite-user": 16,
-    "gerar_codigo_observacao": 3,
-    "importar_funcionarios_csv": 9,
-    "notificar_alteracao_status_observacao": 4,
-    "send-invite-email": 2,
-    "gerenciar_convites": 1
+    "request-password-reset": 7,
+    "invite-user": 18,
+    "gerar_codigo_observacao": 5,
+    "importar_funcionarios_csv": 11,
+    "notificar_alteracao_status_observacao": 6,
+    "send-invite-email": 4,
+    "gerenciar_convites": 3
   }
 }
