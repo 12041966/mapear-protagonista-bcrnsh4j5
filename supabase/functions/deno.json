@@ -6,6 +6,7 @@
     "importar_funcionarios_csv": 11,
     "notificar_alteracao_status_observacao": 6,
     "send-invite-email": 4,
-    "gerenciar_convites": 3
+    "gerenciar_convites": 3,
+    "processar_cadastro_convidado": 1
   }
 }

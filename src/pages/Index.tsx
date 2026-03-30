@@ -75,9 +75,12 @@ export default function Index() {
       <div className="w-full max-w-7xl mx-auto py-12">
         <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">
           <Filter className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-slate-800 mb-2">Empresa não vinculada</h2>
+          <h2 className="text-xl font-bold text-slate-800 mb-2">
+            Usuário não vinculado a uma empresa. Contate o administrador
+          </h2>
           <p className="text-slate-600">
-            Você precisa estar vinculado a uma empresa para visualizar o dashboard.
+            Você precisa estar vinculado a uma empresa para visualizar o dashboard e realizar ações
+            no sistema.
           </p>
         </div>
       </div>

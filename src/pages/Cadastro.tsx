@@ -45,7 +45,7 @@ export default function Cadastro() {
           body: { action: 'validar', token: tokenParam },
         })
         if (error || !data?.success) {
-          setTokenError('Convite expirado ou inválido. Solicite um novo convite ao administrador.')
+          setTokenError('Convite expirado ou inválido. Solicite um novo convite ao administrador')
           setInitialLoading(false)
           return
         }
@@ -95,63 +95,22 @@ export default function Cadastro() {
     setLoading(true)
 
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-      let currentUserId = session?.user?.id
-
-      if (session?.user) {
-        const { error: updateAuthError } = await supabase.auth.updateUser({
-          password: password,
-        })
-        if (updateAuthError) throw updateAuthError
-      } else {
-        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              name: nome,
-              empresa_id: empresaIdParam,
-              whatsapp,
-              role: perfilParam,
-            },
-          },
-        })
-        if (signUpError) {
-          if (
-            signUpError.message.toLowerCase().includes('already registered') ||
-            signUpError.status === 422
-          ) {
-            throw new Error('Este e-mail já está cadastrado no sistema. Faça login.')
-          }
-          throw signUpError
-        }
-        currentUserId = signUpData.user?.id
+      const payload = {
+        email,
+        password,
+        nome,
+        whatsapp,
+        empresa_id: empresaIdParam || undefined,
+        perfil: perfilParam,
+        token: tokenParam || undefined,
       }
 
-      if (currentUserId) {
-        const updates: any = {
-          whatsapp: whatsapp,
-          status: 'ativo',
-          active: true,
-          name: nome,
-        }
+      const { data, error } = await supabase.functions.invoke('processar_cadastro_convidado', {
+        body: payload,
+      })
 
-        if (tokenParam) {
-          updates.status_convite = 'aceito'
-          updates.token_convite = null
-        }
-
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update(updates)
-          .eq('id', currentUserId)
-
-        if (profileError) {
-          console.error('Erro ao atualizar perfil:', profileError)
-        }
-      }
+      if (error) throw error
+      if (data?.error) throw new Error(data.error)
 
       toast({
         title: 'Cadastro concluído!',
@@ -162,9 +121,15 @@ export default function Cadastro() {
       navigate('/login')
     } catch (error: any) {
       console.error(error)
+      let message = error.message || 'Ocorreu um erro ao processar seu cadastro.'
+
+      if (message.includes('Convite expirado ou inválido')) {
+        message = 'Convite expirado ou inválido. Solicite um novo convite ao administrador'
+      }
+
       toast({
         title: 'Erro ao concluir cadastro',
-        description: error.message || 'Ocorreu um erro ao processar seu cadastro.',
+        description: message,
         variant: 'destructive',
       })
     } finally {
