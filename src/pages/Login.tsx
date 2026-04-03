@@ -97,13 +97,15 @@ export default function Login() {
       })
     } else {
       const { data: userData } = await supabase.auth.getUser()
-      if (userData?.user) {
-        const { data: profile } = await supabase
+      if (userData?.user?.email) {
+        const { data: profiles } = await supabase
           .from('profiles')
           .select('empresa_id, is_super_admin')
-          .eq('id', userData.user.id)
-          .single()
+          .eq('email', userData.user.email)
+          .order('is_super_admin', { ascending: false })
+          .limit(1)
 
+        const profile = profiles?.[0]
         if (profile) {
           if (profile.empresa_id) {
             localStorage.setItem('empresa_id', profile.empresa_id.toString())

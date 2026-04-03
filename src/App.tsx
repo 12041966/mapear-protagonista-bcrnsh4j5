@@ -58,11 +58,13 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     supabase
       .from('profiles')
       .select('*')
-      .eq('id', user.id)
-      .single()
+      .eq('email', user.email || '')
+      .order('is_super_admin', { ascending: false })
+      .order('active', { ascending: false })
+      .limit(1)
       .then(({ data, error }) => {
-        if (data && !error) {
-          const profile = data as any
+        const profile = data?.[0] as any
+        if (profile && !error) {
           if (profile.active === false) {
             signOut().then(() => setProfileLoading(false))
             return
@@ -360,9 +362,9 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
     async (obs: any) => {
       const targetCompany =
         isSuperAdmin && activeCompanyId !== 'all' ? activeCompanyId : currentUser?.companyId
-      if (!targetCompany || !user?.id) return
+      if (!targetCompany || !currentUser?.id) return
 
-      const targetUserId = obs.observerId || user.id
+      const targetUserId = obs.observerId || currentUser.id
       const date = new Date().toISOString()
 
       let success = false
