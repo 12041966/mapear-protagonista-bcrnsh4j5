@@ -70,7 +70,10 @@ export default function Index() {
     selectedAreas.length > 0 ||
     selectedShifts.length > 0
 
-  if (!currentUser?.companyId && !isSuperAdmin) {
+  const storedEmpresaId = localStorage.getItem('empresa_id')
+  const storedIsSuperAdmin = localStorage.getItem('is_super_admin') === 'true'
+
+  if (!currentUser?.companyId && !isSuperAdmin && !storedEmpresaId && !storedIsSuperAdmin) {
     return (
       <div className="w-full max-w-7xl mx-auto py-12">
         <div className="bg-white border rounded-lg p-8 text-center shadow-sm animate-fade-in-up">

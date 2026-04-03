@@ -96,6 +96,28 @@ export default function Login() {
         description,
       })
     } else {
+      const { data: userData } = await supabase.auth.getUser()
+      if (userData?.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('empresa_id, is_super_admin')
+          .eq('id', userData.user.id)
+          .single()
+
+        if (profile) {
+          if (profile.empresa_id) {
+            localStorage.setItem('empresa_id', profile.empresa_id.toString())
+          } else {
+            localStorage.removeItem('empresa_id')
+          }
+
+          if (profile.is_super_admin) {
+            localStorage.setItem('is_super_admin', 'true')
+          } else {
+            localStorage.removeItem('is_super_admin')
+          }
+        }
+      }
       navigate('/')
     }
 
@@ -132,19 +154,27 @@ export default function Login() {
       return
     }
 
-    const { error } = await signUp(regEmail, regPassword, {
-      data: {
-        name: regName,
-        whatsapp: regWhatsapp,
-        empresa_id: empresaId,
-      },
-    })
+    const token = searchParams.get('token') || searchParams.get('code') || undefined
 
-    if (error) {
+    const { data: functionData, error: functionError } = await supabase.functions.invoke(
+      'processar_cadastro_convidado',
+      {
+        body: {
+          email: regEmail,
+          password: regPassword,
+          nome: regName,
+          whatsapp: regWhatsapp,
+          empresa_id: empresaId,
+          token: token,
+        },
+      },
+    )
+
+    if (functionError || functionData?.error) {
       toast({
         variant: 'destructive',
         title: 'Erro ao cadastrar',
-        description: error.message,
+        description: functionError?.message || functionData?.error || 'Erro desconhecido',
       })
     } else {
       toast({

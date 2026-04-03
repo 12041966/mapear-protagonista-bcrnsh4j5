@@ -71,13 +71,27 @@ const StoreProviderWrapper = ({ children }: { children: React.ReactNode }) => {
           const superAdmin = profile.is_super_admin === true
           setIsSuperAdmin(superAdmin)
 
+          if (superAdmin) {
+            localStorage.setItem('is_super_admin', 'true')
+          } else {
+            localStorage.removeItem('is_super_admin')
+          }
+
+          const resolvedCompanyId = profile.empresa_id || profile.company_id || ''
+
+          if (resolvedCompanyId) {
+            localStorage.setItem('empresa_id', resolvedCompanyId)
+          } else {
+            localStorage.removeItem('empresa_id')
+          }
+
           setCurrentUser({
             id: profile.id,
             name: profile.name || '',
             email: profile.email || '',
             whatsapp: profile.whatsapp || '',
             cpf: profile.cpf || '',
-            companyId: profile.empresa_id || profile.company_id || '',
+            companyId: resolvedCompanyId,
             registrationNumber: profile.registration_number || null,
             role: (profile.role as Role) || 'Observador',
             isSuperAdmin: superAdmin,

@@ -4,7 +4,8 @@ import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
+  'Access-Control-Allow-Headers':
+    'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
 }
 
 Deno.serve(async (req: Request) => {
@@ -22,10 +23,13 @@ Deno.serve(async (req: Request) => {
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
+      { global: { headers: { Authorization: authHeader } } },
     )
 
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token)
+    const {
+      data: { user },
+      error: userError,
+    } = await supabaseClient.auth.getUser(token)
     if (userError || !user) {
       throw new Error('Unauthorized: ' + (userError?.message || 'User not found'))
     }
@@ -48,7 +52,8 @@ Deno.serve(async (req: Request) => {
     const { email, name, role, whatsapp, empresa_id: requestedEmpresaId } = await req.json()
     if (!email) throw new Error('Email is required')
 
-    const targetEmpresaId = isSuperAdmin && requestedEmpresaId ? requestedEmpresaId : profile.empresa_id
+    const targetEmpresaId =
+      isSuperAdmin && requestedEmpresaId ? requestedEmpresaId : profile.empresa_id
 
     if (!targetEmpresaId) {
       throw new Error('Forbidden: No company assigned')
@@ -56,7 +61,7 @@ Deno.serve(async (req: Request) => {
 
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     )
 
     // Verificar se o usuário já existe nesta empresa
@@ -69,15 +74,23 @@ Deno.serve(async (req: Request) => {
 
     if (existingProfile) {
       if (existingProfile.status_convite === 'pendente') {
-        return new Response(JSON.stringify({ error: 'Já existe um convite pendente para este usuário nesta empresa.' }), {
+        return new Response(
+          JSON.stringify({
+            error: 'Já existe um convite pendente para este usuário nesta empresa.',
+          }),
+          {
+            headers: { 'Content-Type': 'application/json', ...corsHeaders },
+            status: 200,
+          },
+        )
+      }
+      return new Response(
+        JSON.stringify({ error: 'O usuário já está cadastrado nesta empresa.' }),
+        {
           headers: { 'Content-Type': 'application/json', ...corsHeaders },
           status: 200,
-        })
-      }
-      return new Response(JSON.stringify({ error: 'O usuário já está cadastrado nesta empresa.' }), {
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        status: 200,
-      })
+        },
+      )
     }
 
     const nameToUse = name || email.split('@')[0]
@@ -88,9 +101,9 @@ Deno.serve(async (req: Request) => {
       .from('empresas')
       .select('nome, codigo_empresa')
       .eq('id', targetEmpresaId)
-      .maybeSingle();
+      .maybeSingle()
 
-    const codigoEmpresa = empresaData?.codigo_empresa || '';
+    const codigoEmpresa = empresaData?.codigo_empresa || ''
 
     // Insere diretamente o perfil com o token
     const profileId = crypto.randomUUID()
@@ -106,26 +119,31 @@ Deno.serve(async (req: Request) => {
       token_convite: tokenConvite,
       data_envio_convite: new Date().toISOString(),
       data_expiracao_convite: dataExpiracao,
-      active: true
-    });
+      active: true,
+    })
 
-    if (insertError) throw insertError;
+    if (insertError) throw insertError
 
     const linkConvite = `https://mapear-protagonista.goskip.app/cadastro?email=${encodeURIComponent(email)}&empresa_id=${targetEmpresaId}&codigo_empresa=${codigoEmpresa}&nome=${encodeURIComponent(nameToUse)}&perfil=${encodeURIComponent(role || 'Observador')}&token=${tokenConvite}`
 
-    await supabaseAdmin.functions.invoke('send-invite-email', {
-      body: {
-        email: email,
-        nome_usuario: nameToUse,
-        link_convite: linkConvite,
-        empresa_nome: empresaData?.nome || ''
-      }
-    }).catch(err => console.error('Erro ao chamar send-invite-email:', err));
+    await supabaseAdmin.functions
+      .invoke('send-invite-email', {
+        body: {
+          email: email,
+          nome_usuario: nameToUse,
+          link_convite: linkConvite,
+          empresa_nome: empresaData?.nome || '',
+        },
+      })
+      .catch((err) => console.error('Erro ao chamar send-invite-email:', err))
 
-    return new Response(JSON.stringify({ success: true, message: 'Convite enviado com sucesso.' }), {
-      headers: { 'Content-Type': 'application/json', ...corsHeaders },
-      status: 200,
-    })
+    return new Response(
+      JSON.stringify({ success: true, message: 'Convite enviado com sucesso.' }),
+      {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        status: 200,
+      },
+    )
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
