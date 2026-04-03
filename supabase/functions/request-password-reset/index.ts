@@ -4,8 +4,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2.39.3'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers':
-    'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, x-supabase-client-platform, apikey, content-type',
 }
 
 Deno.serve(async (req: Request) => {
@@ -16,7 +15,7 @@ Deno.serve(async (req: Request) => {
   try {
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
     const { email } = await req.json()
@@ -29,7 +28,7 @@ Deno.serve(async (req: Request) => {
     }
 
     const { error } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://mapear-protagonista.goskip.app/login',
+      redirectTo: 'https://mapear-protagonista.goskip.app/login'
     })
 
     if (error) {
@@ -41,7 +40,7 @@ Deno.serve(async (req: Request) => {
       {
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
         status: 200,
-      },
+      }
     )
   } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
